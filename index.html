@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSE-5311 Exam 1 — Ultimate Study Guide</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a1a;color:#e0e0e0;font-family:'Segoe UI',system-ui,sans-serif;line-height:1.6;padding:20px;max-width:1200px;margin:0 auto}
+h1{text-align:center;font-size:2.2em;background:linear-gradient(135deg,#00d2ff,#7b2ff7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:20px 0}
+h2{color:#00d2ff;border-bottom:2px solid #1a1a3e;padding:12px 0 6px;margin:30px 0 15px;font-size:1.5em}
+h3{color:#bb86fc;margin:15px 0 8px;font-size:1.2em}
+h4{color:#03dac6;margin:10px 0 5px}
+.section{background:#12122a;border:1px solid #1e1e3f;border-radius:12px;padding:20px 25px;margin:20px 0;box-shadow:0 4px 15px rgba(0,0,0,0.3)}
+.highlight{background:#1a1a3e;border-left:4px solid #bb86fc;padding:12px 16px;margin:10px 0;border-radius:0 8px 8px 0}
+.correct{color:#00e676;font-weight:bold}
+.wrong{color:#ff5252}
+.formula{background:#1e1e3f;padding:10px 16px;border-radius:8px;font-family:'Courier New',monospace;margin:8px 0;border:1px solid #2a2a4f;font-size:1.05em}
+table{width:100%;border-collapse:collapse;margin:12px 0}
+th{background:#1a1a3e;color:#00d2ff;padding:10px;text-align:center;border:1px solid #2a2a4f}
+td{padding:8px 10px;border:1px solid #2a2a4f;text-align:center}
+tr:nth-child(even){background:#0f0f25}
+.tree-box{background:#0d0d20;border:1px solid #2a2a4f;border-radius:10px;padding:15px;margin:10px 0;overflow-x:auto}
+pre{background:#0d0d20;padding:12px;border-radius:8px;overflow-x:auto;font-size:0.95em;border:1px solid #2a2a4f}
+code{font-family:'Courier New',monospace;color:#03dac6}
+.mega-important{background:linear-gradient(135deg,#1a0030,#0a1628);border:2px solid #ff9800;border-radius:12px;padding:15px 20px;margin:15px 0}
+.mega-important h3{color:#ff9800}
+.q-card{background:#151530;border:1px solid #2a2a4f;border-radius:10px;padding:14px 18px;margin:10px 0}
+.q-card .q{color:#bb86fc;font-weight:bold;margin-bottom:5px}
+.q-card .a{color:#00e676}
+svg text{font-family:'Segoe UI',sans-serif}
+.nav{position:sticky;top:0;background:#0a0a1a;padding:10px;z-index:100;border-bottom:1px solid #1e1e3f;display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.nav a{color:#bb86fc;text-decoration:none;padding:4px 10px;border:1px solid #2a2a4f;border-radius:6px;font-size:0.8em}
+.nav a:hover{background:#1a1a3e}
+.step{background:#0f0f25;border-left:3px solid #03dac6;padding:8px 14px;margin:6px 0;border-radius:0 6px 6px 0}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+@media(max-width:768px){.two-col{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<h1>🎯 CSE-5311 Exam 1 — Ultimate Study Guide</h1>
+<div class="nav">
+<a href="#s1">Big-O</a><a href="#s2">Arrays</a><a href="#s3">Sorting</a><a href="#s4">Searching</a>
+<a href="#s5">BST</a><a href="#s6">Traversals</a><a href="#s7">AVL</a><a href="#s8">Heaps</a>
+<a href="#s9">RB Trees</a><a href="#s10">Splay</a><a href="#s11">Disjoint Sets</a>
+<a href="#s12">Graphs</a><a href="#s13">Practice Qs</a><a href="#s14">HW1</a><a href="#s15">HW2</a>
+</div>
+
+<!-- ============ SECTION 1: BIG-O ============ -->
+<div class="section" id="s1">
+<h2>1. Big-O Notation</h2>
+<p>Big O describes how runtime grows relative to input as input gets arbitrarily large.</p>
+
+<h3>Key Rules</h3>
+<div class="highlight">
+<strong>1. Drop constants:</strong> O(2n) → O(n)<br>
+<strong>2. Drop less significant terms:</strong> O(n² + n) → O(n²)<br>
+<strong>3. Formal definition:</strong> f(n) = O(g(n)) if ∃ constants c > 0, n₀ > 0 such that f(n) ≤ c·g(n) for all n ≥ n₀
+</div>
+
+<h3>Complexity Hierarchy (slowest → fastest)</h3>
+<div class="formula">O(1) &lt; O(log n) &lt; O(n) &lt; O(n log n) &lt; O(n²) &lt; O(n³) &lt; O(2ⁿ) &lt; O(nⁿ)</div>
+
+<h3>Big-Θ and Big-Ω</h3>
+<div class="highlight">
+<strong>Big-Θ (Theta):</strong> Exact bound — f(n) = Θ(g(n)) means f grows at the same rate as g<br>
+<strong>Big-Ω (Omega):</strong> Lower bound — f(n) = Ω(g(n)) means f grows at least as fast as g
+</div>
+
+<h3>⚡ Big-O Simplification Practice (FROM EXAM!)</h3>
+<div class="q-card"><div class="q">(a) f(n) = 100n³ − 7n³ + 14n²</div><div class="a">→ O(n³)</div></div>
+<div class="q-card"><div class="q">(b) f(n) = 100n³ − 100n³ + 7n²</div><div class="a">→ O(n²)</div></div>
+<div class="q-card"><div class="q">(c) f(n) = log(7n²)</div><div class="a">→ O(log n) — log rule: log(7n²) = log7 + 2logn</div></div>
+<div class="q-card"><div class="q">(d) f(n) = 5 log log n + 4 log²(n)</div><div class="a">→ O(log² n)</div></div>
+<div class="q-card"><div class="q">(e) f(n) = 0.001n + 100·2ⁿ</div><div class="a">→ O(2ⁿ) — exponential dominates</div></div>
+<div class="q-card"><div class="q">(f) f(n) = n³(1 + 6n + 2014n²)</div><div class="a">→ O(n⁵) — n³ × n² = n⁵</div></div>
+<div class="q-card"><div class="q">(g) f(n) = (log n)(n + n²)</div><div class="a">→ O(n² log n)</div></div>
+
+<h3>Sorted Array Operations (FROM EXAM!)</h3>
+<div class="highlight">
+Given sorted array A of size n with no duplicates, indexing is O(1):<br>
+• <strong>Maximum value</strong> max₁≤t≤n A[t]: <span class="correct">O(1)</span> — just return A[n]<br>
+• <strong>Mean/Average</strong> (1/n)Σ A[t]: <span class="correct">O(n)</span> — must sum all elements<br>
+• <strong>Median</strong> (n odd): <span class="correct">O(1)</span> — return A[(n+1)/2], since sorted, (n-1)/2 elements are strictly smaller
+</div>
+</div>
+
+<!-- ============ SECTION 2: ARRAYS ============ -->
+<div class="section" id="s2">
+<h2>2. Arrays & Data Structures</h2>
+<h3>Array Complexities</h3>
+<table>
+<tr><th>Operation</th><th>Time</th></tr>
+<tr><td>Lookup by index</td><td>O(1)</td></tr>
+<tr><td>Append (end)</td><td>O(1)</td></tr>
+<tr><td>Insert (middle)</td><td>O(n)</td></tr>
+<tr><td>Delete (middle)</td><td>O(n)</td></tr>
+<tr><td>Search (unsorted)</td><td>O(n)</td></tr>
+<tr><td>Search (sorted)</td><td>O(log n)</td></tr>
+</table>
+<div class="highlight">
+<strong>Strengths:</strong> Fast lookups O(1), fast appends O(1)<br>
+<strong>Weaknesses:</strong> Fixed size, slow inserts/deletes O(n), costly to grow<br>
+<strong>Dynamic arrays:</strong> Double size when full → amortized O(1) append<br>
+<strong>In-place algorithm:</strong> Uses O(1) extra space
+</div>
+</div>
+
+<!-- ============ SECTION 3: SORTING ============ -->
+<div class="section" id="s3">
+<h2>3. Sorting Algorithms</h2>
+<h3>Master Comparison Table</h3>
+<table>
+<tr><th>Algorithm</th><th>Best</th><th>Average</th><th>Worst</th><th>Space</th><th>Stable?</th></tr>
+<tr><td>Insertion Sort</td><td>O(n)</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>Yes</td></tr>
+<tr><td>Selection Sort</td><td>O(n²)</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>No</td></tr>
+<tr><td>Bubble Sort</td><td>O(n)</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>Yes</td></tr>
+<tr><td>Merge Sort</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n)</td><td>Yes</td></tr>
+<tr><td>Quick Sort</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n²)</td><td>O(log n)</td><td>No</td></tr>
+<tr><td>Heap Sort</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td><td>O(1)</td><td>No</td></tr>
+</table>
+
+<div class="mega-important">
+<h3>⚡ EXAM QUESTION: Sorting for Sorted vs Reverse Order</h3>
+<table>
+<tr><th>Algorithm</th><th>Sorted Order</th><th>Reverse Order</th></tr>
+<tr><td>Quicksort (randomized)</td><td>n log n</td><td>n log n</td></tr>
+<tr><td>Heapsort</td><td>n log n</td><td>n log n</td></tr>
+<tr><td>Insertion sort</td><td><span class="correct">linear (n)</span></td><td><span class="wrong">quadratic (n²)</span></td></tr>
+<tr><td>Selection sort</td><td>quadratic (n²)</td><td>quadratic (n²)</td></tr>
+</table>
+<p style="color:#ff9800;margin-top:8px">⚠️ Insertion sort is the ONLY one that changes between sorted/reverse!</p>
+</div>
+
+<h3>Key Points to Memorize</h3>
+<div class="highlight">
+• <strong>Quick Sort worst case O(n²):</strong> when pivot is always min/max (sorted input without randomization)<br>
+• <strong>Merge Sort:</strong> Always O(n log n), but needs O(n) extra space<br>
+• <strong>Heap Sort:</strong> O(n log n) ALL cases, O(1) space — better worst case than Quick Sort<br>
+• <strong>3-way Quick Sort:</strong> Handles many duplicates efficiently<br>
+• <strong>Median-of-three:</strong> Pick median of first/mid/last as pivot for better performance<br>
+• <strong>Quick sort with median partition:</strong> worst case = same as heap sort (n log n)<br>
+• <strong>Quick sort with random partition:</strong> worst case = same as merge sort (n log n expected)<br>
+• <strong>All tree-based sorts (Merge, Quick, Heap):</strong> divide and conquer paradigm
+</div>
+</div>
+
+<!-- ============ SECTION 4: SEARCHING ============ -->
+<div class="section" id="s4">
+<h2>4. Searching Algorithms</h2>
+<div class="two-col">
+<div class="q-card">
+<h4>Linear Search</h4>
+<p>Check every element one by one</p>
+<p><strong>Best:</strong> O(1) | <strong>Worst:</strong> O(n) | <strong>Average:</strong> O(n)</p>
+<p>Works on unsorted arrays</p>
+</div>
+<div class="q-card">
+<h4>Binary Search</h4>
+<p>Divide sorted array in half each step</p>
+<p><strong>Best:</strong> O(1) | <strong>Worst:</strong> O(log n) | <strong>Average:</strong> O(log n)</p>
+<p>Requires sorted array</p>
+</div>
+</div>
+</div>
+
+<!-- ============ SECTION 5: BST ============ -->
+<div class="section" id="s5">
+<h2>5. Binary Search Trees (BST)</h2>
+<h3>BST Property</h3>
+<div class="highlight">For every node: <strong>left subtree values &lt; node &lt; right subtree values</strong></div>
+
+<h3>Key Terms</h3>
+<div class="two-col">
+<div class="q-card">
+<strong>Root:</strong> Top node (no parent)<br>
+<strong>Leaf:</strong> Node with no children<br>
+<strong>Height:</strong> Longest path from root to leaf<br>
+<strong>Depth:</strong> Distance from root to node
+</div>
+<div class="q-card">
+<strong>Internal node:</strong> Non-leaf node<br>
+<strong>Subtree:</strong> Node + all descendants<br>
+<strong>Path:</strong> Sequence of edges<br>
+<strong>Balanced:</strong> Left & right heights differ ≤ 1
+</div>
+</div>
+
+<h3>BST Operations</h3>
+<table>
+<tr><th>Operation</th><th>Average</th><th>Worst (skewed)</th></tr>
+<tr><td>Search</td><td>O(log n)</td><td>O(n)</td></tr>
+<tr><td>Insert</td><td>O(log n)</td><td>O(n)</td></tr>
+<tr><td>Delete</td><td>O(log n)</td><td>O(n)</td></tr>
+</table>
+
+<h3>BST Search Algorithm</h3>
+<pre><code>Search(root, key):
+    if root is NULL or root.key == key:
+        return root
+    if key &lt; root.key:
+        return Search(root.left, key)
+    else:
+        return Search(root.right, key)</code></pre>
+
+<h3>BST Insertion Algorithm</h3>
+<pre><code>Insert(root, key):
+    if root is NULL:
+        return new Node(key)
+    if key &lt; root.key:
+        root.left = Insert(root.left, key)
+    else if key &gt; root.key:
+        root.right = Insert(root.right, key)
+    return root</code></pre>
+
+<h3>BST Deletion — 4 Cases</h3>
+<div class="step"><strong>Case 1 — Leaf:</strong> Simply remove the node</div>
+<div class="step"><strong>Case 2 — One child (left only):</strong> Find max of left subtree (m), move m to x's position, delete(m) recursively</div>
+<div class="step"><strong>Case 3 — One child (right only):</strong> Find min of right subtree (m), move m to x's position, delete(m) recursively</div>
+<div class="step"><strong>Case 4 — Two children:</strong> Find max of left subtree (m), move m to x's position, delete(m) recursively</div>
+<div class="formula">Deletion running time: O(h) where h = height of tree</div>
+
+<h3>BST Validate (testBST)</h3>
+<pre><code>testBST(root):
+    if root is NULL: return true
+    if root.left != NULL and root.left.key &gt; root.key: return false
+    if root.right != NULL and root.right.key &lt; root.key: return false
+    return testBST(root.left) AND testBST(root.right)</code></pre>
+
+<h3>Building Efficient BST (Median Method)</h3>
+<pre><code>Repeat median(s):
+    M &lt;= median(s)
+    Partition s into L(smaller than M), M, R(larger than M)
+    Root &lt;= M
+    Root.Left &lt;= repeat median on L
+    Root.Right &lt;= repeat median on R
+→ Insertion time: O(log n) or O(h)</code></pre>
+
+<div class="mega-important">
+<h3>⚡ Tree Height (FROM EXAM!)</h3>
+<table>
+<tr><th>Tree Type</th><th>Best Case Height</th><th>Worst Case Height</th></tr>
+<tr><td>BST</td><td><span class="correct">log n</span></td><td><span class="wrong">n</span> (skewed)</td></tr>
+<tr><td>Heap-ordered complete tree</td><td><span class="correct">log n</span></td><td><span class="correct">log n</span></td></tr>
+<tr><td>Left-leaning Red-Black tree</td><td><span class="correct">log n</span></td><td><span class="correct">log n</span></td></tr>
+</table>
+</div>
+
+<div class="mega-important">
+<h3>⚡ Tree Type Identification (FROM EXAM!)</h3>
+<p>Given 6 trees, identify which are:</p>
+<div class="highlight">
+<strong>Full binary tree:</strong> Every node has 0 or 2 children (never 1)<br>
+<strong>Complete binary tree:</strong> All levels full except possibly last; last level filled left-to-right<br>
+<strong>AVL balanced:</strong> BST where |height(left) - height(right)| ≤ 1 for ALL nodes<br>
+<strong>Perfect binary tree:</strong> All internal nodes have exactly 2 children AND all leaves at same level
+</div>
+<p style="color:#ff9800">⚠️ Perfect ⊂ Complete ⊂ (not necessarily Full), but Full does NOT imply Complete!</p>
+</div>
+
+<h3>⚡ Binary Tree Node Count Formulas</h3>
+<table>
+<tr><th>Tree Type</th><th>Height h</th><th>Min Nodes</th><th>Max Nodes</th></tr>
+<tr><td>Binary tree</td><td>h</td><td>h + 1</td><td>2^(h+1) − 1</td></tr>
+<tr><td>Full binary tree</td><td>h</td><td>2h + 1</td><td>2^(h+1) − 1</td></tr>
+<tr><td>AVL tree</td><td>h</td><td>N(h) = N(h-1)+N(h-2)+1</td><td>2^(h+1) − 1</td></tr>
+</table>
+<div class="mega-important">
+<h3>⚡ EXAM: Exact Numbers to Memorize</h3>
+<p><strong>AVL tree of height 5:</strong> Min = <span class="correct">20</span>, Max = <span class="correct">63</span></p>
+<p><strong>Full tree of height 6:</strong> Min = <span class="correct">13</span>, Max = <span class="correct">127</span></p>
+<p><strong>Complete tree of height 5, non-leaf nodes:</strong> Min = <span class="correct">16</span>, Max = <span class="correct">31</span></p>
+<p style="font-size:0.9em;color:#aaa;margin-top:5px">AVL min: N(0)=1, N(1)=2, N(2)=4, N(3)=7, N(4)=12, N(5)=20</p>
+</div>
+
+<h3>Leaf Node Formula</h3>
+<div class="formula">A binary tree with n nodes has (n+1)/2 leaves (when n is odd and tree is full)</div>
+<div class="formula">In a FULL binary tree: leaves = internal_nodes + 1</div>
+</div>
+
+<!-- ============ SECTION 6: TRAVERSALS ============ -->
+<div class="section" id="s6">
+<h2>6. Tree Traversals</h2>
+<h3>Two Types</h3>
+<div class="highlight">
+<strong>1. Breadth First Traversal (BFS):</strong> Level-order, uses a <span class="correct">QUEUE</span><br>
+<strong>2. Depth First Traversal (DFS):</strong> Pre/In/Post-order, uses a <span class="correct">STACK</span>
+</div>
+
+<h3>DFS Traversal Algorithms</h3>
+<div class="two-col">
+<div class="q-card">
+<h4>In-order (Left, Root, Right)</h4>
+<pre><code>Step 1: Traverse left subtree
+Step 2: Visit root
+Step 3: Traverse right subtree</code></pre>
+<p style="color:#00e676">→ Gives sorted order for BST!</p>
+</div>
+<div class="q-card">
+<h4>Pre-order (Root, Left, Right)</h4>
+<pre><code>Step 1: Visit root
+Step 2: Traverse left subtree
+Step 3: Traverse right subtree</code></pre>
+</div>
+</div>
+<div class="q-card">
+<h4>Post-order (Left, Right, Root)</h4>
+<pre><code>Step 1: Traverse left subtree
+Step 2: Traverse right subtree
+Step 3: Visit root</code></pre>
+</div>
+
+<div class="mega-important">
+<h3>⚡ EXAM: Traversal Example (Tree with root 25)</h3>
+<div class="tree-box">
+<pre>
+              25
+           /      \
+         15        50
+        /  \      /  \
+      10    22   35   70
+     / \   / \  / \   / \
+    4  12 18 24 31 44 66 90
+</pre>
+</div>
+<p><strong>InOrder:</strong> <span class="correct">4, 10, 12, 15, 18, 22, 24, 25, 31, 35, 44, 50, 66, 70, 90</span></p>
+<p><strong>PreOrder:</strong> <span class="correct">25, 15, 10, 4, 12, 22, 18, 24, 50, 35, 31, 44, 70, 66, 90</span></p>
+<p><strong>PostOrder:</strong> <span class="correct">4, 12, 10, 18, 24, 22, 15, 31, 44, 35, 66, 90, 70, 50, 25</span></p>
+<p><strong>Level-order (BFS):</strong> <span class="correct">25, 15, 50, 10, 22, 35, 70, 4, 12, 18, 24, 31, 44, 66, 90</span></p>
+</div>
+
+<div class="mega-important">
+<h3>⚡ EXAM: Post-Order Traversal Example</h3>
+<div class="tree-box">
+<pre>
+        C
+       / \
+      W   X
+     / \ / \
+    J  Y Z  A
+        |
+        P
+</pre>
+</div>
+<p><strong>Post-order:</strong> <span class="correct">J, Y, W, P, Z, A, X, C</span></p>
+<p><strong>Depth of node X:</strong> <span class="correct">1</span> (one edge from root C)</p>
+</div>
+
+<h3>⚡ DFS/BFS Stack/Queue Questions (FROM EXAM!)</h3>
+<div class="q-card">
+<div class="q">a) Design a tree with 5 nodes such that DFS from one node gives the LARGEST possible stack size</div>
+<div class="a">→ Linear chain (like a linked list): 1→2→3→4→5. Stack will hold all 5 nodes.</div>
+</div>
+<div class="q-card">
+<div class="q">b) Design a tree with 5 nodes such that BFS from one node gives the LARGEST possible queue size</div>
+<div class="a">→ Star graph: center connected to all 4 others. Queue will hold 4 nodes at once.</div>
+</div>
+</div>
+
+<!-- ============ SECTION 7: AVL ============ -->
+<div class="section" id="s7">
+<h2>7. AVL Trees</h2>
+<div class="highlight">
+<strong>AVL = Self-balancing BST</strong> where |height(left) − height(right)| ≤ 1 for ALL nodes.<br>
+All operations: <span class="correct">O(log n)</span> guaranteed
+</div>
+
+<h3>Four Types of Rotations</h3>
+<table>
+<tr><th>Imbalance</th><th>Rotation</th><th>Type</th></tr>
+<tr><td>Left-Left (LL)</td><td>Single Right rotation</td><td>Single</td></tr>
+<tr><td>Right-Right (RR)</td><td>Single Left rotation</td><td>Single</td></tr>
+<tr><td>Left-Right (LR)</td><td>Left then Right</td><td>Double</td></tr>
+<tr><td>Right-Left (RL)</td><td>Right then Left</td><td>Double</td></tr>
+</table>
+
+<div class="mega-important">
+<h3>⚡ EXAM: AVL Insertion Trace — Insert 2, 5, 6, 8, 9, 7</h3>
+<div class="step"><strong>Insert 2:</strong> Root = 2</div>
+<div class="step"><strong>Insert 5:</strong> 2→Right(5). Balanced.</div>
+<div class="step"><strong>Insert 6:</strong> 2→5→6. RR imbalance at 2 → <span class="correct">Single Left Rotation</span> → Root=5, Left=2, Right=6</div>
+<div class="step"><strong>Insert 8:</strong> 5→6→Right(8). Balanced (heights: L=1, R=2, diff=1).</div>
+<div class="step"><strong>Insert 9:</strong> 5→6→8→9. RR imbalance at 6 → <span class="correct">Single Left Rotation</span> → 5(left=2, right=8(left=6, right=9))</div>
+<div class="step"><strong>Insert 7:</strong> 5→8→6→Right(7). RL imbalance at 8 → <span class="correct">Double Rotation (Right-Left)</span>
+<br>Step 1: Right rotate at 6-7 subtree
+<br>Step 2: Left rotate at 8
+<br><strong>Final tree:</strong></div>
+<div class="tree-box"><pre>
+        6
+       / \
+      5   8
+     /   / \
+    2   7   9
+</pre></div>
+</div>
+
+<h3>⚡ Re-balancing AVL tree costs: <span class="correct">O(log n)</span></h3>
+</div>
+
+<!-- ============ SECTION 8: HEAPS ============ -->
+<div class="section" id="s8">
+<h2>8. Heaps & HeapSort</h2>
+<h3>Heap Properties</h3>
+<div class="highlight">
+<strong>Max-Heap:</strong> Parent ≥ children (root is maximum)<br>
+<strong>Min-Heap:</strong> Parent ≤ children (root is minimum)<br>
+Heap is always a <strong>complete binary tree</strong>
+</div>
+
+<h3>Heap Array Indexing (1-based)</h3>
+<div class="formula">
+Parent(i) = ⌊i/2⌋ &nbsp;|&nbsp; Left(i) = 2i &nbsp;|&nbsp; Right(i) = 2i + 1
+</div>
+
+<h3>⚡ EXAM: Heap Array Indexing (0-based)</h3>
+<div class="formula">
+Parent(i) = ⌊(i-1)/2⌋ &nbsp;|&nbsp; Left(i) = 2i + 1 &nbsp;|&nbsp; Right(i) = 2i + 2
+</div>
+
+<div class="mega-important">
+<h3>⚡ EXAM: Heap Index Questions</h3>
+<div class="q-card">
+<div class="q">If heap with largest on top stored in array:</div>
+<div class="a">
+a) Parent of A[9] is A[16] → <span class="wrong">FALSE</span>. Parent(9) = floor(9/2) = A[4] (1-based)<br>
+b) Left child of A[8] is A[17] → <span class="correct">TRUE</span>. Left(8) = 2×8+1 = A[17] (0-based)<br>
+c) Right child of A[8] is A[17] → depends on indexing<br>
+d) Grandparent of A[9] is A[2] → <span class="correct">TRUE</span> (1-based: parent(9)=4, parent(4)=2)<br>
+e) Grandparent of A[8] is A[4] → depends on indexing
+</div>
+</div>
+</div>
+
+<h3>Max Heap Construction (Insert)</h3>
+<pre><code>Step 1 − Create new node at end
+Step 2 − Assign value
+Step 3 − Compare with parent
+Step 4 − If parent &lt; child, swap
+Step 5 − Repeat 3-4 until heap property holds</code></pre>
+
+<h3>Max Heap Deletion (Remove Root)</h3>
+<pre><code>Step 1 − Remove root node
+Step 2 − Move last element to root
+Step 3 − Compare with children
+Step 4 − Swap with LARGER child if needed
+Step 5 − Repeat 3-4 until heap property holds</code></pre>
+
+<div class="mega-important">
+<h3>⚡ EXAM: Max-Heap Remove Trace</h3>
+<p>Array: [−, 20, 12, 18, 7, 3, 6, 4]</p>
+<div class="step">1. Remove root (20), move last (4) to root: [−, 4, 12, 18, 7, 3, 6]</div>
+<div class="step">2. 4 &lt; max child (18), swap: [−, 18, 12, 4, 7, 3, 6]</div>
+<div class="step">3. 4 &lt; max child (6), swap: [−, 18, 12, 6, 7, 3, 4]</div>
+<p><strong>Result:</strong> <span class="correct">[−, 18, 12, 6, 7, 3, 4]</span></p>
+</div>
+
+<h3>HeapSort Algorithm</h3>
+<pre><code>HeapSort(A as array):
+    BuildHeap(A)
+    for i = n to 1:
+        swap(A[1], A[i])
+        n = n - 1
+        Heapify(A, 1)
+
+BuildHeap(A as array):
+    n = elements_in(A)
+    for i = floor(n/2) to 1:
+        Heapify(A, i)
+
+Heapify(A as array, i as int):
+    left = 2i
+    right = 2i + 1
+    if (left &lt;= n) and (A[left] > A[i]):
+        max = left
+    else:
+        max = i
+    if (right &lt;= n) and (A[right] > A[max]):
+        max = right
+    if (max != i):
+        swap(A[i], A[max])
+        Heapify(A, max)</code></pre>
+
+<div class="highlight">
+<strong>HeapSort:</strong> O(n log n) for ALL cases (best, average, worst)<br>
+<strong>Space:</strong> O(1) — in-place!<br>
+Better worst case than Quick Sort O(n²), but Quick Sort faster in practice
+</div>
+
+<div class="mega-important">
+<h3>⚡ EXAM: Min-Heap Build Trace — Insert 7, 5, 6, 3, 8, 1</h3>
+<div class="step">Insert 7: [7]</div>
+<div class="step">Insert 5: [7,5] → 5&lt;7, swap → <strong>[5,7]</strong></div>
+<div class="step">Insert 6: [5,7,6] → 6&gt;5, OK</div>
+<div class="step">Insert 3: [5,7,6,3] → 3&lt;7, swap → [5,3,6,7] → 3&lt;5, swap → <strong>[3,5,6,7]</strong></div>
+<div class="step">Insert 8: [3,5,6,7,8] → 8&gt;5, OK</div>
+<div class="step">Insert 1: [3,5,6,7,8,1] → 1&lt;6, swap → [3,5,1,7,8,6] → 1&lt;3, swap → <strong>[1,5,3,7,8,6]</strong></div>
+<p><strong>Final min-heap:</strong></p>
+<div class="tree-box"><pre>
+        1
+       / \
+      5   3
+     / \ /
+    7  8 6
+</pre></div>
+<h4>deleteMin on above heap:</h4>
+<div class="step">Remove 1, move 6 to root: [6,5,3,7,8] → 6&gt;min child(3), swap → [3,5,6,7,8]</div>
+<p><strong>After deleteMin:</strong> <span class="correct">[3,5,6,7,8]</span></p>
+<div class="tree-box"><pre>
+        3
+       / \
+      5   6
+     / \
+    7   8
+</pre></div>
+</div>
+
+<h3>⚡ EXAM: Max-Heap with Letter Keys</h3>
+<div class="tree-box"><pre>
+          Y
+         / \
+        X   H
+       / \ / \
+      G  T C  A
+     / \ / \
+    F  B Q  R
+</pre></div>
+<p><strong>Array (0-based):</strong> [−, Y, X, H, G, T, C, A, F, B, Q, R]</p>
+<p>Insert P: bubble up from position 12. After insert P, entries at index 3 (*P replaces H's child) and 6 (*H moves) change.</p>
+<p>delete-max(Z): After removing Z, the ? node must be ≥ H (parent of H) and ≤ N (child of N). Answer: <span class="correct">H, I, J, K, L, M, N</span></p>
+</div>
+
+<!-- ============ SECTION 9: RED-BLACK TREES ============ -->
+<div class="section" id="s9">
+<h2>9. Red-Black Trees</h2>
+<h3>Properties (MEMORIZE ALL 3)</h3>
+<div class="highlight">
+<strong>1.</strong> Every node is either <span style="color:red">RED</span> or <strong>BLACK</strong><br>
+<strong>2.</strong> The root is always <strong>BLACK</strong><br>
+<strong>3.</strong> If a node is <span style="color:red">RED</span>, both its children must be <strong>BLACK</strong> (no two consecutive reds)
+</div>
+
+<h3>RB-Tree Insertion Algorithm</h3>
+<div class="step">1. Use BST insert algorithm to add K</div>
+<div class="step">2. Color the new node K <span style="color:red">RED</span></div>
+<div class="step">3. Fix violations (if parent P is red → "double-red" violation)</div>
+
+<h3>Fixing Double-Red Violations</h3>
+<div class="highlight">
+<strong>Case 1:</strong> Parent P is <strong>BLACK</strong> → No problem, done!<br><br>
+<strong>Case 2:</strong> Parent P is <span style="color:red">RED</span> → Check P's sibling S:<br>
+&nbsp;&nbsp;<strong>Case 2a:</strong> S is <strong>BLACK or NULL</strong> → <span class="correct">RESTRUCTURE</span> (trinode restructuring of K, P, G)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;• Sort K, P, G as A, B, C → B becomes parent (BLACK), A and C become children (RED)<br>
+&nbsp;&nbsp;<strong>Case 2b:</strong> S is <span style="color:red">RED</span> → <span class="correct">RECOLOR</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;• P and S become BLACK, G becomes RED (unless G is root → stays BLACK)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;• May propagate double-red upward → check recursively
+</div>
+
+<h3>All operations: O(log n)</h3>
+
+<div class="mega-important">
+<h3>⚡ EXAM: RB-Tree Insert 29</h3>
+<p>Given tree: 25B(18B, 34R(30B(28R), 36B))</p>
+<div class="step">Insert 29 as RED child of 28R → double-red: 29R and 28R</div>
+<div class="step">28's parent is 30B, uncle is null/black → Case 2a: <span class="correct">RESTRUCTURE</span></div>
+<div class="step">Sort {29, 28, 30} → 28=A, 29=B, 30=C → 29 becomes parent (BLACK)</div>
+<p><strong>Result:</strong> 25B(18B, 34R(29B(28R, 30R), 36B))</p>
+</div>
+</div>
+
+<!-- ============ SECTION 10: SPLAY TREES ============ -->
+<div class="section" id="s10">
+<h2>10. Splay Trees</h2>
+<div class="highlight">
+Self-adjusting BST where recently accessed element is moved to root via <strong>"Splaying"</strong>.<br>
+Every operation (insert, search, delete) performs splaying.
+</div>
+
+<h3>Six Rotation Types</h3>
+<table>
+<tr><th>Rotation</th><th>Description</th></tr>
+<tr><td><strong>Zig</strong></td><td>Single right rotation (like AVL right rotation)</td></tr>
+<tr><td><strong>Zag</strong></td><td>Single left rotation (like AVL left rotation)</td></tr>
+<tr><td><strong>Zig-Zig</strong></td><td>Double zig — move 2 positions right</td></tr>
+<tr><td><strong>Zag-Zag</strong></td><td>Double zag — move 2 positions left</td></tr>
+<tr><td><strong>Zig-Zag</strong></td><td>Zig then zag — right then left</td></tr>
+<tr><td><strong>Zag-Zig</strong></td><td>Zag then zig — left then right</td></tr>
+</table>
+
+<h3>Splay Tree Operations</h3>
+<div class="step"><strong>Insert:</strong> BST insert → Splay the newNode to root</div>
+<div class="step"><strong>Search:</strong> BST search → Splay the found node to root</div>
+<div class="step"><strong>Delete:</strong> Splay the node to root → Delete from root → Join remaining subtrees</div>
+</div>
+
+<!-- ============ SECTION 11: DISJOINT SETS ============ -->
+<div class="section" id="s11">
+<h2>11. Disjoint Sets (Union-Find)</h2>
+<h3>Operations</h3>
+<table>
+<tr><th>Operation</th><th>Description</th><th>Complexity</th></tr>
+<tr><td>MakeSet(X)</td><td>Create new set with element X (parent = self)</td><td>O(1)</td></tr>
+<tr><td>Find(X)</td><td>Follow parent pointers to root (representative)</td><td>O(n) naive</td></tr>
+<tr><td>Union(X,Y)</td><td>Merge sets containing X and Y</td><td>O(n) naive</td></tr>
+</table>
+
+<h3>Optimizations</h3>
+<div class="highlight">
+<strong>Union by Rank:</strong> Attach shorter tree under taller tree's root → O(log n)<br>
+<strong>Path Compression:</strong> During Find, make every node point directly to root → nearly O(1) amortized
+</div>
+
+<div class="mega-important">
+<h3>⚡ EXAM: Merge Sort Union S∪T of Two Sorted Sets</h3>
+<p>Given two sorted sets S and T of size n each:</p>
+<p>Sorting their union SUT takes: <span class="correct">O(n)</span> — merge two sorted arrays in linear time!</p>
+</div>
+
+<div class="mega-important">
+<h3>⚡ EXAM: Union-Find with 10 items</h3>
+<p>Set of 10 items (1,2,...,10), using exactly 9 union operations to make a single set (no path compression):</p>
+<p>Example sequence: Union(1,2), Union(3,4), Union(5,6), Union(7,8), Union(9,10), Union(1,3), Union(5,7), Union(1,5), Union(1,9)</p>
+</div>
+</div>
+
+<!-- ============ SECTION 12: GRAPHS ============ -->
+<div class="section" id="s12">
+<h2>12. Graph Theory</h2>
+<h3>Key Definitions</h3>
+<div class="two-col">
+<div class="q-card">
+<strong>Vertex:</strong> Node in graph<br>
+<strong>Edge:</strong> Line between two vertices<br>
+<strong>Adjacent:</strong> Two vertices connected by an edge<br>
+<strong>Path:</strong> Sequence of edges between vertices<br>
+<strong>Degree:</strong> Number of edges incident to vertex
+</div>
+<div class="q-card">
+<strong>Indegree:</strong> Edges coming IN (directed graphs)<br>
+<strong>Outdegree:</strong> Edges going OUT (directed graphs)<br>
+<strong>Distance d(U,V):</strong> Shortest path length<br>
+<strong>Eccentricity e(V):</strong> Max distance to any other vertex
+</div>
+</div>
+
+<h3>Graph Types</h3>
+<table>
+<tr><th>Type</th><th>Definition</th></tr>
+<tr><td>Non-directed</td><td>Edges have no direction (ab = ba)</td></tr>
+<tr><td>Directed</td><td>Edges have direction (ab ≠ ba)</td></tr>
+<tr><td>Simple</td><td>No loops, no parallel edges</td></tr>
+<tr><td>Connected</td><td>Path exists between every pair of vertices</td></tr>
+<tr><td>Disconnected</td><td>Not all pairs connected</td></tr>
+<tr><td>Complete (Kₙ)</td><td>Every vertex connects to every other vertex</td></tr>
+<tr><td>Cycle Graph (Cₙ)</td><td>n vertices (n≥3) forming a single cycle; every vertex has degree 2</td></tr>
+<tr><td>Cyclic</td><td>Contains at least one cycle</td></tr>
+<tr><td>Acyclic</td><td>No cycles</td></tr>
+<tr><td>Bipartite</td><td>Vertices split into two sets V₁, V₂; edges only between sets</td></tr>
+<tr><td>Complete Bipartite</td><td>Every vertex in V₁ connects to every vertex in V₂</td></tr>
+</table>
+
+<h3>Graph Representations</h3>
+<div class="highlight">
+<strong>Adjacency Matrix:</strong> n×n matrix, M[i][j] = 1 if edge exists. Space: O(n²)<br>
+<strong>Adjacency List:</strong> Array of linked lists. Space: O(n + e)
+</div>
+
+<h3>Graph Formulas (MEMORIZE!)</h3>
+<div class="formula">
+Max edges in simple graph with n vertices: <strong>n(n−1)/2</strong><br>
+Number of simple graphs with n vertices: <strong>2^(n(n−1)/2)</strong><br>
+Degree of any vertex in simple graph: <strong>deg(v) ≤ n−1</strong><br>
+In simple graph with n vertices: max degree ≤ n−1
+</div>
+
+<h3>Complement of Graph</h3>
+<div class="highlight">
+G' has same vertices as G, but edge {U,V} is in G' if and only if it is NOT in G.<br>
+<strong>G + G' = Complete graph Kₙ</strong>
+</div>
+
+<h3>Spanning Trees</h3>
+<div class="highlight">
+A spanning tree is a subset of graph G covering ALL vertices with minimum edges.<br>
+• No cycles, cannot be disconnected<br>
+• Every connected undirected graph has at least one spanning tree<br>
+• A disconnected graph has NO spanning tree
+</div>
+
+<div class="mega-important">
+<h3>⚡ EXAM: Spanning Tree Questions</h3>
+<div class="q-card">
+<div class="q">Minimum number of spanning trees in a connected graph is:</div>
+<div class="a">→ <span class="correct">1</span></div>
+</div>
+<div class="q-card">
+<div class="q">All possible spanning trees of graph G have:</div>
+<div class="a">→ <span class="correct">same number of edges AND vertices</span></div>
+</div>
+</div>
+
+<h3>Cut Vertex & Cut Edge</h3>
+<div class="highlight">
+<strong>Cut Vertex:</strong> Removing it disconnects the graph<br>
+<strong>Cut Edge (Bridge):</strong> Removing it disconnects the graph<br>
+• An edge is a cut edge iff it is NOT part of any cycle<br>
+• Max cut edges possible: <strong>n−1</strong><br>
+• When cut edges exist → cut vertices also exist<br>
+• When cut vertex exists → cut edge may or may NOT exist
+</div>
+
+<h3>Cut Set</h3>
+<div class="highlight">
+A subset E' of edges whose deletion disconnects graph G. The deleted edges = cut set.
+</div>
+
+<div class="mega-important">
+<h3>⚡ EXAM: Connected Graph with n vertices and n edges</h3>
+<div class="q-card">
+<div class="q">Undirected graph has n vertices and n edges, and is connected. Which is correct?</div>
+<div class="a">→ <span class="correct">b) The graph definitely has a cycle</span><br>
+(A tree has n-1 edges. With n edges and n vertices, there must be at least one cycle.)</div>
+</div>
+</div>
+
+<h3>DFS & BFS on Graphs</h3>
+<div class="two-col">
+<div class="q-card">
+<h4>DFS (Depth-First Search)</h4>
+<p>Uses: <span class="correct">STACK</span></p>
+<pre><code>Rule 1: Visit adjacent unvisited vertex,
+  mark visited, push to stack
+Rule 2: If no adjacent unvisited,
+  pop from stack
+Rule 3: Repeat until stack empty</code></pre>
+</div>
+<div class="q-card">
+<h4>BFS (Breadth-First Search)</h4>
+<p>Uses: <span class="correct">QUEUE</span></p>
+<pre><code>Rule 1: Visit adjacent unvisited vertex,
+  mark visited, insert in queue
+Rule 2: If no adjacent unvisited,
+  remove first vertex from queue
+Rule 3: Repeat until queue empty</code></pre>
+</div>
+</div>
+
+<div class="q-card">
+<div class="q">⚡ DFS same as BFS: Design a graph with ≥5 vertices where DFS = BFS</div>
+<div class="a">→ A linear chain: 1-2-3-4-5. Both DFS and BFS give: 1,2,3,4,5</div>
+</div>
+</div>
+
+<!-- ============ SECTION 13: PRACTICE QUESTIONS ============ -->
+<div class="section" id="s13">
+<h2>13. Quick-Fire Practice Questions</h2>
+
+<div class="q-card"><div class="q">Q: Worst case performance of Quick Sort with median partition?</div>
+<div class="a">→ Same as heap sort: O(n log n)</div></div>
+
+<div class="q-card"><div class="q">Q: Worst case of Quick Sort with random partition?</div>
+<div class="a">→ Same as merge sort: O(n log n) expected</div></div>
+
+<div class="q-card"><div class="q">Q: Heap sort has same worst case performance as?</div>
+<div class="a">→ Merge sort: O(n log n)</div></div>
+
+<div class="q-card"><div class="q">Q: All tree-based sorts are based on what paradigm?</div>
+<div class="a">→ Divide and conquer — divide set into 2, recursively sort, combine</div></div>
+
+<div class="q-card"><div class="q">Q: What data structure does DFS use?</div>
+<div class="a">→ <span class="correct">Stack</span></div></div>
+
+<div class="q-card"><div class="q">Q: What data structure does BFS use?</div>
+<div class="a">→ <span class="correct">Queue</span></div></div>
+
+<div class="q-card"><div class="q">Q: In a connected graph with 7 vertices, min edges for connected?</div>
+<div class="a">→ <span class="correct">6</span> (n-1 edges = spanning tree)</div></div>
+
+<div class="q-card"><div class="q">Q: Max edges in simple graph with 7 vertices?</div>
+<div class="a">→ <span class="correct">21</span> = 7(7-1)/2</div></div>
+
+<div class="q-card"><div class="q">Q: Number of simple graphs with 4 vertices?</div>
+<div class="a">→ <span class="correct">64</span> = 2^(4×3/2) = 2^6</div></div>
+
+<div class="q-card"><div class="q">Q: K-th smallest element can be found in?</div>
+<div class="a">→ O(n) expected time using Quickselect</div></div>
+
+<div class="q-card"><div class="q">Q: Re-balancing of AVL tree costs?</div>
+<div class="a">→ <span class="correct">O(log n)</span></div></div>
+
+<div class="q-card"><div class="q">Q: In a BST, in-order traversal gives what?</div>
+<div class="a">→ <span class="correct">Sorted order</span></div></div>
+</div>
+
+<!-- ============ SECTION 14: HW1 ============ -->
+<div class="section" id="s14">
+<h2>14. Homework 1 — Arrays & Complexity</h2>
+
+<h3>Q1: Reverse an array in-place</h3>
+<div class="highlight">
+<strong>Algorithm:</strong> Two pointers i=0, j=n-1. Swap A[i]↔A[j], i++, j-- until i≥j<br>
+<strong>Time:</strong> O(n) | <strong>Space:</strong> O(1) (in-place)
+</div>
+
+<h3>Q2: Find pair that sums to target</h3>
+<div class="highlight">
+<strong>Approach 1 (Hash):</strong> For each x, check if (target-x) in hash set. O(n) time, O(n) space<br>
+<strong>Approach 2 (Sort + Two Pointers):</strong> Sort, then use two pointers. O(n log n) time, O(1) space
+</div>
+
+<h3>Q3: Complexity Analysis</h3>
+<div class="q-card">
+<div class="q">T(n) = 2T(n/2) + n</div>
+<div class="a">→ O(n log n) — Master theorem case 2</div>
+</div>
+</div>
+
+<!-- ============ SECTION 15: HW2 ============ -->
+<div class="section" id="s15">
+<h2>15. Homework 2 — Trees & Heaps</h2>
+
+<h3>Q1: Binary Tree with 11 nodes → Leaf count</h3>
+<div class="formula">A binary tree with n nodes has at most ⌈n/2⌉ = ⌈11/2⌉ = 6 leaves</div>
+<div class="formula">Full binary tree: leaves = internal + 1. With 11 nodes: 6 leaves, 5 internal</div>
+
+<h3>Q2: BST Insertion — Insert 8, 4, 12, 2, 6, 10, 14, 1, 3, 5</h3>
+<div class="tree-box"><pre>
+            8
+          /   \
+         4     12
+        / \   /  \
+       2   6 10  14
+      / \ /
+     1  3 5
+</pre></div>
+
+<h3>Q3: BST Deletion — Delete Root (8)</h3>
+<div class="highlight">
+Root 8 has two children → Replace with max of left subtree = <strong>6</strong><br>
+6 has left child 5 → 5 takes 6's old position
+</div>
+<div class="tree-box"><pre>
+            6
+          /   \
+         4     12
+        / \   /  \
+       2   5 10  14
+      / \
+     1   3
+</pre></div>
+
+<h3>Q4: Min-Heap Construction — Insert 9, 5, 2, 7, 3, 8, 1, 4, 6</h3>
+<div class="highlight">
+<strong>Final min-heap array:</strong> <span class="correct">[1, 2, 4, 3, 5, 9, 6, 7, 8]</span> (NOT [1,3,2,...])
+</div>
+<div class="tree-box"><pre>
+          1
+        /   \
+       2     4
+      / \   / \
+     3   5 9   6
+    / \
+   7   8
+</pre></div>
+
+<h3>Q5: AVL Tree — Insert 10, 20, 30, 15, 25, 5, 35</h3>
+<div class="step">Insert 10: root=10</div>
+<div class="step">Insert 20: 10→R(20)</div>
+<div class="step">Insert 30: RR imbalance → Left rotate → root=20, L=10, R=30</div>
+<div class="step">Insert 15: 20→10→R(15). Balanced.</div>
+<div class="step">Insert 25: 20→30→L(25). Balanced.</div>
+<div class="step">Insert 5: 20→10→L(5). Balanced.</div>
+<div class="step">Insert 35: 20→30→R(35). Balanced.</div>
+<div class="tree-box"><pre>
+          20
+        /    \
+      10      30
+     /  \    /  \
+    5   15  25  35
+</pre></div>
+
+<h3>Q5b: AVL Delete 35, then Delete 30</h3>
+<div class="step">Delete 35: Leaf removal → 20(10(5,15), 30(25,−)). Balanced.</div>
+<div class="step">Delete 30: Replace with max of left (25) → 20(10(5,15), 25). Balanced.</div>
+<div class="tree-box"><pre>
+          20
+        /    \
+      10      25
+     /  \
+    5   15
+</pre></div>
+
+<h3>Q6: Red-Black Tree — Insert 10, 20, 30, 15, 25, 5, 35</h3>
+<div class="step">Insert 10B (root is always black)</div>
+<div class="step">Insert 20R → child of 10B, OK</div>
+<div class="step">Insert 30R → child of 20R → double-red! Uncle=NULL → Restructure → 20B(10R, 30R)</div>
+<div class="step">Insert 15R → child of 10R → double-red! Uncle 30R is RED → Recolor: 10B, 30B, 20 stays B (root)</div>
+<div class="step">Insert 25R → child of 30B, OK</div>
+<div class="step">Insert 5R → child of 10B, OK</div>
+<div class="step">Insert 35R → child of 30B → 30 now has two red children (25R, 35R), OK since 30 is black</div>
+<p><strong>Final RB-Tree:</strong> 20B → L:10B(5R,15R) → R:30B(25R,35R)</p>
+<div class="highlight">
+<strong>Verify properties:</strong><br>
+✅ 1. Every node is red or black<br>
+✅ 2. Root (20) is black<br>
+✅ 3. No red node has a red child
+</div>
+</div>
+
+<div style="text-align:center;padding:30px;color:#666;font-size:0.9em">
+<p>📚 CSE-5311 Design & Analysis of Algorithms — Exam 1 Ultimate Guide</p>
+<p>Good luck! You've got this! 🎯</p>
+</div>
+
+</body>
+</html>
