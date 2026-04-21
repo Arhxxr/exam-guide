@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSE 5311 — Exam 2 Study Guide</title>
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--accent:#38bdf8;--accent2:#818cf8;--green:#34d399;--yellow:#fbbf24;--red:#f87171;--text:#e2e8f0;--muted:#94a3b8;--border:#334155;--code-bg:#0d1117;--highlight:#fbbf2418}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;scroll-behavior:smooth}
+a{color:var(--accent);text-decoration:none}
+
+/* --- Top Bar --- */
+.topbar{position:sticky;top:0;z-index:100;background:rgba(15,23,42,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.topbar h1{font-size:1.1rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.topbar .meta{font-size:.78rem;color:var(--muted)}
+.mode-toggle{display:flex;background:var(--card);border-radius:8px;overflow:hidden;border:1px solid var(--border)}
+.mode-toggle button{padding:6px 16px;border:none;background:none;color:var(--muted);cursor:pointer;font-size:.82rem;font-weight:600;transition:.2s}
+.mode-toggle button.active{background:var(--accent);color:var(--bg)}
+
+/* --- Sidebar & Layout --- */
+.layout{display:flex;min-height:100vh}
+.sidebar{width:280px;min-width:280px;background:var(--card);border-right:1px solid var(--border);padding:16px 0;position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto;font-size:.84rem}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.sidebar .nav-group{margin-bottom:6px}
+.sidebar .nav-group-title{padding:6px 20px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent)}
+.sidebar a{display:block;padding:5px 20px 5px 28px;color:var(--muted);transition:.15s;border-left:3px solid transparent}
+.sidebar a:hover,.sidebar a.active{color:var(--text);background:rgba(56,189,248,.06);border-left-color:var(--accent)}
+.main{flex:1;max-width:960px;margin:0 auto;padding:32px 40px 80px}
+
+/* --- Sections --- */
+.section{margin-bottom:48px;animation:fadeIn .4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.section h2{font-size:1.5rem;font-weight:800;margin-bottom:4px;display:flex;align-items:center;gap:10px}
+.section h2 .badge{font-size:.65rem;padding:3px 10px;border-radius:50px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.badge-core{background:var(--accent);color:var(--bg)}
+.badge-focus{background:var(--red);color:#fff}
+.section .session-tag{font-size:.75rem;color:var(--muted);margin-bottom:16px}
+.section h3{font-size:1.12rem;font-weight:700;margin:24px 0 8px;color:var(--accent);border-bottom:1px solid var(--border);padding-bottom:4px}
+.section h4{font-size:.98rem;font-weight:700;margin:16px 0 6px;color:var(--accent2)}
+p,li{margin-bottom:6px}
+ul,ol{padding-left:22px;margin-bottom:12px}
+li{margin-bottom:4px}
+
+/* --- Cards --- */
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin:12px 0}
+.card.highlight{border-left:4px solid var(--yellow);background:var(--highlight)}
+.card.green{border-left:4px solid var(--green)}
+.card.red{border-left:4px solid var(--red)}
+
+/* --- Tables --- */
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.88rem}
+th{background:rgba(56,189,248,.1);color:var(--accent);text-align:left;padding:8px 12px;border-bottom:2px solid var(--accent);font-weight:700}
+td{padding:7px 12px;border-bottom:1px solid var(--border)}
+tr:hover td{background:rgba(56,189,248,.03)}
+
+/* --- Code --- */
+pre{background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:14px 18px;overflow-x:auto;margin:10px 0;font-size:.84rem;line-height:1.6}
+code{font-family:'Fira Code','Cascadia Code',Consolas,monospace;font-size:.84rem}
+p code,li code{background:var(--code-bg);padding:2px 6px;border-radius:4px;border:1px solid var(--border)}
+
+/* --- Detail toggle --- */
+.detail{overflow:hidden;transition:max-height .35s ease,opacity .3s;max-height:5000px;opacity:1}
+body.concise .detail{max-height:0;opacity:0;margin:0;padding:0}
+body.concise .card.detail{border:0}
+.concise-only{display:none}
+body.concise .concise-only{display:block}
+
+/* --- Responsive --- */
+@media(max-width:900px){
+  .sidebar{display:none}
+  .main{padding:20px 16px 60px}
+}
+
+/* --- Progress bar --- */
+.progress-bar{height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0;position:fixed;top:0;left:0;z-index:200;transition:width .1s}
+
+/* --- Search --- */
+.search-box{padding:4px 14px;margin:0 12px 12px;display:flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--border);border-radius:6px}
+.search-box input{background:transparent;border:none;color:var(--text);font-size:.82rem;width:100%;padding:4px 0;outline:none}
+.search-box svg{color:var(--muted);flex-shrink:0}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Top Bar -->
+<div class="topbar">
+  <div>
+    <h1>CSE 5311 — Exam 2 Study Guide</h1>
+    <div class="meta">Sessions 2, 11-12, 15-23 &nbsp;|&nbsp; Wed April 22, 4:30-6:00 PM &nbsp;|&nbsp; Closed Book/Notes</div>
+  </div>
+  <div class="mode-toggle" id="modeToggle">
+    <button class="active" onclick="setMode('full')">Comprehensive</button>
+    <button onclick="setMode('concise')">Quick Review</button>
+  </div>
+</div>
+
+<div class="layout">
+<!-- Sidebar -->
+<nav class="sidebar" id="sidebar">
+  <div class="search-box">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" placeholder="Search topics..." id="searchInput" oninput="filterNav(this.value)">
+  </div>
+  <div class="nav-group"><div class="nav-group-title">Foundations</div>
+    <a href="#bigO">Big-O Notation</a>
+  </div>
+  <div class="nav-group"><div class="nav-group-title">Graph Theory</div>
+    <a href="#graphs">Graph Basics & Traversals</a>
+    <a href="#graphtypes">Graph Types & Properties</a>
+  </div>
+  <div class="nav-group"><div class="nav-group-title">Graph Algorithms</div>
+    <a href="#mst">Minimum Spanning Trees</a>
+    <a href="#shortest">Shortest Path Algorithms</a>
+    <a href="#flow">Network Flow</a>
+    <a href="#topo">Topological Sort & DAGs</a>
+  </div>
+  <div class="nav-group"><div class="nav-group-title">Algorithm Design</div>
+    <a href="#design">Design Paradigms</a>
+  </div>
+  <div class="nav-group"><div class="nav-group-title">Geometry (Focus)</div>
+    <a href="#geo">Geometric Algorithms</a>
+    <a href="#hull">Polygon & Convex Hull</a>
+  </div>
+  <div class="nav-group"><div class="nav-group-title">NP-Completeness (Focus)</div>
+    <a href="#np">P, NP, NP-Complete, NP-Hard</a>
+    <a href="#npc-problems">NP-Complete Problems</a>
+    <a href="#approx">Approximation Algorithms</a>
+  </div>
+  <div class="nav-group"><div class="nav-group-title">Reference</div>
+    <a href="#complexity">Complexity Cheat Sheet</a>
+    <a href="#hw">Practice Problems (HW)</a>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!--                    1. BIG-O NOTATION                         -->
+<!-- ============================================================ -->
+<div class="section" id="bigO">
+<h2>Big-O Notation <span class="badge badge-core">Core</span></h2>
+<div class="session-tag">Session 2</div>
+
+<p>Big-O notation describes how an algorithm's runtime (or space) grows <strong>relative to input size</strong> as the input gets <strong>arbitrarily large</strong>. We focus on the <strong>worst case</strong>.</p>
+
+<div class="card highlight">
+<h4>Formal Definition</h4>
+<p>T(n) is O(F(n)) if there exist constants <strong>C &gt; 0</strong> and <strong>n₀</strong> such that for all n &gt; n₀:</p>
+<pre><code>T(n) ≤ C · F(n)</code></pre>
+</div>
+
+<h4>Simplification Rules</h4>
+<ul>
+  <li><strong>Drop constants:</strong> 5n → O(n)</li>
+  <li><strong>Drop lower-order terms:</strong> n² + 3n + 7 → O(n²)</li>
+  <li><strong>Worst case by default</strong> unless stated otherwise</li>
+</ul>
+
+<div class="detail">
+<h4>Space Complexity</h4>
+<p>Measures total size of new variables allocated, relative to input. Same Big-O rules apply. Optimize for memory when relevant, but beware premature optimization that hurts readability.</p>
+</div>
+
+<h3>Complexity Hierarchy (Best → Worst)</h3>
+<table>
+<tr><th>Notation</th><th>Name</th><th>Example</th></tr>
+<tr><td>O(1)</td><td>Constant</td><td>Array index access</td></tr>
+<tr><td>O(log n)</td><td>Logarithmic</td><td>Binary search</td></tr>
+<tr><td>O(n)</td><td>Linear</td><td>Single loop scan</td></tr>
+<tr><td>O(n log n)</td><td>Linearithmic</td><td>Merge sort, heap sort</td></tr>
+<tr><td>O(n²)</td><td>Quadratic</td><td>Nested loops, bubble sort</td></tr>
+<tr><td>O(n³)</td><td>Cubic</td><td>Floyd-Warshall</td></tr>
+<tr><td>O(2ⁿ)</td><td>Exponential</td><td>Subset enumeration</td></tr>
+<tr><td>O(n!)</td><td>Factorial</td><td>Permutation generation</td></tr>
+</table>
+</div>
+
+<!-- ============================================================ -->
+<!--                  2. GRAPH BASICS                             -->
+<!-- ============================================================ -->
+<div class="section" id="graphs">
+<h2>Graph Basics & Traversals <span class="badge badge-core">Core</span></h2>
+<div class="session-tag">Sessions 11 & 12</div>
+
+<h3>Key Definitions</h3>
+<ul>
+  <li><strong>Vertex (Node):</strong> A point in the graph</li>
+  <li><strong>Edge:</strong> A connection between two vertices</li>
+  <li><strong>Adjacency:</strong> Two vertices connected by an edge</li>
+  <li><strong>Path:</strong> Sequence of edges between two vertices</li>
+  <li><strong>Degree:</strong> Number of edges incident to a vertex — deg(v) ≤ n−1 in a simple graph</li>
+  <li><strong>In-degree / Out-degree (directed):</strong> Edges coming in / going out</li>
+  <li><strong>Distance d(U,V):</strong> Number of edges in the shortest path</li>
+  <li><strong>Eccentricity e(V):</strong> Maximum distance from V to any other vertex</li>
+</ul>
+
+<div class="detail">
+<h4>Directed vs Undirected</h4>
+<p>In an <strong>undirected</strong> graph, edge {a,b} = {b,a}. In a <strong>directed</strong> graph (digraph), edge (a,b) ≠ (b,a) — each edge has an arrow.</p>
+
+<h4>Simple Graph</h4>
+<p>No loops, no parallel edges. Max edges in a simple graph with n vertices: <strong>n(n−1)/2</strong>. Number of possible simple graphs with n vertices: <strong>2^(n(n−1)/2)</strong>.</p>
+</div>
+
+<h3>Graph Representations</h3>
+<table>
+<tr><th>Method</th><th>Space</th><th>Edge Check</th><th>Iterate Neighbors</th><th>Best For</th></tr>
+<tr><td>Adjacency Matrix</td><td>O(V²)</td><td>O(1)</td><td>O(V)</td><td>Dense graphs</td></tr>
+<tr><td>Adjacency List</td><td>O(V+E)</td><td>O(deg)</td><td>O(deg)</td><td>Sparse graphs</td></tr>
+</table>
+
+<h3>Traversal Algorithms</h3>
+<div class="card green">
+<h4>Depth-First Search (DFS) — Uses a Stack</h4>
+<ol>
+  <li>Visit adjacent unvisited vertex, mark visited, push to stack</li>
+  <li>If no adjacent unvisited vertex, pop from stack</li>
+  <li>Repeat until stack empty</li>
+</ol>
+<p><strong>Time:</strong> O(V + E) &nbsp;|&nbsp; <strong>Space:</strong> O(V)</p>
+</div>
+
+<div class="card green">
+<h4>Breadth-First Search (BFS) — Uses a Queue</h4>
+<ol>
+  <li>Visit adjacent unvisited vertex, mark visited, enqueue</li>
+  <li>If no adjacent unvisited vertex, dequeue front vertex</li>
+  <li>Repeat until queue empty</li>
+</ol>
+<p><strong>Time:</strong> O(V + E) &nbsp;|&nbsp; <strong>Space:</strong> O(V)</p>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!--                  2b. GRAPH TYPES                             -->
+<!-- ============================================================ -->
+<div class="section" id="graphtypes">
+<h2>Graph Types & Properties <span class="badge badge-core">Core</span></h2>
+<div class="session-tag">Session 12</div>
+
+<h3>Graph Classifications</h3>
+<table>
+<tr><th>Type</th><th>Definition</th></tr>
+<tr><td><strong>Connected</strong></td><td>Path exists between every pair of vertices</td></tr>
+<tr><td><strong>Disconnected</strong></td><td>At least two vertices with no path between them</td></tr>
+<tr><td><strong>Complete (Kₙ)</strong></td><td>Every vertex connected to all others</td></tr>
+<tr><td><strong>Cycle (Cₙ)</strong></td><td>n vertices, n edges forming a single cycle; every vertex has degree 2</td></tr>
+<tr><td><strong>Cyclic</strong></td><td>Contains at least one cycle</td></tr>
+<tr><td><strong>Acyclic</strong></td><td>No cycles (trees are acyclic connected graphs)</td></tr>
+<tr><td><strong>Bipartite</strong></td><td>Vertices split into V₁, V₂; edges only between sets</td></tr>
+<tr><td><strong>Complete Bipartite</strong></td><td>Every vertex in V₁ connected to every vertex in V₂</td></tr>
+</table>
+
+<div class="detail">
+<h3>Critical Graph Elements</h3>
+<ul>
+  <li><strong>Spanning Tree:</strong> Subgraph connecting all vertices with minimum edges (V−1 edges, no cycles). Every connected undirected graph has at least one.</li>
+  <li><strong>Cut Vertex:</strong> Removing it disconnects the graph</li>
+  <li><strong>Cut Edge (Bridge):</strong> Removing it disconnects the graph. An edge is a bridge iff it's not part of any cycle. Max cut edges = n−1.</li>
+  <li><strong>Cut Set:</strong> Minimum set of edges whose removal disconnects the graph</li>
+  <li><strong>Complement G':</strong> Same vertices; edge {u,v} in G' iff edge not in G. G ∪ G' = Kₙ.</li>
+</ul>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!--                  3. MINIMUM SPANNING TREES                   -->
+<!-- ============================================================ -->
+<div class="section" id="mst">
+<h2>Minimum Spanning Trees <span class="badge badge-core">Core</span></h2>
+<div class="session-tag">Session 15</div>
+
+<p>A <strong>Minimum Spanning Tree (MST)</strong> of a weighted, connected, undirected graph is a spanning tree whose total edge weight is minimized. It has exactly <strong>V−1 edges</strong>.</p>
+
+<h3>Kruskal's Algorithm (Edge-based, Greedy)</h3>
+<div class="card green">
+<p><strong>Strategy:</strong> Sort edges by weight, greedily add smallest edge that doesn't create a cycle.</p>
+<pre><code>KRUSKAL(G):
+  A = ∅
+  for each v ∈ V: MAKE-SET(v)
+  Sort edges by weight (ascending)
+  for each edge (u,v) in sorted order:
+    if FIND-SET(u) ≠ FIND-SET(v):
+      A = A ∪ {(u,v)}
+      UNION(u, v)
+  return A</code></pre>
+<p><strong>Time: O(E log E)</strong> &nbsp;(dominated by sorting) &nbsp;|&nbsp; Uses <strong>Union-Find</strong> for cycle detection</p>
+</div>
+
+<div class="detail">
+<h4>Kruskal's Worked Example</h4>
+<p>Graph with 9 vertices, 14 edges. Edges sorted: 1, 2, 2, 4, 4, 6, 7, 7, 8, 8, 9, 10, 11, 14.</p>
+<p>Selection: Pick edges with weights 1, 2, 2, 4, 4, 7, 7, 8 (skip any that create cycles). After adding V−1 = 8 edges, MST is complete.</p>
+</div>
+
+<h3>Prim's Algorithm (Vertex-based, Greedy)</h3>
+<div class="card green">
+<p><strong>Strategy:</strong> Grow MST from a starting vertex; always add the cheapest edge connecting a tree vertex to a non-tree vertex.</p>
+<pre><code>PRIM(G, start):
+  ReachSet = {start}
+  UnReachSet = V − {start}
+  MST = ∅
+  while UnReachSet ≠ ∅:
+    Find min-weight edge (x,y) where x ∈ ReachSet, y ∈ UnReachSet
+    MST = MST ∪ {(x,y)}
+    ReachSet = ReachSet ∪ {y}
+    UnReachSet = UnReachSet − {y}
+  return MST</code></pre>
+<p><strong>Time: O((V + E) log V)</strong> with binary heap &nbsp;|&nbsp; <strong>O(E + V log V)</strong> with Fibonacci heap</p>
+</div>
+
+<div class="detail">
+<h4>Prim's — Distance Table Method</h4>
+<p>Maintain a table with columns: Vertex, Distance (to nearest tree vertex), Parent. Initialize all distances to ∞ except the start vertex (distance 0). At each step, pick the unvisited vertex with smallest distance, add it to tree, and update neighbors' distances.</p>
+</div>
+
+<div class="card highlight">
+<h4>Kruskal vs Prim</h4>
+<table>
+<tr><th></th><th>Kruskal</th><th>Prim</th></tr>
+<tr><td>Approach</td><td>Edge-based (global sort)</td><td>Vertex-based (grow from start)</td></tr>
+<tr><td>Data Structure</td><td>Union-Find</td><td>Priority Queue (min-heap)</td></tr>
+<tr><td>Best for</td><td>Sparse graphs</td><td>Dense graphs</td></tr>
+<tr><td>Time</td><td>O(E log E)</td><td>O((V+E) log V) or O(E + V log V)</td></tr>
+</table>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!--                  4. SHORTEST PATH                            -->
+<!-- ============================================================ -->
+<div class="section" id="shortest">
+<h2>Shortest Path Algorithms <span class="badge badge-core">Core</span></h2>
+<div class="session-tag">Session 16</div>
+
+<h3>Problem Variations</h3>
+<ul>
+  <li>Single Source Single Destination (SSSD)</li>
+  <li>Single Source Multiple Destination (SSMD)</li>
+  <li>Multiple Source Single / Multiple Destination</li>
+</ul>
+
+<h3>Dijkstra's Algorithm</h3>
+<div class="card green">
+<p><strong>Requirement:</strong> All edge weights must be <strong>non-negative</strong>.</p>
+<pre><code>DIJKSTRA(G, source):
+  for each v ∈ V:
+    dist[v] = ∞;  prev[v] = null
+  dist[source] = 0
+  Q = all vertices
+
+  while Q ≠ ∅:
+    u = vertex in Q with min dist[u]
+    remove u from Q
+    for each neighbor v of u still in Q:
+      new_dist = dist[u] + weight(u,v)
+      if new_dist < dist[v]:
+        dist[v] = new_dist
+        prev[v] = u
+  return dist[], prev[]</code></pre>
+<p><strong>Time: O((V + E) log V)</strong> with binary heap &nbsp;|&nbsp; Greedy: always picks closest unvisited vertex</p>
+</div>
+
+<div class="detail">
+<h4>Dijkstra Step-by-Step</h4>
+<p>Maintain a distance table. Start with source = 0, all others = ∞. Visit the unvisited node with smallest distance, update its neighbors via <strong>relaxation</strong>: if dist[u] + w(u,v) &lt; dist[v], update dist[v]. Mark node visited. Repeat until all nodes visited or target reached.</p>
+</div>
+
+<h3>Bellman-Ford Algorithm</h3>
+<div class="card green">
+<p><strong>Advantage:</strong> Handles <strong>negative edge weights</strong>. Can detect <strong>negative cycles</strong>.</p>
+<pre><code>BELLMAN-FORD(V, E, source):
+  for each v ∈ V:
+    dist[v] = ∞;  pred[v] = null
+  dist[source] = 0
+
+  // Relax all edges V-1 times
+  for i = 1 to |V| - 1:
+    for each edge (u,v,w) ∈ E:
+      if dist[u] + w < dist[v]:
+        dist[v] = dist[u] + w
+        pred[v] = u
+
+  // Detect negative cycles
+  for each edge (u,v,w) ∈ E:
+    if dist[u] + w < dist[v]:
+      ERROR "Negative-weight cycle detected"
+
+  return dist[], pred[]</code></pre>
+<p><strong>Time: O(V · E)</strong> &nbsp;|&nbsp; Slower than Dijkstra but more versatile</p>
+</div>
+
+<div class="card highlight">
+<h4>Dijkstra vs Bellman-Ford</h4>
+<table>
+<tr><th></th><th>Dijkstra</th><th>Bellman-Ford</th></tr>
+<tr><td>Negative weights?</td><td>No</td><td>Yes</td></tr>
+<tr><td>Negative cycle detection?</td><td>No</td><td>Yes</td></tr>
+<tr><td>Strategy</td><td>Greedy (priority queue)</td><td>Relax all edges V−1 times</td></tr>
+<tr><td>Time</td><td>O((V+E) log V)</td><td>O(V·E)</td></tr>
+</table>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!--                  5. NETWORK FLOW                             -->
+<!-- ============================================================ -->
+<div class="section" id="flow">
+<h2>Network Flow <span class="badge badge-core">Core</span></h2>
+<div class="session-tag">Session 17</div>
+
+<h3>Problem Setup</h3>
+<p>Given directed graph G = (V, E) with edge capacities c(e) &gt; 0, source <strong>s</strong>, and sink <strong>t</strong>. <strong>Goal:</strong> Maximize flow from s to t subject to:</p>
+<ul>
+  <li><strong>Capacity constraint:</strong> 0 ≤ flow(e) ≤ capacity(e) for every edge</li>
+  <li><strong>Conservation:</strong> For every non-source/sink node: total flow in = total flow out</li>
+  <li><strong>Skew symmetry:</strong> f(u,v) = −f(v,u)</li>
+</ul>
+
+<h3>Ford-Fulkerson Method</h3>
+<div class="card green">
+<pre><code>FORD-FULKERSON(G, s, t):
+  Initialize flow on all edges to 0
+  while ∃ augmenting path P from s to t in residual graph:
+    bottleneck = min capacity along P
+    Augment flow along P by bottleneck
+    Update residual graph:
+      - Subtract bottleneck from forward edges
+      - Add bottleneck to reverse edges
+  return total flow</code></pre>
+<p><strong>Key concepts:</strong></p>
+<ul>
+  <li><strong>Residual Graph:</strong> Shows remaining capacity on each edge; includes reverse edges to allow "undoing" flow</li>
+  <li><strong>Augmenting Path:</strong> Any path from s to t in residual graph with positive capacity</li>
+  <li><strong>Bottleneck:</strong> Minimum capacity along the augmenting path</li>
+</ul>
+</div>
+
+<div class="detail">
+<h4>Ford-Fulkerson Worked Example</h4>
+<p>Find augmenting paths one at a time. After each path, update the residual graph by subtracting the bottleneck from forward edges and adding it to reverse edges:</p>
+<table>
+<tr><th>Step</th><th>Augmenting Path</th><th>Bottleneck</th><th>Cumulative Flow</th></tr>
+<tr><td>1</td><td>S → C → D → B → T</td><td>7</td><td>7</td></tr>
+<tr><td>2</td><td>S → C → D → T</td><td>1</td><td>8</td></tr>
+<tr><td>3</td><td>S → A → B → T</td><td>5</td><td>13</td></tr>
+<tr><td>4</td><td>S → A → C → D → T</td><td>2</td><td>15</td></tr>
+</table>
+<p>No more augmenting paths in residual graph. <strong>Max Flow = 15</strong></p>
+<p><strong>Residual graph update at each step:</strong> For every edge (u,v) on the path with bottleneck f: reduce capacity(u,v) by f, increase capacity(v,u) by f. Reverse edges allow the algorithm to "undo" previous flow decisions.</p>
+
+<h4>Dinic's Algorithm (Faster)</h4>
+<p>Uses <strong>level graphs</strong> (BFS assigns levels = distance from source) and <strong>blocking flows</strong> (saturate at least one edge per path). Process:</p>
+<ol>
+  <li>Build level graph using BFS from source</li>
+  <li>Find blocking flow (DFS through level graph)</li>
+  <li>Update residual graph; remove saturated edges and dead-end nodes</li>
+  <li>Repeat until no path from s to t exists in level graph</li>
+</ol>
+<pre><code>DINIC(G, s, t):
+  F = 0
+  while BFS builds a level graph with path s→t:
+    while ∃ blocking flow f in level graph:
+      F = F + f
+      Update residual graph
+  return F</code></pre>
+<p><strong>Time:</strong> O(V² · E) — generally faster than basic Ford-Fulkerson in practice.</p>
+</div>
+
+<div class="card highlight">
+<h4>Max-Flow Min-Cut Theorem</h4>
+<p>The maximum flow from s to t equals the minimum capacity of any s-t cut (partition separating s and t). This is a fundamental duality result.</p>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!--                  6. TOPOLOGICAL SORT                         -->
+<!-- ============================================================ -->
+<div class="section" id="topo">
+<h2>Topological Sort & DAGs <span class="badge badge-core">Core</span></h2>
+<div class="session-tag">Session 21</div>
+
+<p>A <strong>topological ordering</strong> of a DAG (Directed Acyclic Graph) is a linear ordering of vertices such that for every directed edge (u, v), vertex u appears before v. Multiple valid orderings may exist. <strong>Only possible on DAGs</strong> — if a cycle exists, no valid ordering exists.</p>
+
+<h3>Kahn's Algorithm (BFS-based)</h3>
+<div class="card green">
+<pre><code>KAHN(G):
+  Compute in-degree for each vertex
+  Q = queue of all vertices with in-degree 0
+  result = []
+  while Q ≠ ∅:
+    v = dequeue from Q
+    result.append(v)
+    for each neighbor u of v:
+      in-degree[u] -= 1
+      if in-degree[u] == 0:
+        enqueue u
+  if |result| ≠ |V|:
+    ERROR "Graph has a cycle!"
+  return result</code></pre>
+<p><strong>Time: O(V + E)</strong> &nbsp;|&nbsp; Also useful for <strong>cycle detection</strong></p>
+</div>
+
+<div class="detail">
+<h3>Critical Path Method (CPM)</h3>
+<p>Used for project scheduling. Models tasks and dependencies as a DAG.</p>
+<ul>
+  <li><strong>Critical time</strong> of a task = max(critical times of prerequisites) + task's own time</li>
+  <li><strong>Critical path</strong> = longest path through the DAG = minimum project completion time</li>
+  <li>Tasks not on the critical path have <strong>slack</strong> (can be delayed without affecting total time)</li>
+</ul>
+<h4>Example</h4>
+<p>Tasks A(0.3s), B(0.5s), C(0.4s), D(0.7s), E(0.1s) with dependencies. Serial time = 2.0s. Critical path A→B→C→E = 1.3s (allows parallel execution of D).</p>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!--                  7. ALGORITHM DESIGN                         -->
+<!-- ============================================================ -->
+<div class="section" id="design">
+<h2>Algorithm Design Paradigms <span class="badge badge-core">Core</span></h2>
+<div class="session-tag">Session 18</div>
+
+<h3>Divide & Conquer</h3>
+<ul>
+  <li><strong>Divide:</strong> Break problem into smaller subproblems</li>
+  <li><strong>Conquer:</strong> Recursively solve subproblems</li>
+  <li><strong>Combine:</strong> Merge solutions into overall answer</li>
+</ul>
+<p>Examples: Binary search, merge sort, quick sort, closest pair of points. Runtime depends on division cost + combination cost + number of subproblems.</p>
+
+<h3>Greedy Algorithms</h3>
+<div class="card green">
+<p>Build a solution step-by-step by always making the <strong>locally optimal choice</strong>. At each step: consider extensions → discard infeasible ones → pick the one that optimizes the objective function.</p>
+<p><strong>Examples:</strong> Prim's, Kruskal's, Dijkstra's, Huffman coding, shortest-job-first scheduling.</p>
+<p><strong>Caution:</strong> Greedy doesn't always yield the globally optimal solution!</p>
+</div>
+
+<div class="detail">
+<h4>Project Selection Example (From Class)</h4>
+<p>10 projects, 26-week deadline, each with completion time and expected revenue:</p>
+<table>
+<tr><th>Strategy</th><th>Revenue</th><th>Optimality</th></tr>
+<tr><td>Greedy-by-time</td><td>$400K</td><td>77%</td></tr>
+<tr><td>Greedy-by-revenue</td><td>$470K</td><td>90%</td></tr>
+<tr><td>Greedy-by-revenue-density</td><td>$490K</td><td>94%</td></tr>
+<tr><td>Brute force (optimal)</td><td>$520K</td><td>100%</td></tr>
+</table>
+<p>The <strong>revenue-density</strong> (revenue/week) heuristic came closest to optimal.</p>
+
+<h4>Process Scheduling — Shortest Job First is Optimal</h4>
+<p>To minimize total wait time for N processes on a single processor, schedule by shortest completion time first. Total wait = 4·t₁ + 3·t₂ + 2·t₃ + t₄ — minimized when t₁ ≤ t₂ ≤ t₃ ≤ t₄. This extends to multiple processors.</p>
+</div>
+
+<h3>Brute Force</h3>
+<p>Enumerate all possible solutions, check each for validity. Simplest but slowest. Useful as a baseline to verify greedy/DP solutions are near-optimal.</p>
+</div>
+
+<!-- ============================================================ -->
+<!--                  8. GEOMETRIC ALGORITHMS                     -->
+<!-- ============================================================ -->
+<div class="section" id="geo">
+<h2>Geometric Algorithms <span class="badge badge-focus">Focus Topic</span></h2>
+<div class="session-tag">Session 19</div>
+
+<h3>Fundamental Formulas</h3>
+<div class="card highlight">
+<table>
+<tr><th>Operation</th><th>Formula</th></tr>
+<tr><td>Midpoint</td><td>((x₁+x₂)/2, (y₁+y₂)/2)</td></tr>
+<tr><td>Distance</td><td>√((x₂−x₁)² + (y₂−y₁)²)</td></tr>
+<tr><td>Slope</td><td>(y₂−y₁) / (x₂−x₁)</td></tr>
+<tr><td>Triangle Area</td><td>|x₁(y₂−y₃) + x₂(y₃−y₁) + x₃(y₁−y₂)| / 2</td></tr>
+<tr><td>Line through origin test</td><td>x₁(y₂−y₁) = y₁(x₂−x₁)</td></tr>
+</table>
+</div>
+
+<h3>Point-in-Shape Tests</h3>
+
+<h4>Point Inside Triangle</h4>
+<p>Given triangle ABC and point P: compute Area(PAB) + Area(PBC) + Area(PAC). If this sum equals Area(ABC), then P is inside the triangle.</p>
+
+<h4>Point Inside Rectangle</h4>
+<p>Same approach: split rectangle ABCD into triangles with P. If A₁+A₂+A₃+A₄ = Area(ABCD), P is inside.</p>
+
+<h4>Point Inside Polygon (Ray Casting)</h4>
+<div class="card green">
+<p>Draw a horizontal ray from P to the right (→ ∞). Count intersections with polygon edges:</p>
+<ul>
+  <li><strong>Odd count</strong> → P is <strong>inside</strong></li>
+  <li><strong>Even count</strong> → P is <strong>outside</strong></li>
+  <li>If P lies on an edge or vertex → considered <strong>inside</strong></li>
+</ul>
+</div>
+
+<h3>Circle Problems</h3>
+<p>Given circles with centers C₁(x₁,y₁), C₂(x₂,y₂) and radii R₁, R₂. Let d = distance(C₁, C₂):</p>
+<table>
+<tr><th>Condition</th><th>Result</th></tr>
+<tr><td>d = R₁ + R₂</td><td>Touch externally</td></tr>
+<tr><td>d &gt; R₁ + R₂</td><td>Don't intersect</td></tr>
+<tr><td>d &lt; R₁ + R₂</td><td>Intersect</td></tr>
+</table>
+
+<h3>Collinearity & Maximum Points on a Line</h3>
+<p>For each point p, compute slope to all other points. Points with the same slope (relative to p) are collinear with p. Track maximum count. <strong>Time: O(n²)</strong>.</p>
+
+<h3>Checking if Four Points Form a Square</h3>
+<ol>
+  <li>All four sides must have <strong>equal length d</strong></li>
+  <li>Both diagonals must have <strong>equal length √2·d</strong></li>
+  <li>Angle between any two adjacent sides must be <strong>90°</strong></li>
+</ol>
+
+<h3>Simple Closed Path</h3>
+<div class="card">
+<ol>
+  <li>Find bottom-most point (min y; break ties by min x) → call it P₀</li>
+  <li>Sort remaining points by <strong>polar angle</strong> counterclockwise around P₀</li>
+  <li>Traverse sorted array → yields non-self-intersecting closed path</li>
+</ol>
+<p>Uses <strong>orientation test</strong> instead of computing actual angles.</p>
+</div>
+
+<h3>Closest Pair of Points (Divide & Conquer)</h3>
+<div class="card green">
+<p><strong>Brute force:</strong> O(n²). <strong>D&C:</strong> O(n log n).</p>
+<ol>
+  <li>Sort points by x-coordinate</li>
+  <li>Split into left and right halves at midpoint</li>
+  <li>Recursively find closest pair in each half: dₗ, dᵣ. Let d = min(dₗ, dᵣ)</li>
+  <li>Build <strong>strip</strong> of points within distance d of the dividing line</li>
+  <li>Sort strip by y-coordinate, check each point against next 7 points only</li>
+  <li>Return min(d, closest pair in strip)</li>
+</ol>
+<p><strong>Key insight:</strong> Only 7 neighbors need checking per strip point (geometric proof).</p>
+</div>
+
+<h3>Optimum Point on a Line (Ternary Search)</h3>
+<p>Given points and a line ax+by+c=0, find the point on the line minimizing total distance to all given points. Uses <strong>ternary search</strong> (not binary) because the distance function is <strong>unimodal</strong> (U-shaped), not monotonic.</p>
+</div>
+
+<!-- ============================================================ -->
+<!--                  9. POLYGON & CONVEX HULL                    -->
+<!-- ============================================================ -->
+<div class="section" id="hull">
+<h2>Polygon & Convex Hull <span class="badge badge-focus">Focus Topic</span></h2>
+<div class="session-tag">Session 20</div>
+
+<h3>Polygon Formulas</h3>
+<table>
+<tr><th>Property</th><th>Formula</th></tr>
+<tr><td>Interior angle of regular n-gon</td><td>(n−2) × 180° / n</td></tr>
+<tr><td>Exterior angle of regular n-gon</td><td>360° / n</td></tr>
+<tr><td>Number of diagonals</td><td>n(n−3) / 2</td></tr>
+</table>
+
+<h3>Tangent Lines Between Convex Polygons</h3>
+<div class="detail">
+<p>Four tangent lines exist between two non-overlapping convex polygons. <strong>Upper tangent algorithm:</strong> Start with rightmost point of A and leftmost point of B. While the line crosses either polygon, move the relevant point counterclockwise. <strong>Lower tangent:</strong> similar, moving clockwise.</p>
+</div>
+
+<h3>Convex Hull</h3>
+<p>The <strong>convex hull</strong> is the smallest convex polygon enclosing all given points (like stretching a rubber band around the points).</p>
+
+<h4>Jarvis March (Gift Wrapping)</h4>
+<div class="card green">
+<ol>
+  <li>Start with the <strong>leftmost point</strong> (min x)</li>
+  <li>From current point p, find point q such that triplet (p, q, r) is <strong>counterclockwise</strong> for all other points r</li>
+  <li>Set p = q, repeat until returning to start</li>
+</ol>
+<p><strong>Time: O(n·h)</strong> where h = number of hull points. Best when h is small.</p>
+</div>
+
+<h4>Graham Scan</h4>
+<div class="card green">
+<p><strong>Phase 1 — Sort:</strong></p>
+<ol>
+  <li>Find bottom-most point P₀ (min y, then min x for ties)</li>
+  <li>Sort remaining points by <strong>polar angle</strong> counterclockwise around P₀</li>
+  <li>Remove colinear points except farthest from P₀</li>
+</ol>
+<p><strong>Phase 2 — Scan:</strong></p>
+<ol start="4">
+  <li>Process points one by one. Track last three: prev, curr, next</li>
+  <li>If orientation(prev, curr, next) is <strong>NOT counterclockwise</strong> → discard curr (it makes a right turn)</li>
+  <li>Else keep curr. Continue until all processed.</li>
+</ol>
+<p><strong>Time: O(n log n)</strong> (dominated by sorting). Better than Jarvis when h is large.</p>
+</div>
+
+<div class="card highlight">
+<h4>Jarvis vs Graham</h4>
+<table>
+<tr><th></th><th>Jarvis March</th><th>Graham Scan</th></tr>
+<tr><td>Time</td><td>O(n·h)</td><td>O(n log n)</td></tr>
+<tr><td>Best when</td><td>h ≪ n (few hull points)</td><td>h ≈ n (many hull points)</td></tr>
+<tr><td>Approach</td><td>Gift wrapping from leftmost</td><td>Sort then scan</td></tr>
+</table>
+</div>
+
+<div class="detail">
+<h4>Orientation Test (Used by Both Algorithms)</h4>
+<p>For three points p, q, r, compute the cross product of vectors (q−p) and (r−q):</p>
+<pre><code>val = (q.y − p.y)·(r.x − q.x) − (q.x − p.x)·(r.y − q.y)
+if val == 0  → Collinear
+if val > 0   → Clockwise
+if val < 0   → Counterclockwise</code></pre>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!--                  10. NP-COMPLETENESS                         -->
+<!-- ============================================================ -->
+<div class="section" id="np">
+<h2>P, NP, NP-Complete, NP-Hard <span class="badge badge-focus">Focus Topic</span></h2>
+<div class="session-tag">Sessions 22 & 23</div>
+
+<h3>Complexity Classes</h3>
+<div class="card highlight">
+<table>
+<tr><th>Class</th><th>Definition</th><th>Example</th></tr>
+<tr><td><strong>P</strong></td><td>Problems <strong>solvable</strong> in polynomial time</td><td>Sorting, shortest path, MST</td></tr>
+<tr><td><strong>NP</strong></td><td>Problems whose solutions are <strong>verifiable</strong> in polynomial time</td><td>SAT, Clique, Hamiltonian Cycle</td></tr>
+<tr><td><strong>NP-Hard</strong></td><td>At least as hard as every problem in NP. Can reduce any NP problem to it.</td><td>Halting problem, TSP optimization</td></tr>
+<tr><td><strong>NP-Complete</strong></td><td>In NP <strong>AND</strong> NP-Hard. The "hardest" problems within NP.</td><td>SAT, 3-SAT, Clique, Vertex Cover</td></tr>
+</table>
+</div>
+
+<h3>Key Relationships</h3>
+<ul>
+  <li><strong>P ⊆ NP</strong> (everything solvable in poly time is also verifiable)</li>
+  <li>The <strong>P vs NP</strong> question: Is P = NP or P ⊊ NP? (Clay Millennium Prize — $1M)</li>
+  <li>If <strong>any</strong> NP-Complete problem is solvable in polynomial time, then <strong>ALL</strong> NP problems are (P = NP)</li>
+  <li>NP-Complete = NP ∩ NP-Hard</li>
+</ul>
+
+<h3>Tractability Spectrum</h3>
+<div class="card">
+<pre><code>Tractable (Polynomial)     │  Intractable (Exponential+)    │  Unsolvable
+───────────────────────────┼────────────────────────────────┼──────────────
+O(1), O(log n), O(n),      │  O(2ⁿ), O(n!), O(2^(2^n))    │  Halting Problem
+O(n log n), O(n²), O(n³)   │  NP-Complete problems live here│  (Turing 1936)
+                           │  (if P ≠ NP)                   │</code></pre>
+</div>
+
+<h3>Polynomial Reduction</h3>
+<div class="card green">
+<p><strong>Definition:</strong> Problem X <strong>reduces to</strong> problem Y (X ≤ₚ Y) if an algorithm for Y can be used to solve X in polynomial time.</p>
+<pre><code>Instance of X  →  [Polynomial Transform]  →  Algorithm for Y  →  Solution to X</code></pre>
+<p><strong>Cost:</strong> cost(solving X) = M × cost(solving Y) + cost(reduction)</p>
+<p><strong>Two uses:</strong></p>
+<ul>
+  <li><strong>Algorithm design:</strong> If we can solve Y, we can solve X too</li>
+  <li><strong>Hardness proof:</strong> If X is hard and X ≤ₚ Y, then Y is <strong>at least as hard as X</strong></li>
+</ul>
+</div>
+
+<div class="detail">
+<h4>Reduction Example: Sorting ≤ₚ Convex Hull</h4>
+<p>Given N integers to sort, map each integer xᵢ to point (xᵢ, xᵢ²) on a parabola. The convex hull of these points, traversed in order, gives the sorted sequence. Since sorting is Ω(n log n), convex hull must also be Ω(n log n). Graham scan achieves O(n log n) → optimal.</p>
+</div>
+
+<h3>Proving a Problem is NP-Complete</h3>
+<ol>
+  <li><strong>Show it's in NP:</strong> Given a certificate, verify the solution in polynomial time</li>
+  <li><strong>Show it's NP-Hard:</strong> Reduce a known NP-Complete problem to it in polynomial time</li>
+</ol>
+
+<h3>Decision vs Optimization Problems</h3>
+<p><strong>Decision:</strong> "Is there a solution with cost ≤ k?" (yes/no). <strong>Optimization:</strong> "Find the minimum-cost solution." NP-Completeness is defined for decision problems, but if the decision version is hard, the optimization version is at least as hard.</p>
+</div>
+
+<!-- ============================================================ -->
+<!--                  11. NP-COMPLETE PROBLEMS                    -->
+<!-- ============================================================ -->
+<div class="section" id="npc-problems">
+<h2>NP-Complete Problems <span class="badge badge-focus">Focus Topic</span></h2>
+<div class="session-tag">Sessions 22 & 23</div>
+
+<h3>Clique</h3>
+<div class="card">
+<p><strong>Problem:</strong> Given graph G and integer k, does G contain a complete subgraph (clique) of size k?</p>
+<p><strong>Dividing into two cliques:</strong> G can be split into two cliques iff the <strong>complement</strong> of G is <strong>bipartite</strong>.</p>
+<ul>
+  <li>Step 1: Compute complement graph G'</li>
+  <li>Step 2: Check if G' is bipartite (BFS/DFS 2-coloring)</li>
+</ul>
+</div>
+
+<h3>Vertex Cover</h3>
+<div class="card">
+<p><strong>Problem:</strong> Given graph G and integer k, is there a subset S of ≤ k vertices such that every edge has at least one endpoint in S?</p>
+<p><strong>NP-Complete.</strong> No known polynomial solution unless P = NP.</p>
+<h4>2-Approximation Algorithm</h4>
+<pre><code>APPROX-VERTEX-COVER(G):
+  C = ∅;  E' = E
+  while E' ≠ ∅:
+    Pick any edge (u,v) from E'
+    C = C ∪ {u, v}
+    Remove all edges incident to u or v from E'
+  return C</code></pre>
+<p>Guarantee: Never returns a cover larger than <strong>2× the optimal</strong>.</p>
+</div>
+
+<h3>Independent Set</h3>
+<div class="card">
+<p><strong>Problem:</strong> Largest set of vertices with <strong>no edges between them</strong>.</p>
+<p><strong>Relationship:</strong> Independent set in G = Clique in complement G' (and vice versa). Both NP-Complete. Maximum independent set is NP-hard and hard to approximate.</p>
+</div>
+
+<h3>Hamiltonian Cycle</h3>
+<div class="card">
+<p><strong>Problem:</strong> Does graph G contain a cycle visiting every vertex <strong>exactly once</strong>?</p>
+<p><strong>Naive:</strong> Try all n! permutations → O(n!).</p>
+<p><strong>Backtracking approach:</strong></p>
+<ol>
+  <li>Start from vertex 0. Maintain path array.</li>
+  <li>Before adding vertex: check it's adjacent to last vertex AND not already in path</li>
+  <li>If stuck, backtrack and try another vertex</li>
+</ol>
+<p><strong>Contrast with Shortest Path:</strong> Shortest path is in P; Hamiltonian path is NP-Complete.</p>
+</div>
+
+<h3>Traveling Salesman Problem (TSP)</h3>
+<div class="card red">
+<p><strong>Problem:</strong> Find the shortest route visiting every city exactly once and returning to start. Essentially finding the <strong>minimum-weight Hamiltonian cycle</strong>.</p>
+<p><strong>NP-Hard</strong> — no known polynomial time solution.</p>
+
+<h4>Approaches</h4>
+<table>
+<tr><th>Method</th><th>Time</th><th>Notes</th></tr>
+<tr><td>Naive (all permutations)</td><td>O(n!)</td><td>Try every starting arrangement</td></tr>
+<tr><td>Dynamic Programming</td><td>O(n²·2ⁿ)</td><td>Better than naive but still exponential</td></tr>
+<tr><td>MST-based Approximation</td><td>O(n² or E log V)</td><td>Requires triangle inequality; ≤ 2× optimal</td></tr>
+</table>
+
+<h4>DP Recurrence</h4>
+<pre><code>C(S, i) = min over j∈S, j≠i [ C(S−{i}, j) + dist(j, i) ]
+Base case: C({1}, 1) = 0
+Answer: min over i [ C(V, i) + dist(i, 1) ]</code></pre>
+
+<h4>MST-based 2-Approximation (requires triangle inequality)</h4>
+<ol>
+  <li>Build MST from vertex 1 using Prim's algorithm</li>
+  <li>List vertices in <strong>preorder traversal</strong> of MST</li>
+  <li>Add starting vertex at end → this is the tour</li>
+</ol>
+<p><strong>Proof of 2× bound:</strong></p>
+<ul>
+  <li>Optimal TSP tour ≥ MST cost (removing one edge from optimal tour gives a spanning tree)</li>
+  <li>Full walk of MST ≤ 2 × MST cost (each edge traversed twice)</li>
+  <li>Preorder walk ≤ full walk (triangle inequality lets us shortcut)</li>
+  <li>Therefore: tour cost ≤ 2 × optimal</li>
+</ul>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!--                  11b. APPROXIMATION ALGORITHMS               -->
+<!-- ============================================================ -->
+<div class="section" id="approx">
+<h2>Approximation Algorithms <span class="badge badge-focus">Focus Topic</span></h2>
+<div class="session-tag">Sessions 22 & 23</div>
+
+<div class="card highlight">
+<h4>Why Approximation?</h4>
+<p>For NP-Hard problems, we can't find exact solutions efficiently. Instead, we find solutions guaranteed to be within a factor of optimal.</p>
+</div>
+
+<table>
+<tr><th>Problem</th><th>Approximation</th><th>Guarantee</th><th>Condition</th></tr>
+<tr><td>Vertex Cover</td><td>Pick both endpoints of arbitrary edges</td><td>≤ 2× optimal</td><td>None</td></tr>
+<tr><td>TSP</td><td>MST preorder walk</td><td>≤ 2× optimal</td><td>Triangle inequality</td></tr>
+</table>
+</div>
+
+<!-- ============================================================ -->
+<!--                  12. COMPLEXITY CHEAT SHEET                  -->
+<!-- ============================================================ -->
+<div class="section" id="complexity">
+<h2>Complexity Cheat Sheet</h2>
+
+<h3>Algorithm Complexities</h3>
+<table>
+<tr><th>Algorithm</th><th>Time Complexity</th><th>Space</th><th>Notes</th></tr>
+<tr><td colspan="4" style="background:rgba(56,189,248,.08);font-weight:700">Graph Traversals</td></tr>
+<tr><td>BFS</td><td>O(V + E)</td><td>O(V)</td><td>Queue-based, shortest path in unweighted graphs</td></tr>
+<tr><td>DFS</td><td>O(V + E)</td><td>O(V)</td><td>Stack-based, topological sort, cycle detection</td></tr>
+<tr><td colspan="4" style="background:rgba(56,189,248,.08);font-weight:700">Minimum Spanning Tree</td></tr>
+<tr><td>Kruskal's</td><td>O(E log E)</td><td>O(V)</td><td>Sort edges + Union-Find</td></tr>
+<tr><td>Prim's (binary heap)</td><td>O((V+E) log V)</td><td>O(V)</td><td>Priority queue</td></tr>
+<tr><td>Prim's (Fibonacci heap)</td><td>O(E + V log V)</td><td>O(V)</td><td>Best for dense graphs</td></tr>
+<tr><td colspan="4" style="background:rgba(56,189,248,.08);font-weight:700">Shortest Path</td></tr>
+<tr><td>Dijkstra (binary heap)</td><td>O((V+E) log V)</td><td>O(V)</td><td>Non-negative weights only</td></tr>
+<tr><td>Bellman-Ford</td><td>O(V · E)</td><td>O(V)</td><td>Handles negative weights, detects negative cycles</td></tr>
+<tr><td colspan="4" style="background:rgba(56,189,248,.08);font-weight:700">Network Flow</td></tr>
+<tr><td>Ford-Fulkerson</td><td>O(E · max_flow)</td><td>O(V + E)</td><td>Depends on augmenting path method</td></tr>
+<tr><td>Dinic's</td><td>O(V² · E)</td><td>O(V + E)</td><td>Level graphs + blocking flow</td></tr>
+<tr><td colspan="4" style="background:rgba(56,189,248,.08);font-weight:700">Topological Sort</td></tr>
+<tr><td>Kahn's (BFS)</td><td>O(V + E)</td><td>O(V)</td><td>In-degree tracking</td></tr>
+<tr><td>DFS-based</td><td>O(V + E)</td><td>O(V)</td><td>Reverse post-order</td></tr>
+<tr><td colspan="4" style="background:rgba(56,189,248,.08);font-weight:700">Geometric</td></tr>
+<tr><td>Closest Pair (D&C)</td><td>O(n log n)</td><td>O(n)</td><td>Strip optimization: check 7 neighbors</td></tr>
+<tr><td>Convex Hull — Graham</td><td>O(n log n)</td><td>O(n)</td><td>Sort + scan</td></tr>
+<tr><td>Convex Hull — Jarvis</td><td>O(n · h)</td><td>O(h)</td><td>h = hull points</td></tr>
+<tr><td colspan="4" style="background:rgba(56,189,248,.08);font-weight:700">NP Problems</td></tr>
+<tr><td>TSP (brute force)</td><td>O(n!)</td><td>O(n)</td><td>All permutations</td></tr>
+<tr><td>TSP (DP)</td><td>O(n² · 2ⁿ)</td><td>O(n · 2ⁿ)</td><td>Bitmask DP</td></tr>
+<tr><td>Hamiltonian (brute force)</td><td>O(n!)</td><td>O(n)</td><td>Backtracking improves in practice</td></tr>
+</table>
+
+<h3>Data Structures from Exam 1 (Referenced in HW2)</h3>
+<table>
+<tr><th>Structure</th><th>Search</th><th>Insert</th><th>Delete</th><th>Notes</th></tr>
+<tr><td>BST (balanced)</td><td>O(log n)</td><td>O(log n)</td><td>O(log n)</td><td>Can degrade to O(n) if skewed</td></tr>
+<tr><td>AVL Tree</td><td>O(log n)</td><td>O(log n)</td><td>O(log n)</td><td>Height-balanced; rotations: LL, RR, LR, RL</td></tr>
+<tr><td>Red-Black Tree</td><td>O(log n)</td><td>O(log n)</td><td>O(log n)</td><td>Recoloring + rotations</td></tr>
+<tr><td>Min/Max Heap</td><td>O(n)</td><td>O(log n)</td><td>O(log n)</td><td>Heap sort: O(n log n)</td></tr>
+</table>
+</div>
+
+<!-- ============================================================ -->
+<!--                  13. PRACTICE PROBLEMS (HW)                  -->
+<!-- ============================================================ -->
+<div class="section" id="hw">
+<h2>Practice Problems from Homework</h2>
+<div class="session-tag">Exam-relevant problems from HW1 & HW2</div>
+
+<h3>HW1 — Algorithm Design & Complexity</h3>
+
+<div class="card">
+<h4>Q1: Find Missing Number in Array [1..100]</h4>
+<p><strong>Approach:</strong> Sum formula. Expected sum = 100×101/2 = 5050. Subtract actual sum.</p>
+<pre><code>expected = n(n+1)/2
+actual = sum of all elements
+missing = expected − actual</code></pre>
+<p><strong>Time: O(n)</strong> — single pass through array.</p>
+</div>
+
+<div class="card">
+<h4>Q2: Find All Pairs with Given Sum</h4>
+<p><strong>Approach:</strong> Nested loop — check every pair (i, j) where j > i.</p>
+<pre><code>for i = 0 to n-1:
+  for j = i+1 to n-1:
+    if arr[i] + arr[j] == target: print pair</code></pre>
+<p><strong>Time: O(n²)</strong></p>
+</div>
+
+<div class="card">
+<h4>Q5: Sorting Complexities</h4>
+<table>
+<tr><th>Algorithm</th><th>Best</th><th>Average</th><th>Worst</th><th>Worst-case trigger</th></tr>
+<tr><td>Quick Sort</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n²)</td><td>Already sorted + bad pivot (first/last element)</td></tr>
+<tr><td>Bubble Sort</td><td>O(n)</td><td>O(n²)</td><td>O(n²)</td><td>Best when already sorted (one pass, no swaps)</td></tr>
+<tr><td>Insertion Sort</td><td>O(n)</td><td>O(n²)</td><td>O(n²)</td><td>Worst when reverse-sorted; best when sorted</td></tr>
+</table>
+</div>
+
+<h3>HW2 — Trees (Referenced Topics: Sessions 2, 11-12)</h3>
+
+<div class="card">
+<h4>Binary Tree Leaf Nodes</h4>
+<ul>
+  <li><strong>Minimum leaves:</strong> 1 (skewed/degenerate tree — a chain)</li>
+  <li><strong>Maximum leaves:</strong> ⌊n/2⌋ (complete binary tree)</li>
+  <li><strong>Full binary tree:</strong> L = I + 1 (leaves = internal nodes + 1); total nodes n = 2L − 1</li>
+</ul>
+</div>
+
+<div class="card">
+<h4>Min-Heap Insertion: 5, 3, 9, 7, 2, 4, 6, 1, 8</h4>
+<p>Insert at end, sift up to restore heap property. <strong>Final array:</strong> [1, 2, 4, 3, 5, 9, 6, 7, 8]</p>
+</div>
+
+<div class="detail">
+<div class="card">
+<h4>AVL Tree: Insert 12, 24, 14, 27, 35, 17, 19, 22</h4>
+<p>Key rotations performed:</p>
+<ul>
+  <li>After inserting 14: <strong>RL rotation</strong> at 12 → new root 14</li>
+  <li>After inserting 35: <strong>LL rotation</strong> (left rotation) at 24 → subtree root 27</li>
+  <li>After inserting 22: <strong>RR rotation</strong> (right rotation) at 27 → subtree root 24</li>
+</ul>
+<p><strong>Max height difference between leaves:</strong> O(log n)</p>
+</div>
+
+<div class="card">
+<h4>Red-Black Tree: Insert 5, 6, 1, 9, 2, 4, 3, 8, 7</h4>
+<p>Key operations: recoloring (when uncle is red) and rotations (when uncle is black). Operations — search, insert, delete — all O(log n) worst case.</p>
+<p><strong>Final tree:</strong> 5(B) root, left subtree 2(R)→{1(B), 4(B)→{3(R)}}, right subtree 8(R)→{6(B)→{7(R)}, 9(B)}</p>
+</div>
+</div>
+
+</div>
+
+<!-- ============================================================ -->
+<!--                  CONCISE QUICK-REVIEW                        -->
+<!-- ============================================================ -->
+<div class="concise-only section" id="quick-ref">
+<h2>Quick Reference Card</h2>
+<div class="card highlight">
+<h4>Exam Info</h4>
+<p>Wed April 22 | 4:30–6:00 PM | NH 100 | Closed book & notes | Questions similar to in-class examples</p>
+</div>
+
+<h3>Must-Know Algorithms</h3>
+<table>
+<tr><th>Topic</th><th>Algorithm</th><th>Time</th><th>Key Idea</th></tr>
+<tr><td>MST</td><td>Kruskal</td><td>O(E log E)</td><td>Sort edges, Union-Find for cycles</td></tr>
+<tr><td>MST</td><td>Prim</td><td>O((V+E)log V)</td><td>Grow tree, min-heap for cheapest edge</td></tr>
+<tr><td>Shortest Path</td><td>Dijkstra</td><td>O((V+E)log V)</td><td>Greedy, non-negative weights only</td></tr>
+<tr><td>Shortest Path</td><td>Bellman-Ford</td><td>O(VE)</td><td>Relax V−1 times, detects neg cycles</td></tr>
+<tr><td>Max Flow</td><td>Ford-Fulkerson</td><td>O(E·maxflow)</td><td>Find augmenting paths in residual graph</td></tr>
+<tr><td>Topo Sort</td><td>Kahn's</td><td>O(V+E)</td><td>BFS from in-degree 0 vertices</td></tr>
+<tr><td>Convex Hull</td><td>Graham Scan</td><td>O(n log n)</td><td>Sort by polar angle, CCW scan</td></tr>
+<tr><td>Convex Hull</td><td>Jarvis March</td><td>O(nh)</td><td>Gift wrapping from leftmost point</td></tr>
+<tr><td>Closest Pair</td><td>Divide & Conquer</td><td>O(n log n)</td><td>Split, recurse, check strip (7 pts)</td></tr>
+</table>
+
+<h3>NP Quick Reference</h3>
+<ul>
+  <li><strong>P:</strong> solvable in poly time | <strong>NP:</strong> verifiable in poly time | <strong>NPC:</strong> in NP AND NP-Hard</li>
+  <li><strong>Proving NPC:</strong> (1) Show in NP (verify in poly time), (2) Reduce known NPC to it</li>
+  <li><strong>Key NPC problems:</strong> SAT, 3-SAT, Clique, Vertex Cover, Independent Set, Hamiltonian Cycle, TSP (decision)</li>
+  <li><strong>Approx:</strong> Vertex Cover 2×, TSP 2× (with triangle ineq.)</li>
+  <li><strong>Decision vs Optimization:</strong> Decision = yes/no; Optimization = find best. If decision is hard, optimization is at least as hard.</li>
+</ul>
+
+<h3>Key Formulas</h3>
+<ul>
+  <li>Triangle area: |x₁(y₂−y₃) + x₂(y₃−y₁) + x₃(y₁−y₂)| / 2</li>
+  <li>Interior angle: (n−2)×180/n | Diagonals: n(n−3)/2</li>
+  <li>Circles: d = R₁+R₂ touch, d&gt; no touch, d&lt; intersect</li>
+  <li>Point-in-polygon: ray cast, count intersections (odd=in)</li>
+  <li>Max edges simple graph: n(n−1)/2</li>
+  <li>TSP DP: C(S,i) = min[C(S−{i},j) + dist(j,i)]</li>
+</ul>
+</div>
+
+</main>
+</div>
+
+<script>
+function setMode(mode){
+  const btns=document.querySelectorAll('.mode-toggle button');
+  btns.forEach(b=>b.classList.remove('active'));
+  if(mode==='concise'){
+    document.body.classList.add('concise');
+    btns[1].classList.add('active');
+  }else{
+    document.body.classList.remove('concise');
+    btns[0].classList.add('active');
+  }
+}
+
+// Progress bar
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement;
+  const pct=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100;
+  document.getElementById('progressBar').style.width=pct+'%';
+});
+
+// Active nav highlight
+const sections=document.querySelectorAll('.section[id]');
+const navLinks=document.querySelectorAll('.sidebar a');
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      navLinks.forEach(l=>l.classList.remove('active'));
+      const link=document.querySelector(`.sidebar a[href="#${e.target.id}"]`);
+      if(link)link.classList.add('active');
+    }
+  });
+},{rootMargin:'-80px 0px -60% 0px',threshold:0.1});
+sections.forEach(s=>observer.observe(s));
+
+// Search/filter
+function filterNav(q){
+  q=q.toLowerCase();
+  document.querySelectorAll('.sidebar a').forEach(a=>{
+    a.style.display=a.textContent.toLowerCase().includes(q)?'':'none';
+  });
+  if(q.length>1){
+    sections.forEach(s=>{
+      const match=s.textContent.toLowerCase().includes(q);
+      s.style.display=match?'':'none';
+    });
+  }else{
+    sections.forEach(s=>s.style.display='');
+  }
+}
+</script>
+</body>
+</html>

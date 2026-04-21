@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSE 5311 Exam 2 - 6 Hour Cram Battle Plan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            color-scheme: dark;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --accent: #38bdf8;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --border: #334155;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+        }
+
+        /* ===== HEADER & NAV ===== */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border-bottom: 2px solid var(--accent);
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .exam-details {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .timer-container {
+            background: var(--bg-card);
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 0.8rem 1.2rem;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+
+        .timer-time {
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        .panic-meter {
+            margin-top: 1rem;
+            background: var(--bg-card);
+            border-radius: 8px;
+            padding: 1rem;
+            border-left: 4px solid var(--accent);
+        }
+
+        .panic-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 24px;
+            background: #0f0f1f;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f59e0b, #38bdf8, #10b981);
+            width: 40%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #0f172a;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: var(--bg-card);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 0.6rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            font-size: 0.85rem;
+        }
+
+        .nav-btn:hover {
+            background: var(--accent);
+            color: var(--bg-dark);
+        }
+
+        /* ===== MAIN CONTAINER ===== */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* ===== SECTION A: 6-HOUR BATTLE PLAN ===== */
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-icon {
+            font-size: 2.2rem;
+        }
+
+        .study-block {
+            background: var(--bg-card);
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+            transition: all 0.2s ease;
+        }
+
+        .study-block.completed {
+            opacity: 0.7;
+            background: #0f2f1f;
+            border-left-color: var(--success);
+        }
+
+        .study-block:hover {
+            box-shadow: 0 8px 16px rgba(56, 189, 248, 0.1);
+        }
+
+        .block-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+
+        .block-time {
+            background: var(--accent);
+            color: var(--bg-dark);
+            padding: 0.6rem 1rem;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            white-space: nowrap;
+        }
+
+        .block-checkbox {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: var(--success);
+        }
+
+        .block-title {
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .block-content {
+            margin-bottom: 1rem;
+        }
+
+        .block-section {
+            margin-bottom: 1rem;
+        }
+
+        .block-section-label {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .block-text {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            padding-left: 1rem;
+        }
+
+        .block-list {
+            list-style: none;
+            margin-left: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .block-list li {
+            color: var(--text-secondary);
+            margin-bottom: 0.3rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .block-list li:before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* ===== SECTION B: CRAM SHEET ===== */
+        .cram-sheet {
+            background: var(--bg-card);
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .subsection-title {
+            font-size: 1.4rem;
+            color: var(--accent);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .subsection-title:first-child {
+            margin-top: 0;
+        }
+
+        /* ===== TABLES ===== */
+        .complexity-table,
+        .trap-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .complexity-table thead,
+        .trap-table thead {
+            background: #0f0f1f;
+        }
+
+        .complexity-table th,
+        .trap-table th {
+            color: var(--accent);
+            padding: 0.8rem;
+            text-align: left;
+            font-weight: 700;
+            border: 1px solid var(--border);
+        }
+
+        .complexity-table td,
+        .trap-table td {
+            padding: 0.8rem;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .complexity-table tbody tr:nth-child(odd),
+        .trap-table tbody tr:nth-child(odd) {
+            background: rgba(56, 189, 248, 0.03);
+        }
+
+        .complexity-table tbody tr:hover,
+        .trap-table tbody tr:hover {
+            background: rgba(56, 189, 248, 0.08);
+        }
+
+        /* ===== ALGORITHM CHEATSHEETS ===== */
+        .algo-card {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.2rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .algo-name {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .algo-steps {
+            background: #0f0f1f;
+            border-left: 3px solid var(--accent);
+            padding: 0.8rem;
+            border-radius: 4px;
+            margin-bottom: 0.6rem;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            font-family: 'Courier New', monospace;
+        }
+
+        .algo-note {
+            color: var(--warning);
+            font-size: 0.85rem;
+            font-style: italic;
+            margin-top: 0.5rem;
+        }
+
+        /* ===== QUICK REFERENCE BOXES ===== */
+        .quick-ref {
+            background: rgba(16, 185, 129, 0.08);
+            border-left: 4px solid var(--success);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+
+        .quick-ref-title {
+            color: var(--success);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .quick-ref-content {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ===== DECISION GUIDE ===== */
+        .decision-item {
+            background: rgba(30, 41, 59, 0.8);
+            border-left: 3px solid var(--accent);
+            padding: 0.8rem;
+            margin-bottom: 0.8rem;
+            border-radius: 4px;
+        }
+
+        .decision-problem {
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .decision-solution {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ===== NP-COMPLETENESS ===== */
+        .np-definition {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid var(--border);
+            padding: 0.8rem;
+            margin-bottom: 0.8rem;
+            border-radius: 4px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .np-def-term {
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .np-def-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ===== FORMULAS BOX ===== */
+        .formula-box {
+            background: #0f0f1f;
+            border: 1px solid var(--border);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 2;
+        }
+
+        .formula-line {
+            color: var(--text-secondary);
+            margin-bottom: 0.8rem;
+        }
+
+        .formula-label {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* ===== TRAP LIST ===== */
+        .trap-item {
+            background: rgba(239, 68, 68, 0.08);
+            border-left: 3px solid var(--danger);
+            padding: 0.8rem;
+            margin-bottom: 0.8rem;
+            border-radius: 4px;
+        }
+
+        .trap-number {
+            color: var(--danger);
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .trap-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ===== PRINT STYLES ===== */
+        @media print {
+            .header,
+            .nav-buttons,
+            .timer-container,
+            .panic-meter,
+            .block-checkbox {
+                display: none;
+            }
+
+            .study-block {
+                page-break-inside: avoid;
+                border: 1px solid var(--border);
+            }
+
+            .cram-sheet {
+                border: none;
+                background: transparent;
+                padding: 0;
+            }
+
+            .section {
+                page-break-before: always;
+            }
+
+            .section:first-child {
+                page-break-before: auto;
+            }
+
+            body {
+                font-size: 11pt;
+                line-height: 1.4;
+            }
+
+            .complexity-table,
+            .trap-table {
+                font-size: 8pt;
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .complexity-table,
+            .trap-table {
+                font-size: 0.75rem;
+            }
+
+            .complexity-table th,
+            .complexity-table td,
+            .trap-table th,
+            .trap-table td {
+                padding: 0.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<div class="header">
+    <div class="header-content">
+        <div>
+            <h1>CSE 5311 Exam 2 Battle Plan</h1>
+            <div class="exam-details">Wednesday, April 22, 2026 • 4:30-6:00 PM • 90 minutes • Closed Book/Notes</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 1rem; align-items: flex-end;">
+            <div class="timer-container">
+                <div class="panic-label">TIME UNTIL EXAM:</div>
+                <div class="timer-time" id="timer">--:--:--</div>
+            </div>
+            <div class="panic-meter">
+                <div class="panic-label">ESTIMATED READINESS:</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 40%;">
+                        <span id="progressPercent">40%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="nav-buttons" style="margin-top: 1rem; justify-content: center;">
+        <button class="nav-btn" onclick="document.getElementById('section-a').scrollIntoView({behavior: 'smooth'})">📅 6-Hour Plan</button>
+        <button class="nav-btn" onclick="document.getElementById('section-b').scrollIntoView({behavior: 'smooth'})">📚 Cram Sheet</button>
+        <button class="nav-btn" onclick="window.print()">🖨️ Print</button>
+    </div>
+</div>
+
+<div class="container">
+
+<!-- ===== SECTION A: THE 6-HOUR BATTLE PLAN ===== -->
+<div class="section" id="section-a">
+    <div class="section-title">
+        <span class="section-icon">⏰</span>
+        SECTION A: Your 6-Hour Battle Plan
+    </div>
+
+    <div style="background: rgba(56, 189, 248, 0.1); border-left: 4px solid var(--accent); padding: 1rem; border-radius: 6px; margin-bottom: 2rem;">
+        <strong style="color: var(--accent);">THE STRATEGY:</strong> We're prioritizing by ROI. The prof said "questions similar to in-class examples" = you NEED to trace algorithms. Algorithm tracing is mechanical — master it first, and you'll grab the low-hanging fruit. Then definitions (Big-O, graph basics). Then the conceptual stuff (NP). Then the harder topics. You can do this.
+    </div>
+
+    <!-- HOUR 1 -->
+    <div class="study-block" data-block="1">
+        <div class="block-header">
+            <div>
+                <div class="block-time">HOUR 1 (60 min)</div>
+                <div class="block-title">Algorithm Tracing — The Guaranteed Points</div>
+            </div>
+            <input type="checkbox" class="block-checkbox" onchange="updateProgress()">
+        </div>
+        <div class="block-content">
+            <div class="block-section">
+                <div class="block-section-label">WHY FIRST</div>
+                <div class="block-text">The prof emphasized "questions will be similar to examples I solved in class." Those examples are algorithm traces. Once you see the step-by-step pattern, you can replicate it on the exam. This is mechanical — no deep understanding needed, just memorize the template. Highest points-per-minute investment.</div>
+            </div>
+
+            <div class="block-section">
+                <div class="block-section-label">WHAT TO PRACTICE</div>
+                <ul class="block-list">
+                    <li><strong>Dijkstra's:</strong> Pick a 5-node graph with weights. Trace it step-by-step using a distance table. Update distances, mark visited, repeat.</li>
+                    <li><strong>Prim's:</strong> Same graph. Start from a vertex. Build MST by picking minimum key vertex not yet in MST.</li>
+                    <li><strong>Kruskal's:</strong> Sort all edges. Use Union-Find to check if endpoints are in same component. Add edge if they're not.</li>
+                    <li><strong>Ford-Fulkerson:</strong> Flow network. Find augmenting path (BFS). Find bottleneck. Update residual graph. Repeat until no path.</li>
+                </ul>
+            </div>
+
+            <div class="block-section">
+                <div class="block-section-label">KEY TIP</div>
+                <div class="block-text">For EACH algorithm, memorize the TABLE FORMAT. The prof grades on execution — show your work in a clean table with columns for step, vertices, distances/keys, etc. That's what they teach in class.</div>
+            </div>
+
+            <div class="block-section">
+                <div class="block-section-label">ACTION ITEMS</div>
+                <ul class="block-list">
+                    <li>☐ Trace Dijkstra's on a sample graph (use 5 nodes, 7-8 edges)</li>
+                    <li>☐ Trace Prim's on the same graph</li>
+                    <li>☐ Trace Kruskal's on the same graph</li>
+                    <li>☐ Trace Ford-Fulkerson on a flow network (3-4 nodes)</li>
+                    <li>☐ Review your traces — are they clean and easy to follow?</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- HOUR 2 -->
+    <div class="study-block" data-block="2">
+        <div class="block-header">
+            <div>
+                <div class="block-time">HOUR 2 (45 min)</div>
+                <div class="block-title">Big-O + Graph Basics — Easy Points You Can't Miss</div>
+            </div>
+            <input type="checkbox" class="block-checkbox" onchange="updateProgress()">
+        </div>
+        <div class="block-content">
+            <div class="block-section">
+                <div class="block-section-label">WHY SECOND</div>
+                <div class="block-text">Definition and recall questions. You either know them or you don't. Pure memorization = guaranteed points. Exam often has 1-2 questions on Big-O hierarchy and graph representations.</div>
+            </div>
+
+            <div class="block-section">
+                <div class="block-section-label">MEMORIZE THIS</div>
+                <ul class="block-list">
+                    <li><strong>Big-O Hierarchy (smallest to largest):</strong> 1 < log n < √n < n < n log n < n² < n³ < 2ⁿ < n!</li>
+                    <li><strong>Formal Definition:</strong> f(n) = O(g(n)) iff ∃ c > 0, n₀ > 0 such that f(n) ≤ c·g(n) for ALL n ≥ n₀</li>
+                    <li><strong>Simplification:</strong> Drop constants, keep dominant term (3n² + 5n + 10 → O(n²))</li>
+                </ul>
+            </div>
+
+            <div class="block-section">
+                <div class="block-section-label">GRAPH BASICS (NON-NEGOTIABLE)</div>
+                <ul class="block-list">
+                    <li><strong>Adjacency Matrix:</strong> O(V²) space, O(1) edge lookup, good for dense graphs</li>
+                    <li><strong>Adjacency List:</strong> O(V + E) space, O(degree) edge lookup, good for sparse graphs</li>
+                    <li><strong>BFS:</strong> Uses queue, O(V+E), unweighted shortest path</li>
+                    <li><strong>DFS:</strong> Uses stack/recursion, O(V+E), finds connected components</li>
+                    <li><strong>Graph Types:</strong> Directed, undirected, weighted, DAG, bipartite, complete graph K_n</li>
+                </ul>
+            </div>
+
+            <div class="block-section">
+                <div class="block-section-label">ACTION ITEMS</div>
+                <ul class="block-list">
+                    <li>☐ Write out Big-O hierarchy 5 times (muscle memory)</li>
+                    <li>☐ Write formal Big-O definition from memory</li>
+                    <li>☐ Simplify: 2n³ + 7n² + 100n, 5 log n + 2, n²·log n</li>
+                    <li>☐ Explain when to use adjacency matrix vs list</li>
+                    <li>☐ Trace BFS and DFS on a 5-node graph</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- HOUR 3 -->
+    <div class="study-block" data-block="3">
+        <div class="block-header">
+            <div>
+                <div class="block-time">HOUR 3 (45 min)</div>
+                <div class="block-title">NP-Completeness — The Conceptual Framework</div>
+            </div>
+            <input type="checkbox" class="block-checkbox" onchange="updateProgress()">
+        </div>
+        <div class="block-content">
+            <div class="block-section">
+                <div class="block-section-label">WHY HOUR 3</div>
+                <div class="block-text">THIS WILL BE ON THE EXAM. Students lose points by confusing P, NP, NP-Hard, NP-Complete. The prof loves testing whether you understand the framework. This is conceptual but learnable in 45 minutes.</div>
+            </div>
+
+            <div class="block-section">
+                <div class="block-section-label">THE 4 CRITICAL DEFINITIONS</div>
+                <ul class="block-list">
+                    <li><strong>P:</strong> Problems solvable in polynomial time (yes/no answer computable in poly time)</li>
+                    <li><strong>NP:</strong> Problems VERIFIABLE in polynomial time (if yes, you can prove it in poly time). NP does NOT mean "not polynomial"!</li>
+                    <li><strong>NP-Hard:</strong> At least as hard as any NP problem. Might NOT be in NP. Informal: reducible from every NP problem.</li>
+                    <li><strong>NP-Complete:</strong> In NP AND NP-Hard. The hardest problems in NP. If you solve one in poly time, P=NP.</li>
+                </ul>
+            </div>
+
+            <div class="block-section">
+                <div class="block-section-label">HOW TO PROVE NP-COMPLETE (2-STEP)</div>
+                <ul class="block-list">
+                    <li><strong>Step 1:</strong> Show the problem ∈ NP. Give a polynomial-time verifier. (Example: for Clique, given a set of vertices, verify in O(k²) that all k(k-1)/2 edges exist.)</li>
+                    <li><strong>Step 2:</strong> Reduce a KNOWN NP-Complete problem to yours in polynomial time. (Example: reduce SAT → 3-SAT → Clique)</li>
+                </ul>
+            </div>
+
+            <div class="block-section">
+                <div class="block-section-label">THE REDUCTION CHAIN (MEMORIZE)</div>
+                <ul class="block-list">
+                    <li>SAT → 3-SAT → Clique → Vertex Cover → Independent Set</li>
+                    <li>Hamiltonian Cycle → TSP (Traveling Salesman Problem)</li>
+                </ul>
+            </div>
+
+            <div class="block-section">
+                <div class="block-section-label">PROBLEM RELATIONSHIPS (KEY FOR EXAM)</div>
+                <ul class="block-list">
+                    <li><strong>Clique vs Independent Set:</strong> IS in complement graph ↔ Clique in original graph</li>
+                    <li><strong>Independent Set vs Vertex Cover:</strong> VC of size k ↔ IS of size n-k in same graph</li>
+                    <li><strong>Implication:</strong> If you solve one, you solve all three (via polynomial reduction)</li>
+                </ul>
+            </div>
+
+            <div class="block-section">
+                <div class="block-section-label">ACTION ITEMS</div>
+                <ul class="block-list">
+                    <li>☐ Write P, NP, NP-Hard, NP-Complete definitions from memory</li>
+                    <li>☐ Explain why NP ≠ "not polynomial"</li>
+                    <li>☐ Explain the 2-step NP-Complete proof template</li>
+                    <li>☐ Draw or describe the reduction chain</li>
+                    <li>☐ Explain Clique ↔ IS ↔ VC relationships</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- HOUR 4 -->
+    <div class="study-block" data-block="4">
+        <div class="block-header">
+            <div>
+                <div class="block-time">HOUR 4 (45 min)</div>
+                <div class="block-title">Topological Sort + Design Paradigms + Bellman-Ford</div>
+            </div>
+            <input type="checkbox" class="block-checkbox" onchange="updateProgress()">
+        </div>
+        <div class="block-content">
+            <div class="block-section">
+                <div class="block-section-label">WHY HOUR 4</div>
+                <div class="block-text">Mid-difficulty topics. Topological sort is straightforward to trace (you'll likely get the points). Bellman-Ford fills in the shortest-path picture. Design paradigms show you understand algorithm construction.</div>
+            </div>
+
+            <div class="block-section">
+                <div class="block-section-label">KAHN'S TOPOLOGICAL SORT (MEMORIZE)</div>
+                <ul class="block-list">
+                    <li>1. Compute in-degree of all vertices</li>
+                    <li>2. Add all in-degree 0 vertices to a queue</li>
+                    <li>3. While queue not empty: remove vertex, add to ordering, decrease in-degree of neighbors, add new 0-degree vertices</li>
+                    <li>4. If ordering doesn't have all vertices → cycle exists (not a DAG)</li>
+                    <li><strong>Complexity:</strong> O(V+E)</li>
+                </ul>
+            </div>
+
+            <div class="block-section">
+                <div class="block-section-label">BELLMAN-FORD (HANDLES NEGATIVE WEIGHTS)</div>
+                <ul class="block-list">
+                    <li>1. Initialize all distances to ∞, source to 0</li>
+                    <li>2. Repeat V-1 times: for EACH edge (u,v,w), if dist[u] + w < dist[v], update dist[v]</li>
+                    <li>3. On Vth iteration, if any distance decreases → negative cycle detected</li>
+                    <li><strong>When to use:</strong> Negative edge weights OR you need cycle detection</li>
+                    <li><strong>Complexity:</strong> O(VE)</li>
+                </ul>
+            </div>
+
+            <div class="block-section">
+                <div class="block-section-label">DESIGN PARADIGMS (CONCEPTUAL)</div>
+                <ul class="block-list">
+                    <li><strong>Greedy:</strong> Make locally optimal choices → globally optimal. Requires greedy-choice property + optimal substructure.</li>
+                    <li><strong>Divide & Conquer:</strong> Split problem, solve subproblems, combine. (Examples: merge sort, closest pair, quick sort)</li>
+                    <li><strong>Dynamic Programming:</strong> Store subproblem results to avoid recomputation. (Examples: LCS, knapsack, shortest path)</li>
+                    <li><strong>Brute Force:</strong> Try all possibilities. Exponential time, but guarantees optimal solution.</li>
+                </ul>
+            </div>
+
+            <div class="block-section">
+                <div class="block-section-label">ACTION ITEMS</div>
+                <ul class="block-list">
+                    <li>☐ Trace Kahn's algorithm on a DAG (5-6 vertices)</li>
+                    <li>☐ Trace Bellman-Ford on a graph with negative weights</li>
+                    <li>☐ Explain why Dijkstra fails on negative weights (example: edge weight -1)</li>
+                    <li>☐ Describe one problem solved by greedy, divide & conquer, and DP</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- HOUR 5 -->
+    <div class="study-block" data-block="5">
+        <div class="block-header">
+            <div>
+                <div class="block-time">HOUR 5 (45 min)</div>
+                <div class="block-title">Geometric Algorithms — The Detail-Heavy Topic</div>
+            </div>
+            <input type="checkbox" class="block-checkbox" onchange="updateProgress()">
+        </div>
+        <div class="block-content">
+            <div class="block-section">
+                <div class="block-section-label">WHY HOUR 5</div>
+                <div class="block-text">These are detail-heavy but on the exam. The prof covered them extensively. You need to know the algorithm steps, not just the idea. Most students skip this — don't. Exam often has 1 problem on Graham Scan or orientation test.</div>
+            </div>
+
+            <div class="block-section">
+                <div class="block-section-label">ORIENTATION TEST (YOU NEED THIS)</div>
+                <ul class="block-list">
+                    <li><strong>Formula:</strong> (p2.x - p1.x)(p3.y - p1.y) - (p2.y - p1.y)(p3.x - p1.x)</li>
+                    <li><strong>Interpretation:</strong> Positive = counterclockwise (CCW), Negative = clockwise (CW), Zero = collinear</li>
+                    <li><strong>Use case:</strong> Determines if three points turn left or right. Foundation for convex hull algorithms.</li>
+                </ul>
+            </div>
+
+            <div class="block-section">
+                <div class="block-section-label">GRAHAM SCAN (CONVEX HULL)</div>
+                <ul class="block-list">
+                    <li>1. Find the lowest-y point (leftmost if tie). Call it p0.</li>
+                    <li>2. Sort remaining points by polar angle with respect to p0. (Highest angle last.)</li>
+                    <li>3. Push p0, p1, p2 onto stack</li>
+                    <li>4. For each remaining point p: while stack has ≥2 points and top-2 + p make clockwise turn, pop. Push p.</li>
+                    <li>5. Stack contains hull vertices in CCW order.</li>
+                    <li><strong>Complexity:</strong> O(n log n)</li>
+                </ul>
+            </div>
+
+            <div class="block-section">
+                <div class="block-section-label">JARVIS MARCH (GIFT WRAPPING)</div>
+                <ul class="block-list">
+                    <li>1. Start with leftmost point</li>
+                    <li>2. Repeatedly pick the point that is most counterclockwise from the current direction</li>
+                    <li>3. Stop when you return to start</li>
+                    <li><strong>Complexity:</strong> O(nh) where h = number of hull points. Good when hull is small.</li>
+                </ul>
+            </div>
+
+            <div class="block-section">
+                <div class="block-section-label">CLOSEST PAIR (DIVIDE & CONQUER)</div>
+                <ul class="block-list">
+                    <li>1. Sort points by x-coordinate</li>
+                    <li>2. Divide into left/right halves at midpoint</li>
+                    <li>3. Recursively find closest pair in each half: δ_L, δ_R</li>
+                    <li>4. Let δ = min(δ_L, δ_R)</li>
+                    <li>5. Check the strip: all points within distance δ of the dividing line. For each point, check at most 7 points above it (sorted by y).</li>
+                    <li>6. Return closest pair overall</li>
+                    <li><strong>Complexity:</strong> O(n log n)</li>
+                </ul>
+            </div>
+
+            <div class="block-section">
+                <div class="block-section-label">POINT-IN-POLYGON (RAY CASTING)</div>
+                <ul class="block-list">
+                    <li>Cast a ray from point to infinity (usually rightward along x-axis)</li>
+                    <li>Count intersections with polygon edges</li>
+                    <li>Odd count = inside, even count = outside</li>
+                </ul>
+            </div>
+
+            <div class="block-section">
+                <div class="block-section-label">ACTION ITEMS</div>
+                <ul class="block-list">
+                    <li>☐ Memorize orientation test formula and what sign means</li>
+                    <li>☐ Trace Graham Scan on 6-8 random points</li>
+                    <li>☐ Trace Jarvis March on same points</li>
+                    <li>☐ Trace Closest Pair on 8 points</li>
+                    <li>☐ Understand why strip optimization matters in Closest Pair</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- HOUR 6 -->
+    <div class="study-block" data-block="6">
+        <div class="block-header">
+            <div>
+                <div class="block-time">HOUR 6 (30-45 min)</div>
+                <div class="block-title">Review + Weak Spots + Sleep</div>
+            </div>
+            <input type="checkbox" class="block-checkbox" onchange="updateProgress()">
+        </div>
+        <div class="block-content">
+            <div class="block-section">
+                <div class="block-section-label">WHAT TO DO</div>
+                <ul class="block-list">
+                    <li>Go back to any algorithm that didn't click</li>
+                    <li>Do ONE full trace of each major algorithm (15-20 min)</li>
+                    <li>Review the complexity table below (5 min)</li>
+                    <li>Review common exam traps (5 min)</li>
+                    <li>If time remains: review HW problems that overlap with exam topics</li>
+                </ul>
+            </div>
+
+            <div class="block-section">
+                <div class="block-section-label">THEN: SLEEP</div>
+                <div class="block-text">Do NOT sacrifice sleep. A rested brain recalls better than a tired one that studied 2 more hours. Set your alarm. Go to bed by midnight at the latest.</div>
+            </div>
+
+            <div class="block-section">
+                <div class="block-section-label">NEXT MORNING (EXAM DAY)</div>
+                <ul class="block-list">
+                    <li>Wake up rested</li>
+                    <li>Eat breakfast</li>
+                    <li>Review this cram sheet (Section B) for 20-30 min. Focus on complexity table + trap list.</li>
+                    <li>Walk in confident. You know the patterns.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ===== SECTION B: THE CRAM SHEET ===== -->
+<div class="section" id="section-b">
+    <div class="section-title">
+        <span class="section-icon">📚</span>
+        SECTION B: The Cram Sheet — Memorize & Review
+    </div>
+
+    <div class="cram-sheet">
+
+        <!-- B1: COMPLEXITY TABLE -->
+        <div class="subsection-title">B1: Master Complexity Table</div>
+        <p style="color: var(--text-secondary); margin-bottom: 1rem;">Memorize these. You WILL be asked about complexity on the exam.</p>
+
+        <table class="complexity-table">
+            <thead>
+                <tr>
+                    <th>Algorithm</th>
+                    <th>Time Complexity</th>
+                    <th>Space Complexity</th>
+                    <th>Key Insight</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>BFS</td>
+                    <td>O(V + E)</td>
+                    <td>O(V)</td>
+                    <td>Queue, unweighted shortest path</td>
+                </tr>
+                <tr>
+                    <td>DFS</td>
+                    <td>O(V + E)</td>
+                    <td>O(V)</td>
+                    <td>Stack/recursion, connected components</td>
+                </tr>
+                <tr>
+                    <td>Dijkstra's (min-heap)</td>
+                    <td>O((V+E)log V)</td>
+                    <td>O(V)</td>
+                    <td>No negative weights, greedy pick</td>
+                </tr>
+                <tr>
+                    <td>Dijkstra's (array)</td>
+                    <td>O(V²)</td>
+                    <td>O(V)</td>
+                    <td>Dense graphs, simpler implementation</td>
+                </tr>
+                <tr>
+                    <td>Bellman-Ford</td>
+                    <td>O(VE)</td>
+                    <td>O(V)</td>
+                    <td>Negative weights OK, detects cycles</td>
+                </tr>
+                <tr>
+                    <td>Kruskal's</td>
+                    <td>O(E log E)</td>
+                    <td>O(V + E)</td>
+                    <td>MST, sort edges, Union-Find</td>
+                </tr>
+                <tr>
+                    <td>Prim's (min-heap)</td>
+                    <td>O((V+E)log V)</td>
+                    <td>O(V)</td>
+                    <td>MST, grow from vertex</td>
+                </tr>
+                <tr>
+                    <td>Prim's (array)</td>
+                    <td>O(V²)</td>
+                    <td>O(V)</td>
+                    <td>MST, dense graphs</td>
+                </tr>
+                <tr>
+                    <td>Ford-Fulkerson (simple DFS)</td>
+                    <td>O(VE²)</td>
+                    <td>O(V + E)</td>
+                    <td>Max flow, may not terminate with irrational capacities</td>
+                </tr>
+                <tr>
+                    <td>Edmonds-Karp (BFS)</td>
+                    <td>O(VE²)</td>
+                    <td>O(V + E)</td>
+                    <td>Max flow, always terminates</td>
+                </tr>
+                <tr>
+                    <td>Dinic's Algorithm</td>
+                    <td>O(V²E)</td>
+                    <td>O(V + E)</td>
+                    <td>Max flow, faster than Edmonds-Karp</td>
+                </tr>
+                <tr>
+                    <td>Kahn's Topological Sort</td>
+                    <td>O(V + E)</td>
+                    <td>O(V)</td>
+                    <td>DAG only, in-degree based</td>
+                </tr>
+                <tr>
+                    <td>Graham Scan (Convex Hull)</td>
+                    <td>O(n log n)</td>
+                    <td>O(n)</td>
+                    <td>Sort by polar angle, stack-based</td>
+                </tr>
+                <tr>
+                    <td>Jarvis March (Gift Wrapping)</td>
+                    <td>O(nh)</td>
+                    <td>O(n)</td>
+                    <td>h = hull points, good when h << n</td>
+                </tr>
+                <tr>
+                    <td>Closest Pair (D&C)</td>
+                    <td>O(n log n)</td>
+                    <td>O(n)</td>
+                    <td>Divide, conquer, strip check</td>
+                </tr>
+                <tr>
+                    <td>NP-Complete (best known)</td>
+                    <td>O(2ⁿ) or worse</td>
+                    <td>Varies</td>
+                    <td>No poly-time solution known (unless P=NP)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- B2: ALGORITHM CHEATSHEETS -->
+        <div class="subsection-title">B2: Algorithm Step-by-Step Cheatsheets</div>
+        <p style="color: var(--text-secondary); margin-bottom: 1rem;">These are the EXACT steps to trace on the exam. Memorize the format.</p>
+
+        <div class="algo-card">
+            <div class="algo-name">Dijkstra's Algorithm (Shortest Path, No Negative Weights)</div>
+            <div class="algo-steps">
+INPUT: Graph G, source s
+OUTPUT: Shortest distances dist[] and parent pointers
+
+1. Initialize: dist[s] = 0, dist[v] = ∞ for all v ≠ s, parent[v] = null
+2. Create set "unvisited" = all vertices
+3. While unvisited is not empty:
+   a. Pick u from unvisited with minimum dist[u]
+   b. Remove u from unvisited
+   c. For each neighbor v of u:
+      - If dist[u] + weight(u,v) < dist[v]:
+        - dist[v] = dist[u] + weight(u,v)
+        - parent[v] = u
+4. Return dist[] and parent[]
+
+TABLE FORMAT (for your answer):
+Step | Visited | d[A] | d[B] | d[C] | d[D] | Parent[A] | Parent[B] | ...
+  0  |   {}    |  0   | ∞   | ∞   | ∞   |    -      |    -      | ...
+  1  |   {A}   |  0   | 4   | 2   | ∞   |    -      |    A      | A | ...
+  ... continue until all visited
+            </div>
+            <div class="algo-note">⚠️ FAILS on negative edge weights. Use Bellman-Ford instead.</div>
+        </div>
+
+        <div class="algo-card">
+            <div class="algo-name">Prim's Algorithm (Minimum Spanning Tree)</div>
+            <div class="algo-steps">
+INPUT: Graph G
+OUTPUT: Minimum spanning tree edges
+
+1. Start with any vertex (say s), add to MST set
+2. Initialize key[v] = ∞ for all v, key[s] = 0
+3. While MST set doesn't contain all vertices:
+   a. Pick vertex u NOT in MST with minimum key[u]
+   b. Add u to MST set
+   c. For each edge (u,v) where v is not in MST:
+      - If weight(u,v) < key[v]:
+        - key[v] = weight(u,v)
+        - parent[v] = u (track edge for output)
+4. Return MST edges using parent pointers
+
+TABLE FORMAT:
+Step | MST Set | key[A] | key[B] | key[C] | Edge Added
+  1  |  {A}    |   0    |   5    |   7    |    -
+  2  |  {A,B}  |   0    |   5    |   3    |  (A,B,5)
+  ... continue until all vertices in MST
+            </div>
+            <div class="algo-note">⚠️ Good for dense graphs. Use Kruskal's for sparse.</div>
+        </div>
+
+        <div class="algo-card">
+            <div class="algo-name">Kruskal's Algorithm (Minimum Spanning Tree)</div>
+            <div class="algo-steps">
+INPUT: Graph G with edges
+OUTPUT: Minimum spanning tree edges
+
+1. Sort all edges by weight (ascending)
+2. Initialize Union-Find structure (each vertex in its own set)
+3. For each edge (u,v,w) in sorted order:
+   a. If find(u) ≠ find(v):  // u and v in different components
+      - Add edge (u,v) to MST
+      - union(u,v)  // merge components
+   b. Else: skip edge (would create cycle)
+4. Return MST edges
+
+TABLE FORMAT:
+Edge  | Weight | find(u) | find(v) | Action    | Reason
+(A,B) |   1    |    0    |    1    |   Add     | Different sets
+(B,C) |   2    |    0    |    2    |   Add     | Different sets
+(A,C) |   3    |    0    |    0    |   Skip    | Same set (cycle)
+... continue for all edges
+            </div>
+            <div class="algo-note">⚠️ Exactly |V|-1 edges in MST. Don't add more.</div>
+        </div>
+
+        <div class="algo-card">
+            <div class="algo-name">Ford-Fulkerson Algorithm (Maximum Flow)</div>
+            <div class="algo-steps">
+INPUT: Flow network with source s, sink t, capacities c(u,v)
+OUTPUT: Maximum flow value and flow on each edge
+
+1. Initialize flow[u,v] = 0 for all edges
+2. Build residual graph: res[u,v] = c[u,v] - flow[u,v]
+3. While there exists augmenting path P from s to t in residual graph:
+   a. Find minimum capacity (bottleneck) along P: b = min(res along P)
+   b. For each edge (u,v) in P:
+      - flow[u,v] += b        // increase forward flow
+      - flow[v,u] -= b        // increase backward flow (undo)
+      - Update residual: res[u,v] -= b, res[v,u] += b
+   c. Add b to total max flow
+4. Return max flow and final flow array
+
+EXAMPLE (3-node network, s=A, t=C):
+Initial: A->B cap 10, A->C cap 5, B->C cap 8
+
+Path 1: A->B->C, bottleneck=min(10,8)=8
+  flow[A,B]=8, flow[B,C]=8, maxflow=8
+
+Path 2: A->C, bottleneck=5
+  flow[A,C]=5, maxflow=13
+
+No more augmenting paths → maxflow=13
+            </div>
+            <div class="algo-note">⚠️ Update BOTH forward and backward edges in residual graph. Backward edges allow "undoing".</div>
+        </div>
+
+        <div class="algo-card">
+            <div class="algo-name">Bellman-Ford Algorithm (Shortest Path, Negative Weights OK)</div>
+            <div class="algo-steps">
+INPUT: Graph G, source s
+OUTPUT: Shortest distances, or "negative cycle detected"
+
+1. Initialize: dist[s] = 0, dist[v] = ∞ for v ≠ s
+2. Repeat |V|-1 times:
+   - For EACH edge (u,v,w):
+     - If dist[u] + w < dist[v]:
+       - dist[v] = dist[u] + w
+3. Check for negative cycle (|V|th iteration):
+   - For EACH edge (u,v,w):
+     - If dist[u] + w < dist[v]:
+       - Return "Negative cycle detected"
+4. Return dist[]
+
+WHY |V|-1? A shortest path has at most |V|-1 edges. After |V|-1 iterations, all shortest paths found. If iteration |V| still updates, there's a cycle.
+            </div>
+            <div class="algo-note">⚠️ Slower than Dijkstra (O(VE) vs O(V log V)), but handles negatives + detects cycles.</div>
+        </div>
+
+        <div class="algo-card">
+            <div class="algo-name">Kahn's Algorithm (Topological Sort of DAG)</div>
+            <div class="algo-steps">
+INPUT: Directed acyclic graph (DAG)
+OUTPUT: Topological ordering or "not a DAG"
+
+1. Compute in-degree for each vertex
+2. Add all in-degree 0 vertices to a queue
+3. While queue is not empty:
+   a. Remove vertex u from queue
+   b. Add u to topological ordering
+   c. For each neighbor v of u:
+      - Decrement in-degree[v]
+      - If in-degree[v] becomes 0, add v to queue
+4. If topological ordering has all vertices: return ordering
+   Else: return "Graph has a cycle"
+
+EXAMPLE: A->B, A->C, B->D, C->D
+In-degrees: A=0, B=1, C=1, D=2
+Queue: [A]
+Pop A, add to order: [A], decrease in-degree[B] and in-degree[C]
+  in-degrees: B=0, C=0, D=2
+  Add B,C to queue: [B,C]
+Pop B, add to order: [A,B], decrease in-degree[D]
+  in-degrees: D=1
+  Queue: [C]
+Pop C, add to order: [A,B,C], decrease in-degree[D]
+  in-degrees: D=0
+  Queue: [D]
+Pop D, add to order: [A,B,C,D]
+Result: [A,B,C,D] or [A,C,B,D] are valid topological orderings
+            </div>
+            <div class="algo-note">⚠️ Only works on DAGs. If cycles exist, it will detect them (not all vertices processed).</div>
+        </div>
+
+        <div class="algo-card">
+            <div class="algo-name">Graham Scan (Convex Hull)</div>
+            <div class="algo-steps">
+INPUT: Set of n points in 2D
+OUTPUT: Convex hull vertices in counterclockwise order
+
+1. Find the point p0 with lowest y-coordinate (leftmost if tie)
+2. Sort remaining points by polar angle with respect to p0
+   - Use cross product to compare angles: (p-p0) × (q-p0)
+3. Initialize: stack = [p0, p1, p2]
+4. For i = 3 to n-1:
+   p = points[i]
+   While stack has ≥2 points AND ccw(stack[-2], stack[-1], p) ≤ 0:
+     (ccw = cross product orientation test; ≤0 means clockwise or collinear)
+     stack.pop()
+   stack.push(p)
+5. Stack contains hull vertices in CCW order
+
+ORIENTATION TEST: (q.x-p.x)(r.y-p.y) - (q.y-p.y)(r.x-p.x)
+  > 0: counter-clockwise, < 0: clockwise, = 0: collinear
+            </div>
+            <div class="algo-note">⚠️ Sort by POLAR ANGLE, not x-coordinate. Polar angle means angle from p0.</div>
+        </div>
+
+        <div class="algo-card">
+            <div class="algo-name">Jarvis March (Gift Wrapping Convex Hull)</div>
+            <div class="algo-steps">
+INPUT: Set of n points in 2D
+OUTPUT: Convex hull vertices in counterclockwise order
+
+1. Find leftmost point, add to hull
+2. current_point = leftmost point
+3. While current_point is not the starting point:
+   a. next_point = any other point (or first point initially)
+   b. For each remaining point p:
+      - If p is more counterclockwise from current_point than next_point:
+        - next_point = p
+        - Use orientation test: if cross product < 0, then p is more CCW
+   c. Add next_point to hull
+   d. current_point = next_point
+4. Return hull
+
+COMPLEXITY: O(nh) where h = number of hull points
+- Good when hull is small (h << n)
+- Bad when hull is large (h ≈ n)
+            </div>
+            <div class="algo-note">⚠️ Slower than Graham Scan (O(nh) vs O(n log n)), but simple and good for small hulls.</div>
+        </div>
+
+        <div class="algo-card">
+            <div class="algo-name">Closest Pair of Points (Divide & Conquer)</div>
+            <div class="algo-steps">
+INPUT: Set of n points, sorted by x-coordinate
+OUTPUT: Distance between closest pair
+
+1. Base case: if n ≤ 3, return closest pair by brute force O(1)
+2. Divide: split points at midpoint x = mid_x
+   - Left points = points[0..mid]
+   - Right points = points[mid+1..n]
+3. Conquer:
+   - δL = closest pair distance in left half
+   - δR = closest pair distance in right half
+   - δ = min(δL, δR)
+4. Check strip: find all points within distance δ of dividing line (x = mid_x)
+   - For each point p in strip (sorted by y):
+     - For j = 1 to 7 (or until y-distance > δ):
+       - Compute distance to next 7 points above p
+       - Update δ if closer pair found
+5. Return δ
+
+WHY 7? In a δ×2δ rectangle, at most 8 points fit with min distance δ.
+            </div>
+            <div class="algo-note">⚠️ The "7 points" check is the key optimization. Don't forget the strip.</div>
+        </div>
+
+        <!-- B3: NP-COMPLETENESS QUICK REFERENCE -->
+        <div class="subsection-title">B3: NP-Completeness Quick Reference</div>
+
+        <div class="np-definition">
+            <div class="np-def-term">P (Polynomial Time)</div>
+            <div class="np-def-text">Problems solvable in polynomial time. There exists an algorithm that computes the answer (yes/no) in O(poly(n)) time.</div>
+        </div>
+
+        <div class="np-definition">
+            <div class="np-def-term">NP (Nondeterministic Polynomial Time)</div>
+            <div class="np-def-text">Problems whose SOLUTIONS can be VERIFIED in polynomial time. NOT "not polynomial." If someone gives you a solution, you can check if it's correct in poly time.</div>
+        </div>
+
+        <div class="np-definition">
+            <div class="np-def-term">NP-Hard</div>
+            <div class="np-def-text">At least as hard as any NP problem. Every NP problem reduces to it in poly time. NP-Hard problems might NOT be in NP.</div>
+        </div>
+
+        <div class="np-definition">
+            <div class="np-def-term">NP-Complete</div>
+            <div class="np-def-text">Both NP AND NP-Hard. The hardest problems in NP. If you solve one in poly time, P=NP (and you win a million dollars).</div>
+        </div>
+
+        <div style="background: rgba(245, 158, 11, 0.1); border-left: 4px solid var(--warning); padding: 1rem; border-radius: 6px; margin: 1rem 0;">
+            <div style="color: var(--warning); font-weight: 700; margin-bottom: 0.5rem;">CRITICAL: How to Prove NP-Complete</div>
+            <ul style="list-style: none; padding-left: 0; color: var(--text-secondary); font-size: 0.9rem;">
+                <li style="margin-bottom: 0.5rem;"><strong style="color: var(--accent);">Step 1: Show ∈ NP</strong> — Provide a polynomial-time verifier. "Given a candidate solution, I can check if it's valid in poly time."</li>
+                <li style="margin-bottom: 0.5rem;"><strong style="color: var(--accent);">Step 2: Reduce from NP-Complete</strong> — Take a KNOWN NP-Complete problem and reduce it to yours in poly time. "If I could solve your problem in poly time, I could solve [known hard] in poly time."</li>
+                <li><strong style="color: var(--accent);">Result:</strong> Your problem is NP-Complete.</li>
+            </ul>
+        </div>
+
+        <div style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
+            <div style="color: var(--accent); font-weight: 700; margin-bottom: 0.8rem;">THE REDUCTION CHAIN</div>
+            <div style="background: #0f0f1f; border: 1px solid var(--border); padding: 1rem; border-radius: 6px; font-family: monospace; font-size: 0.9rem; color: var(--text-secondary); line-height: 2;">
+SAT (Boolean Satisfiability)
+  ↓ reduces to
+3-SAT (Each clause has ≤3 literals)
+  ↓ reduces to
+Clique (Find k vertices, all connected)
+  ↓ reduces to
+Vertex Cover (Find k vertices touching all edges)
+  ↓ reduces to
+Independent Set (Find k vertices, NO edges between)
+
+SEPARATE CHAIN:
+Hamiltonian Cycle (Visit every vertex once, return to start)
+  ↓ reduces to
+TSP (Traveling Salesman: shortest Hamiltonian cycle)
+            </div>
+        </div>
+
+        <div style="background: rgba(30, 41, 59, 0.8); border: 1px solid var(--border); padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem;">
+            <div style="color: var(--accent); font-weight: 700; margin-bottom: 0.8rem;">KEY RELATIONSHIPS (Exam Loves These)</div>
+            <ul style="list-style: none; padding: 0; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.8;">
+                <li><strong style="color: var(--accent);">Clique ↔ Independent Set:</strong> Clique in graph G = Independent Set in complement graph Ḡ. (Complement: opposite edges.)</li>
+                <li><strong style="color: var(--accent);">Independent Set ↔ Vertex Cover:</strong> IS of size k in G ↔ VC of size n-k in G. (Complement of VC = IS.)</li>
+                <li><strong style="color: var(--accent);">Result:</strong> All three are equally hard (polynomial-time equivalent). Solve one, solve all.</li>
+            </ul>
+        </div>
+
+        <!-- B4: KEY FORMULAS & DEFINITIONS -->
+        <div class="subsection-title">B4: Key Formulas & Definitions to Memorize</div>
+
+        <div class="formula-box">
+            <div class="formula-line">
+                <span class="formula-label">Big-O Definition:</span> f(n) = O(g(n)) iff ∃ c > 0, n₀ > 0 such that f(n) ≤ c·g(n) ∀ n ≥ n₀
+            </div>
+
+            <div class="formula-line">
+                <span class="formula-label">Big-Ω Definition:</span> f(n) = Ω(g(n)) iff ∃ c > 0, n₀ > 0 such that f(n) ≥ c·g(n) ∀ n ≥ n₀
+            </div>
+
+            <div class="formula-line">
+                <span class="formula-label">Big-Θ Definition:</span> f(n) = Θ(g(n)) iff f(n) = O(g(n)) AND f(n) = Ω(g(n))
+            </div>
+
+            <div class="formula-line">
+                <span class="formula-label">Orientation Test (3D Cross Product):</span> (p2.x - p1.x)(p3.y - p1.y) - (p2.y - p1.y)(p3.x - p1.x)
+                <br/>→ 0: CCW,  < 0: CW,  = 0: Collinear
+            </div>
+
+            <div class="formula-line">
+                <span class="formula-label">Max-Flow Min-Cut Theorem:</span> Maximum flow = Minimum cut capacity
+            </div>
+
+            <div class="formula-line">
+                <span class="formula-label">Handshaking Lemma:</span> Sum of all vertex degrees = 2|E|
+            </div>
+
+            <div class="formula-line">
+                <span class="formula-label">Tree Properties:</span> |E| = |V| - 1, connected, acyclic (any 2 ⇒ 3rd)
+            </div>
+
+            <div class="formula-line">
+                <span class="formula-label">MST Cut Property:</span> For any cut (S, V-S), minimum edge crossing it is in some MST
+            </div>
+
+            <div class="formula-line">
+                <span class="formula-label">MST Cycle Property:</span> For any cycle, maximum weight edge is NOT in any MST
+            </div>
+
+            <div class="formula-line">
+                <span class="formula-label">Relaxation:</span> If d[v] > d[u] + w(u,v), then d[v] = d[u] + w(u,v)
+            </div>
+        </div>
+
+        <!-- B5: DECISION GUIDE -->
+        <div class="subsection-title">B5: "When to Use What" Decision Guide</div>
+
+        <div class="decision-item">
+            <div class="decision-problem">⚡ Shortest path, NO negative weights</div>
+            <div class="decision-solution">→ Dijkstra's: O((V+E)log V) with min-heap, O(V²) with array. Fastest option.</div>
+        </div>
+
+        <div class="decision-item">
+            <div class="decision-problem">⚡ Shortest path, negative weights allowed</div>
+            <div class="decision-solution">→ Bellman-Ford: O(VE). Slower but handles negatives + detects cycles.</div>
+        </div>
+
+        <div class="decision-item">
+            <div class="decision-problem">⚡ Shortest path in a DAG</div>
+            <div class="decision-solution">→ Topological sort + single-pass relaxation: O(V+E). Faster than Dijkstra/Bellman-Ford.</div>
+        </div>
+
+        <div class="decision-item">
+            <div class="decision-problem">⚡ Minimum spanning tree, sparse graph (E << V²)</div>
+            <div class="decision-solution">→ Kruskal's: O(E log E). Sort edges, Union-Find. Good for sparse.</div>
+        </div>
+
+        <div class="decision-item">
+            <div class="decision-problem">⚡ Minimum spanning tree, dense graph (E ≈ V²)</div>
+            <div class="decision-solution">→ Prim's: O(V²) with array. Same result, different approach (grow from vertex).</div>
+        </div>
+
+        <div class="decision-item">
+            <div class="decision-problem">⚡ Maximum flow in a network</div>
+            <div class="decision-solution">→ Ford-Fulkerson (DFS) or Edmonds-Karp (BFS): O(VE²). Edmonds-Karp guaranteed to terminate.</div>
+        </div>
+
+        <div class="decision-item">
+            <div class="decision-problem">⚡ Topological ordering of a DAG</div>
+            <div class="decision-solution">→ Kahn's: O(V+E), queue-based. Or DFS-based. Kahn's is cleaner to trace on exam.</div>
+        </div>
+
+        <div class="decision-item">
+            <div class="decision-problem">⚡ Convex hull, general points</div>
+            <div class="decision-solution">→ Graham Scan: O(n log n). Sort by polar angle. Fast and standard.</div>
+        </div>
+
+        <div class="decision-item">
+            <div class="decision-problem">⚡ Convex hull, few hull points expected</div>
+            <div class="decision-solution">→ Jarvis March: O(nh) where h = hull points. Good when h << n.</div>
+        </div>
+
+        <div class="decision-item">
+            <div class="decision-problem">⚡ Closest pair of points</div>
+            <div class="decision-solution">→ Divide & Conquer: O(n log n). Key: don't forget the strip optimization.</div>
+        </div>
+
+        <div class="decision-item">
+            <div class="decision-problem">⚡ Prove a problem is NP-Complete</div>
+            <div class="decision-solution">→ (1) Show ∈ NP (poly-time verifier). (2) Reduce known NP-Complete to it. Direction matters!</div>
+        </div>
+
+        <!-- B6: COMMON EXAM TRAPS -->
+        <div class="subsection-title">B6: Common Exam Traps & Mistakes (READ THIS!)</div>
+
+        <div class="trap-item">
+            <div class="trap-number">TRAP 1: Using Dijkstra with negative weights</div>
+            <div class="trap-text">Dijkstra FAILS on negative edges. It assumes once a vertex is visited, its distance won't improve. Counterexample: shortest path might go backward through a negative edge. Use Bellman-Ford instead.</div>
+        </div>
+
+        <div class="trap-item">
+            <div class="trap-number">TRAP 2: Greedy doesn't always work</div>
+            <div class="trap-text">Greedy only gives optimal solution if greedy-choice property + optimal substructure hold. For Kruskal's/Prim's/Dijkstra: proven to work. For arbitrary problems: PROVE IT or give counterexample.</div>
+        </div>
+
+        <div class="trap-item">
+            <div class="trap-number">TRAP 3: "NP" = "not polynomial"</div>
+            <div class="trap-text">WRONG. NP = nondeterministic polynomial = verifiable in poly time. You can check a solution quickly, but finding it might be hard. Example: Sudoku solution is verifiable in O(n²), finding it is hard.</div>
+        </div>
+
+        <div class="trap-item">
+            <div class="trap-number">TRAP 4: Confusing NP-Hard and NP-Complete</div>
+            <div class="trap-text">NP-Hard = at least as hard as any NP problem. Might NOT be in NP (e.g., undecidable problems). NP-Complete = NP AND NP-Hard. All NP-Complete problems equally hard, reducible to each other.</div>
+        </div>
+
+        <div class="trap-item">
+            <div class="trap-number">TRAP 5: Skipping edges in Kruskal's</div>
+            <div class="trap-text">You skip an edge if it would CREATE A CYCLE (both endpoints in same Union-Find set), NOT just if it connects a visited vertex. The difference: visited doesn't track components correctly after branching.</div>
+        </div>
+
+        <div class="trap-item">
+            <div class="trap-number">TRAP 6: Ford-Fulkerson: forgetting backward edges</div>
+            <div class="trap-text">When you send flow along an edge (u,v), you MUST update both: forward capacity decreases, backward capacity increases. Backward edges allow "undoing" flow. Without them, algorithm breaks.</div>
+        </div>
+
+        <div class="trap-item">
+            <div class="trap-number">TRAP 7: Graham Scan sorting wrong</div>
+            <div class="trap-text">Sort by POLAR ANGLE with respect to p0, not by x-coordinate. Polar angle means the angle from p0 to each point. Use atan2 or cross product to compare angles without computing them explicitly.</div>
+        </div>
+
+        <div class="trap-item">
+            <div class="trap-number">TRAP 8: Bellman-Ford iteration count</div>
+            <div class="trap-text">Relax ALL edges exactly |V|-1 times, THEN check |V|th iteration for negative cycles. Don't stop early, don't use |V| relaxations initially.</div>
+        </div>
+
+        <div class="trap-item">
+            <div class="trap-number">TRAP 9: Negative cycle = undefined shortest path</div>
+            <div class="trap-text">If negative cycle is on path from s to t, shortest path is undefined (can loop forever, making path arbitrarily negative). Report it, don't ignore it.</div>
+        </div>
+
+        <div class="trap-item">
+            <div class="trap-number">TRAP 10: Topological sort on cyclic graph</div>
+            <div class="trap-text">Kahn's only works on DAGs (directed acyclic graphs). If graph has cycle, algorithm won't process all vertices. Check: if sorted order has < n vertices, there's a cycle.</div>
+        </div>
+
+        <div class="trap-item">
+            <div class="trap-number">TRAP 11: Forgetting strip in Closest Pair</div>
+            <div class="trap-text">Divide & conquer finds closest in left, closest in right. But closest overall might be across the midline! The strip (width 2δ around dividing line) catches these. Don't skip it.</div>
+        </div>
+
+        <div class="trap-item">
+            <div class="trap-number">TRAP 12: NP-Complete reduction direction</div>
+            <div class="trap-text">To prove problem X is NP-Complete, reduce FROM known NP-Complete TO X. Wrong direction: you've proven X is at least as easy, not hard. Direction: NPC → X.</div>
+        </div>
+
+        <div class="trap-item">
+            <div class="trap-number">TRAP 13: Independent Set / Vertex Cover complement</div>
+            <div class="trap-text">IS of size k ↔ VC of size n-k in SAME graph. Not different graphs. The complement of an IS (all other vertices) is a VC.</div>
+        </div>
+
+        <div class="trap-item">
+            <div class="trap-number">TRAP 14: Orientation test sign</div>
+            <div class="trap-text">Cross product > 0 = counter-clockwise (left turn), < 0 = clockwise (right turn), = 0 = collinear. Get the sign right or your convex hull is backward.</div>
+        </div>
+
+        <div class="trap-item">
+            <div class="trap-number">TRAP 15: Greedy vs DP choice</div>
+            <div class="trap-text">Greedy = make best local choice immediately, never reconsider. DP = make locally optimal choice but store subproblem results. Greedy is faster but risky; DP is safer but slower. Know when each applies.</div>
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<script>
+    // ===== TIMER =====
+    function updateTimer() {
+        const examTime = new Date('2026-04-22T16:30:00-05:00'); // 4:30 PM CDT
+        const now = new Date();
+        const diff = examTime - now;
+
+        if (diff <= 0) {
+            document.getElementById('timer').textContent = 'Exam time!';
+            return;
+        }
+
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById('timer').textContent =
+            String(hours).padStart(2, '0') + ':' +
+            String(minutes).padStart(2, '0') + ':' +
+            String(seconds).padStart(2, '0');
+    }
+
+    updateTimer();
+    setInterval(updateTimer, 1000);
+
+    // ===== PROGRESS TRACKING =====
+    function updateProgress() {
+        const checkboxes = document.querySelectorAll('.block-checkbox');
+        const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
+        const total = checkboxes.length;
+        const percentage = Math.round((checked / total) * 60) + 40; // Base 40%, add up to 60%
+
+        document.getElementById('progressFill').style.width = percentage + '%';
+        document.getElementById('progressPercent').textContent = percentage + '%';
+
+        // Mark blocks as completed
+        document.querySelectorAll('.study-block').forEach((block, i) => {
+            if (checkboxes[i] && checkboxes[i].checked) {
+                block.classList.add('completed');
+            } else {
+                block.classList.remove('completed');
+            }
+        });
+
+        // Persist in session storage
+        const state = Array.from(checkboxes).map(cb => cb.checked);
+        sessionStorage.setItem('examProgress', JSON.stringify(state));
+    }
+
+    // Load progress from session
+    function loadProgress() {
+        const saved = sessionStorage.getItem('examProgress');
+        if (saved) {
+            const state = JSON.parse(saved);
+            const checkboxes = document.querySelectorAll('.block-checkbox');
+            checkboxes.forEach((cb, i) => {
+                if (state[i]) cb.checked = true;
+            });
+            updateProgress();
+        }
+    }
+
+    loadProgress();
+
+    // ===== SMOOTH SCROLL =====
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
