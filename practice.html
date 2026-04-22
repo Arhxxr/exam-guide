@@ -1,0 +1,1757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSE 5311 Exam 2 — Comprehensive Practice Set</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            color-scheme:dark;
+            --bg:#0f172a;--card:#1e293b;--accent:#38bdf8;--accent2:#818cf8;
+            --green:#34d399;--yellow:#fbbf24;--red:#f87171;--orange:#fb923c;
+            --text:#e2e8f0;--muted:#94a3b8;--border:#334155;--dark:#0d1117;
+        }
+        body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.6}
+
+        .header{background:linear-gradient(135deg,#0f172a,#1e293b);border-bottom:2px solid var(--accent);padding:1.5rem;position:sticky;top:0;z-index:100;box-shadow:0 4px 12px rgba(0,0,0,.4)}
+        .header-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+        .header h1{font-size:1.6rem;color:var(--accent);font-weight:800}
+        .header .sub{font-size:.85rem;color:var(--muted)}
+        .score-box{background:var(--card);border:2px solid var(--accent);border-radius:8px;padding:.6rem 1.2rem;text-align:center}
+        .score-box .label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+        .score-box .val{color:var(--accent);font-size:1.3rem;font-weight:700}
+
+        .nav{background:rgba(15,23,42,.95);border-bottom:1px solid var(--border);padding:.5rem 1.5rem;position:sticky;top:72px;z-index:99;overflow-x:auto;white-space:nowrap;backdrop-filter:blur(8px)}
+        .nav a{display:inline-block;padding:.35rem .7rem;margin-right:.25rem;border-radius:4px;font-size:.78rem;color:var(--muted);text-decoration:none;transition:all .2s}
+        .nav a:hover,.nav a.active{color:var(--accent);background:rgba(56,189,248,.1)}
+
+        .main{max-width:1100px;margin:0 auto;padding:2rem 1.5rem 4rem}
+
+        .section{margin-bottom:3rem}
+        .section-hdr{display:flex;align-items:center;gap:.8rem;margin-bottom:.3rem}
+        .section-title{font-size:1.5rem;font-weight:800;color:var(--accent)}
+        .section-badge{font-size:.7rem;font-weight:700;padding:.2rem .6rem;border-radius:4px;text-transform:uppercase}
+        .badge-high{background:rgba(248,113,113,.2);color:var(--red)}
+        .badge-med{background:rgba(251,191,36,.2);color:var(--yellow)}
+        .badge-std{background:rgba(56,189,248,.2);color:var(--accent)}
+        .section-desc{color:var(--muted);font-size:.88rem;margin-bottom:1.2rem}
+
+        .problem{background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:1.2rem;overflow:hidden}
+        .problem-hdr{padding:1rem 1.2rem;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem}
+        .problem-num{font-weight:800;color:var(--accent);font-size:.9rem;white-space:nowrap}
+        .problem-pts{font-size:.75rem;color:var(--yellow);background:rgba(251,191,36,.1);padding:.15rem .5rem;border-radius:4px;white-space:nowrap}
+        .problem-body{padding:0 1.2rem 1rem;font-size:.92rem}
+        .problem-body p{margin-bottom:.5rem}
+        .problem-body ul{margin:.3rem 0 .5rem 1.2rem;font-size:.88rem}
+        .problem-body .graph-def{background:var(--dark);border:1px solid var(--border);border-radius:6px;padding:.7rem;font-family:monospace;font-size:.85rem;margin:.5rem 0;white-space:pre-wrap;line-height:1.5}
+
+        .solution-toggle{display:block;width:100%;padding:.7rem 1.2rem;background:rgba(56,189,248,.08);border:none;border-top:1px solid var(--border);color:var(--accent);font-size:.85rem;font-weight:600;cursor:pointer;text-align:left;transition:background .2s}
+        .solution-toggle:hover{background:rgba(56,189,248,.15)}
+        .solution-toggle .arrow{display:inline-block;transition:transform .3s;margin-right:.4rem}
+        .solution-toggle .arrow.open{transform:rotate(90deg)}
+        .solution-content{display:none;padding:1rem 1.2rem;background:rgba(13,17,23,.5);border-top:1px solid var(--border)}
+        .solution-content.show{display:block}
+        .solution-content pre{background:rgba(30,41,59,.6);border:1px solid var(--border);border-radius:6px;padding:.8rem;font-size:.82rem;line-height:1.55;overflow-x:auto;color:var(--text);white-space:pre-wrap;margin:.5rem 0}
+        .solution-content .step{color:var(--accent);font-weight:700}
+        .solution-content .note{color:var(--yellow);font-weight:600}
+        .solution-content .warn{color:var(--red);font-weight:600}
+        .solution-content .ok{color:var(--green);font-weight:600}
+        .solution-content p{margin-bottom:.5rem;font-size:.9rem}
+        .solution-content h4{color:var(--accent);font-size:.95rem;margin:1rem 0 .3rem}
+        .solution-content .key-insight{background:rgba(251,191,36,.1);border-left:3px solid var(--yellow);padding:.5rem .8rem;margin:.6rem 0;border-radius:0 6px 6px 0;font-size:.85rem;color:var(--yellow)}
+
+        .check-row{display:flex;align-items:center;gap:.5rem;padding:.3rem 1.2rem .6rem;font-size:.82rem;color:var(--muted)}
+        .check-row input{accent-color:var(--green);width:16px;height:16px;cursor:pointer}
+
+        @media print{
+            .header,.nav,.solution-toggle,.solution-content,.check-row,.score-box{display:none!important}
+            body{background:#fff;color:#111;font-size:11pt}
+            .problem{border-color:#ccc;background:#f9f9f9;break-inside:avoid}
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="header-inner">
+        <div>
+            <h1>COMPREHENSIVE PRACTICE SET</h1>
+            <div class="sub">CSE 5311 Exam 2 · 30 Problems · All Topics · Full Solutions</div>
+        </div>
+        <div class="score-box">
+            <div class="label">Completed</div>
+            <div class="val" id="scoreVal">0 / 30</div>
+        </div>
+    </div>
+</div>
+
+<div class="nav">
+    <a href="#s1">1. Dijkstra</a>
+    <a href="#s2">2. MST</a>
+    <a href="#s3">3. Bellman-Ford</a>
+    <a href="#s4">4. Network Flow</a>
+    <a href="#s5">5. NP-Complete</a>
+    <a href="#s6">6. Geometric</a>
+    <a href="#s7">7. Topological</a>
+    <a href="#s8">8. Big-O</a>
+    <a href="#s9">9. Graphs</a>
+    <a href="#s10">10. Paradigms</a>
+</div>
+
+<div class="main">
+
+<!-- ╔══════════════════════════════════════════════════════════════╗ -->
+<!-- ║  SECTION 1: DIJKSTRA'S ALGORITHM  (Heavy Hitter)           ║ -->
+<!-- ╚══════════════════════════════════════════════════════════════╝ -->
+<div class="section" id="s1">
+<div class="section-hdr"><div class="section-title">1. Dijkstra's Algorithm</div><div class="section-badge badge-high">HIGH PRIORITY</div></div>
+<p class="section-desc">Almost guaranteed to appear. Master the distance-table format. 3 problems: standard trace, tricky graph, and a "why does it fail" question.</p>
+
+<!-- P1 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 1.1 — Standard Dijkstra Trace</span><span class="problem-pts">~15 pts</span></div>
+<div class="problem-body">
+<p>Consider the following directed weighted graph with vertices A through G:</p>
+<div class="graph-def">Edges:
+A → B : 3      A → C : 6
+B → C : 2      B → D : 4
+C → D : 1      C → E : 9
+D → E : 5      D → F : 7
+E → G : 2
+F → E : 1      F → G : 4</div>
+<p>Using Dijkstra's algorithm with <strong>source = A</strong>, trace the algorithm step by step. Show the complete distance table at each step including: the vertex selected, the set of visited vertices, the current distance to every vertex, and the parent pointer for each vertex. Also give the final shortest path from A to G and its cost.</p>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">Initialization:</span>
+dist[A]=0, dist[B]=∞, dist[C]=∞, dist[D]=∞, dist[E]=∞, dist[F]=∞, dist[G]=∞
+parent[all] = null
+Unvisited = {A, B, C, D, E, F, G}
+
+<span class="step">Step-by-step trace:</span>
+
+Step | Pick | Visited          | d[A] | d[B] | d[C] | d[D] | d[E] | d[F] | d[G] | Updates
+─────┼──────┼──────────────────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼────────────
+Init |  —   | {}               |  0   |  ∞   |  ∞   |  ∞   |  ∞   |  ∞   |  ∞   | —
+  1  |  A   | {A}              |  0   |  3   |  6   |  ∞   |  ∞   |  ∞   |  ∞   | B=0+3=3, C=0+6=6
+  2  |  B   | {A,B}            |  0   |  3   |  5   |  7   |  ∞   |  ∞   |  ∞   | C=min(6,3+2)=5, D=3+4=7
+  3  |  C   | {A,B,C}          |  0   |  3   |  5   |  6   | 14   |  ∞   |  ∞   | D=min(7,5+1)=6, E=5+9=14
+  4  |  D   | {A,B,C,D}        |  0   |  3   |  5   |  6   | 11   | 13   |  ∞   | E=min(14,6+5)=11, F=6+7=13
+  5  |  E   | {A,B,C,D,E}      |  0   |  3   |  5   |  6   | 11   | 13   | 13   | G=11+2=13
+  6  |  F   | {A,B,C,D,E,F}    |  0   |  3   |  5   |  6   | 11   | 13   | 13   | E=min(11,13+1)=11 (no change), G=min(13,13+4)=13 (no change)
+  7  |  G   | {A,B,C,D,E,F,G}  |  0   |  3   |  5   |  6   | 11   | 13   | 13   | —
+
+<span class="step">Parent pointers:</span>
+  B ← A,  C ← B,  D ← C,  E ← D,  F ← D,  G ← E
+
+<span class="step">Shortest path A → G:</span>
+  Trace parents: G ← E ← D ← C ← B ← A
+  Path: A → B → C → D → E → G
+  Cost: 3 + 2 + 1 + 5 + 2 = <span class="ok">13</span></pre>
+<div class="key-insight">Key exam technique: When picking the next vertex, ALWAYS scan ALL unvisited vertices and choose the one with the smallest current distance. Don't just look at neighbors of the last picked vertex.</div>
+</div>
+</div>
+
+<!-- P2 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 1.2 — Dijkstra Fails: Negative Weights</span><span class="problem-pts">~8 pts</span></div>
+<div class="problem-body">
+<p>Consider this graph with a negative edge:</p>
+<div class="graph-def">Edges:
+A → B : 1
+A → C : 5
+B → C : -4</div>
+<p>(a) Trace Dijkstra's algorithm from source A. What shortest distance does it compute for C?</p>
+<p>(b) What is the ACTUAL shortest distance from A to C? Explain why Dijkstra fails here.</p>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">(a) Dijkstra's trace:</span>
+
+Step | Pick | Visited | d[A] | d[B] | d[C]
+─────┼──────┼─────────┼──────┼──────┼──────
+Init |  —   | {}      |  0   |  ∞   |  ∞
+  1  |  A   | {A}     |  0   |  1   |  5     ← B=0+1=1, C=0+5=5
+  2  |  B   | {A,B}   |  0   |  1   | -3     ← C=min(5, 1+(-4))=-3
+  3  |  C   | {A,B,C} |  0   |  1   | -3
+
+Dijkstra computes: dist[C] = -3
+
+<span class="step">(b) Actual shortest distance:</span>
+Path A → B → C = 1 + (-4) = -3
+Path A → C = 5
+
+Actual shortest = -3. In THIS particular case, Dijkstra happens to get the right answer!
+
+<span class="warn">BUT here's where it typically fails — consider a modified graph:</span>
+
+A → B : 4
+A → C : 3
+B → C : -2
+
+Dijkstra trace:
+  Step 1: Pick A. d[B]=4, d[C]=3.
+  Step 2: Pick C (d=3, smaller). Mark C as VISITED. d[C]=3 is "locked in."
+  Step 3: Pick B. Try to update C: d[B]+w(B,C) = 4+(-2) = 2 < 3.
+  But C is already visited! Dijkstra SKIPS this update.
+  Dijkstra says dist[C] = 3. Actual shortest = A→B→C = 4+(-2) = 2.
+
+<span class="step">Why Dijkstra fails:</span>
+Dijkstra's correctness relies on the GREEDY PROPERTY: once a vertex is
+"visited" (extracted from the priority queue), its distance is final.
+This only works when all edge weights are non-negative, because a visited
+vertex can never have its distance improved by going through an unvisited one.
+
+With negative edges, a visited vertex CAN be improved later, violating
+the greedy assumption. Use <span class="ok">Bellman-Ford</span> instead for negative weights.</pre>
+</div>
+</div>
+
+<!-- P3 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 1.3 — Dijkstra with Parent Path Reconstruction</span><span class="problem-pts">~10 pts</span></div>
+<div class="problem-body">
+<p>Given this directed weighted graph:</p>
+<div class="graph-def">Edges:
+S → A : 7    S → B : 2
+A → B : 3    A → C : 9
+B → A : 4    B → C : 6    B → D : 8
+C → D : 1
+D → C : 2</div>
+<p>Run Dijkstra from source S. Give the shortest distance AND the actual shortest path to every vertex. Show your distance table.</p>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">Trace:</span>
+
+Step | Pick | Visited      | d[S] | d[A] | d[B] | d[C] | d[D] | Updates
+─────┼──────┼──────────────┼──────┼──────┼──────┼──────┼──────┼────────────────
+Init |  —   | {}           |  0   |  ∞   |  ∞   |  ∞   |  ∞   | —
+  1  |  S   | {S}          |  0   |  7   |  2   |  ∞   |  ∞   | A=7(par S), B=2(par S)
+  2  |  B   | {S,B}        |  0   |  6   |  2   |  8   | 10   | A=min(7,2+4)=6(par B), C=2+6=8(par B), D=2+8=10(par B)
+  3  |  A   | {S,B,A}      |  0   |  6   |  2   |  8   | 10   | B: already visited. C=min(8,6+9)=8 (no chg)
+  4  |  C   | {S,B,A,C}    |  0   |  6   |  2   |  8   |  9   | D=min(10,8+1)=9(par C)
+  5  |  D   | {S,B,A,C,D}  |  0   |  6   |  2   |  8   |  9   | C: already visited
+
+<span class="step">Results:</span>
+  S → S = 0  (trivial)
+  S → B = 2  Path: S → B
+  S → A = 6  Path: S → B → A
+  S → C = 8  Path: S → B → C
+  S → D = 9  Path: S → B → C → D
+
+<span class="step">Parent pointers:</span> A←B, B←S, C←B, D←C
+
+<span class="note">Note:</span> A's shortest path goes through B (cost 6) not directly from S (cost 7).
+D's shortest path goes through C (cost 9) not directly from B (cost 10).</pre>
+</div>
+</div>
+</div>
+
+
+<!-- ╔══════════════════════════════════════════════════════════════╗ -->
+<!-- ║  SECTION 2: MST (Kruskal + Prim)  (Heavy Hitter)           ║ -->
+<!-- ╚══════════════════════════════════════════════════════════════╝ -->
+<div class="section" id="s2">
+<div class="section-hdr"><div class="section-title">2. Minimum Spanning Trees</div><div class="section-badge badge-high">HIGH PRIORITY</div></div>
+<p class="section-desc">Kruskal's and Prim's are both likely exam questions. You might be asked to trace one or both. Know the table formats cold.</p>
+
+<!-- P4 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 2.1 — Kruskal's with Union-Find</span><span class="problem-pts">~15 pts</span></div>
+<div class="problem-body">
+<p>Given this undirected weighted graph with 7 vertices:</p>
+<div class="graph-def">Vertices: A, B, C, D, E, F, G
+Edges:
+A-B:2   A-D:7   B-C:3   B-D:4   B-E:6
+C-E:5   D-E:1   D-F:8   E-F:3   E-G:9   F-G:5</div>
+<p>Find the MST using Kruskal's algorithm. Show: (1) sorted edge list, (2) Union-Find decisions for each edge (add/skip and why), (3) final MST edges and total weight.</p>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">Step 1: Sort edges by weight:</span>
+D-E:1, A-B:2, B-C:3, E-F:3, B-D:4, C-E:5, F-G:5, B-E:6, A-D:7, D-F:8, E-G:9
+
+<span class="step">Step 2: Process edges (Union-Find):</span>
+Initial components: {A},{B},{C},{D},{E},{F},{G}  (7 components)
+Need V-1 = 6 edges for MST.
+
+Edge  | Wt | find(u) | find(v) | Action | Reason                  | Components
+──────┼────┼─────────┼─────────┼────────┼─────────────────────────┼──────────────────────
+D-E   |  1 |    D    |    E    |  ADD   | Different: {D} ≠ {E}    | {A},{B},{C},{D,E},{F},{G}
+A-B   |  2 |    A    |    B    |  ADD   | Different: {A} ≠ {B}    | {A,B},{C},{D,E},{F},{G}
+B-C   |  3 |    A    |    C    |  ADD   | Different: {A,B} ≠ {C}  | {A,B,C},{D,E},{F},{G}
+E-F   |  3 |    D    |    F    |  ADD   | Different: {D,E} ≠ {F}  | {A,B,C},{D,E,F},{G}
+B-D   |  4 |    A    |    D    |  ADD   | Different: {A,B,C}≠{D,E,F} | {A,B,C,D,E,F},{G}
+C-E   |  5 |    A    |    A    |  SKIP  | Same component → CYCLE  | —
+F-G   |  5 |    A    |    G    |  ADD   | Different: {A..F} ≠ {G} | {A,B,C,D,E,F,G}
+
+STOP: 6 edges = V-1 ✓
+
+<span class="step">MST Edges:</span> D-E(1), A-B(2), B-C(3), E-F(3), B-D(4), F-G(5)
+<span class="ok">Total MST Weight: 1+2+3+3+4+5 = 18</span>
+
+<span class="note">Note:</span> C-E(5) was skipped because C and E were already in the same component
+(connected via B-C, B-D, D-E). Adding it would create cycle B-C-E-D-B.</pre>
+</div>
+</div>
+
+<!-- P5 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 2.2 — Prim's Algorithm</span><span class="problem-pts">~15 pts</span></div>
+<div class="problem-body">
+<p>Using the SAME graph as Problem 2.1, find the MST using Prim's algorithm starting from <strong>vertex A</strong>. Show the key-value table at each step, including which vertex is picked, the MST set, and which edge is added.</p>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">Reminder — graph edges:</span>
+A-B:2, A-D:7, B-C:3, B-D:4, B-E:6, C-E:5, D-E:1, D-F:8, E-F:3, E-G:9, F-G:5
+
+<span class="step">Prim's trace (starting from A):</span>
+
+Step | Pick | MST Set          | key[A]|key[B]|key[C]|key[D]|key[E]|key[F]|key[G]| Edge Added
+─────┼──────┼──────────────────┼───────┼──────┼──────┼──────┼──────┼──────┼──────┼──────────
+Init |  —   | {}               |   0   |  ∞   |  ∞   |  ∞   |  ∞   |  ∞   |  ∞   | —
+  1  |  A   | {A}              |   0   |  2   |  ∞   |  7   |  ∞   |  ∞   |  ∞   | —
+  2  |  B   | {A,B}            |   0   |  2   |  3   |  4   |  6   |  ∞   |  ∞   | A-B(2)
+  3  |  C   | {A,B,C}          |   0   |  2   |  3   |  4   |  5   |  ∞   |  ∞   | B-C(3)
+  4  |  D   | {A,B,C,D}        |   0   |  2   |  3   |  4   |  1   |  8   |  ∞   | B-D(4)
+  5  |  E   | {A,B,C,D,E}      |   0   |  2   |  3   |  4   |  1   |  3   |  9   | D-E(1)
+  6  |  F   | {A,B,C,D,E,F}    |   0   |  2   |  3   |  4   |  1   |  3   |  5   | E-F(3)
+  7  |  G   | {A,B,C,D,E,F,G}  |   0   |  2   |  3   |  4   |  1   |  3   |  5   | F-G(5)
+
+<span class="step">Explanation of key updates:</span>
+Step 1: A processed → B gets key 2 (A-B), D gets key 7 (A-D)
+Step 2: B processed (min key=2) → C gets 3 (B-C), D: min(7,4)=4 (B-D), E gets 6 (B-E)
+Step 3: C processed (min key=3) → E: min(6,5)=5 (C-E)
+Step 4: D processed (min key=4) → E: min(5,1)=1 (D-E!), F gets 8 (D-F)
+Step 5: E processed (min key=1) → F: min(8,3)=3 (E-F), G gets 9 (E-G)
+Step 6: F processed (min key=3) → G: min(9,5)=5 (F-G)
+Step 7: G processed. Done.
+
+<span class="step">MST Edges:</span> A-B(2), B-C(3), B-D(4), D-E(1), E-F(3), F-G(5)
+<span class="ok">Total MST Weight: 2+3+4+1+3+5 = 18</span>
+
+<span class="note">Verification:</span> Same total weight as Kruskal's (18) ✓
+Same edges as Kruskal's ✓ (order of addition differs, but MST is the same)</pre>
+<div class="key-insight">Prim's key insight: key[v] stores the minimum weight edge connecting v to the current MST — NOT the total distance from the source. This is the key difference from Dijkstra (which stores total distance).</div>
+</div>
+</div>
+
+<!-- P6 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 2.3 — Kruskal vs Prim Conceptual</span><span class="problem-pts">~5 pts</span></div>
+<div class="problem-body">
+<p>(a) Can Kruskal's and Prim's produce different MSTs on the same graph? Under what conditions?</p>
+<p>(b) When would you prefer Kruskal's over Prim's, and vice versa? State the time complexities for each.</p>
+<p>(c) How many edges does any spanning tree of a graph with n vertices have? Why?</p>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">(a) Can they produce different MSTs?</span>
+Yes, but ONLY when the graph has edges with EQUAL (tied) weights.
+If all edge weights are distinct, both algorithms produce the EXACT same MST.
+With ties, different tie-breaking choices can lead to different spanning trees,
+but all will have the same TOTAL weight (they're all minimum).
+
+<span class="step">(b) When to prefer each:</span>
+<span class="ok">Kruskal's: O(E log E)</span> — better for SPARSE graphs (E ≪ V²)
+  Uses Union-Find. Edge-centric: sorts edges and processes them.
+
+<span class="ok">Prim's: O(V²) with array, O((V+E) log V) with min-heap</span>
+  Better for DENSE graphs (E ≈ V²) with array implementation.
+  Vertex-centric: grows MST from a single vertex.
+
+<span class="step">(c) Spanning tree edge count:</span>
+A spanning tree of n vertices always has exactly <span class="ok">n - 1 edges</span>.
+Why: A tree is a connected acyclic graph. Starting with n isolated vertices,
+each edge connects two components (reducing component count by 1).
+To go from n components to 1 component requires exactly n-1 edges.</pre>
+</div>
+</div>
+</div>
+
+
+<!-- ╔══════════════════════════════════════════════════════════════╗ -->
+<!-- ║  SECTION 3: BELLMAN-FORD  (Heavy Hitter)                    ║ -->
+<!-- ╚══════════════════════════════════════════════════════════════╝ -->
+<div class="section" id="s3">
+<div class="section-hdr"><div class="section-title">3. Bellman-Ford Algorithm</div><div class="section-badge badge-high">HIGH PRIORITY</div></div>
+<p class="section-desc">Know the iteration-by-iteration table format AND negative cycle detection.</p>
+
+<!-- P7 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 3.1 — Bellman-Ford Trace with Negative Edges</span><span class="problem-pts">~12 pts</span></div>
+<div class="problem-body">
+<p>Given this directed weighted graph:</p>
+<div class="graph-def">Vertices: S, A, B, C, D
+Edges:
+S → A : 6    S → B : 7
+A → B : 8    A → C : 5    A → D : -4
+B → C : -3   B → D : 9
+C → D : 7
+D → B : -2</div>
+<p>Run Bellman-Ford from source S. Show ALL iterations. Does a negative cycle exist?</p>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">Setup:</span> |V| = 5, so we need V-1 = 4 iterations.
+Edge processing order: (S,A,6),(S,B,7),(A,B,8),(A,C,5),(A,D,-4),(B,C,-3),(B,D,9),(C,D,7),(D,B,-2)
+
+<span class="step">Initialization:</span> dist[S]=0, dist[A]=∞, dist[B]=∞, dist[C]=∞, dist[D]=∞
+
+<span class="step">Iteration 1:</span>
+           |dist[S]|dist[A]|dist[B]|dist[C]|dist[D]
+Before     |   0   |   ∞   |   ∞   |   ∞   |   ∞
+(S,A,6)    |   0   |   6   |   ∞   |   ∞   |   ∞    ← 0+6=6 < ∞ ✓
+(S,B,7)    |   0   |   6   |   7   |   ∞   |   ∞    ← 0+7=7 < ∞ ✓
+(A,B,8)    |   0   |   6   |   7   |   ∞   |   ∞    ← 6+8=14 > 7, no change
+(A,C,5)    |   0   |   6   |   7   |  11   |   ∞    ← 6+5=11 < ∞ ✓
+(A,D,-4)   |   0   |   6   |   7   |  11   |   2    ← 6+(-4)=2 < ∞ ✓
+(B,C,-3)   |   0   |   6   |   7   |   4   |   2    ← 7+(-3)=4 < 11 ✓
+(B,D,9)    |   0   |   6   |   7   |   4   |   2    ← 7+9=16 > 2, no change
+(C,D,7)    |   0   |   6   |   7   |   4   |   2    ← 4+7=11 > 2, no change
+(D,B,-2)   |   0   |   6   |   0   |   4   |   2    ← 2+(-2)=0 < 7 ✓
+
+After I1:   |   0   |   6   |   0   |   4   |   2
+
+<span class="step">Iteration 2:</span>
+(S,A,6)    |  no change (6 ≤ 6)
+(S,B,7)    |  no change (0 ≤ 7)
+(A,B,8)    |  6+8=14 > 0, no change
+(A,C,5)    |  6+5=11 > 4, no change
+(A,D,-4)   |  6-4=2, no change (2 ≤ 2)
+(B,C,-3)   |  0+(-3)=-3 < 4 ✓ → dist[C] = -3
+(B,D,9)    |  0+9=9 > 2, no change
+(C,D,7)    |  -3+7=4 > 2, no change
+(D,B,-2)   |  2+(-2)=0, no change (0 ≤ 0)
+
+After I2:   |   0   |   6   |   0   |  -3   |   2
+
+<span class="step">Iteration 3:</span>
+(B,C,-3)   |  0-3=-3, no change (-3 ≤ -3)
+All others: no changes.
+
+After I3:   |   0   |   6   |   0   |  -3   |   2
+
+<span class="step">Iteration 4:</span>
+No changes (converged at iteration 3).
+
+After I4:   |   0   |   6   |   0   |  -3   |   2
+
+<span class="step">Negative Cycle Check (Iteration 5):</span>
+Process all edges one more time.
+No edge produces a shorter distance → <span class="ok">NO negative cycle exists.</span>
+
+<span class="step">Final shortest distances from S:</span>
+  S → S = 0
+  S → A = 6   (path: S → A)
+  S → B = 0   (path: S → A → D → B)
+  S → C = -3  (path: S → A → D → B → C)
+  S → D = 2   (path: S → A → D)</pre>
+<div class="key-insight">Notice how dist[B] went from 7 → 0 via the path S→A→D→B (cost 6+(-4)+(-2)=0). This is cheaper than the direct S→B (cost 7). Bellman-Ford found this because it relaxes ALL edges, unlike Dijkstra which "locks in" vertices.</div>
+</div>
+</div>
+
+<!-- P8 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 3.2 — Negative Cycle Detection</span><span class="problem-pts">~8 pts</span></div>
+<div class="problem-body">
+<p>Given this directed weighted graph:</p>
+<div class="graph-def">Vertices: A, B, C, D
+Edges:
+A → B : 1
+B → C : -3
+C → D : 2
+D → B : -1</div>
+<p>Run Bellman-Ford from source A. Show all iterations. Does a negative cycle exist? If so, identify it and explain why shortest paths are undefined.</p>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">Setup:</span> |V|=4, need V-1=3 iterations.
+Edges: (A,B,1),(B,C,-3),(C,D,2),(D,B,-1)
+
+<span class="step">Iteration 1:</span>
+             | d[A] | d[B] | d[C] | d[D]
+Before       |  0   |  ∞   |  ∞   |  ∞
+(A,B,1)      |  0   |  1   |  ∞   |  ∞
+(B,C,-3)     |  0   |  1   | -2   |  ∞
+(C,D,2)      |  0   |  1   | -2   |  0
+(D,B,-1)     |  0   | -1   | -2   |  0    ← 0+(-1)=-1 < 1 ✓
+
+<span class="step">Iteration 2:</span>
+(A,B,1)      |  0   | -1   | -2   |  0    ← no change (1 > -1)
+(B,C,-3)     |  0   | -1   | -4   |  0    ← -1+(-3)=-4 < -2 ✓
+(C,D,2)      |  0   | -1   | -4   | -2    ← -4+2=-2 < 0 ✓
+(D,B,-1)     |  0   | -3   | -4   | -2    ← -2+(-1)=-3 < -1 ✓
+
+<span class="step">Iteration 3:</span>
+(A,B,1)      |  0   | -3   | -4   | -2    ← no change
+(B,C,-3)     |  0   | -3   | -6   | -2    ← -3+(-3)=-6 < -4 ✓
+(C,D,2)      |  0   | -3   | -6   | -4    ← -6+2=-4 < -2 ✓
+(D,B,-1)     |  0   | -5   | -6   | -4    ← -4+(-1)=-5 < -3 ✓
+
+<span class="warn">Negative Cycle Check (Iteration 4):</span>
+(B,C,-3)     | -5+(-3)=-8 < -6 ✓  ← <span class="warn">STILL RELAXING! NEGATIVE CYCLE DETECTED!</span>
+
+<span class="step">The negative cycle is: B → C → D → B</span>
+  Weight: (-3) + 2 + (-1) = <span class="warn">-2 (negative!)</span>
+
+Every time you traverse this cycle, the total cost decreases by 2.
+You can loop forever → cost approaches -∞.
+
+<span class="step">Therefore:</span> Shortest paths to B, C, and D are UNDEFINED (they are -∞).
+Any vertex reachable from the negative cycle has undefined shortest path.</pre>
+</div>
+</div>
+</div>
+
+
+<!-- ╔══════════════════════════════════════════════════════════════╗ -->
+<!-- ║  SECTION 4: NETWORK FLOW  (Heavy Hitter)                    ║ -->
+<!-- ╚══════════════════════════════════════════════════════════════╝ -->
+<div class="section" id="s4">
+<div class="section-hdr"><div class="section-title">4. Network Flow (Ford-Fulkerson)</div><div class="section-badge badge-high">HIGH PRIORITY</div></div>
+<p class="section-desc">Max flow problems are exam staples. You MUST show augmenting paths, bottlenecks, and residual graph updates.</p>
+
+<!-- P9 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 4.1 — Ford-Fulkerson Full Trace</span><span class="problem-pts">~18 pts</span></div>
+<div class="problem-body">
+<p>Find the maximum flow from S to T in this network:</p>
+<div class="graph-def">Capacities:
+S → A : 10     S → B : 10
+A → B : 2      A → C : 8      A → D : 4
+B → D : 9
+C → T : 10
+D → C : 6      D → T : 10</div>
+<p>Use Edmonds-Karp (BFS for augmenting paths). Show each augmenting path, its bottleneck, the residual graph updates, and the final max flow. Also identify the minimum cut.</p>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">Initial residual capacities = original capacities.</span>
+
+<span class="step">Iteration 1:</span>
+BFS from S to T. Shortest path: S → A → C → T
+Bottleneck = min(10, 8, 10) = 8
+Update residual:
+  S→A: 10-8=2    A→C: 8-8=0    C→T: 10-8=2
+  Backward: A→S: 8,  C→A: 8,  T→C: 8
+max_flow = 8
+
+<span class="step">Iteration 2:</span>
+BFS from S. S→A residual=2, S→B residual=10.
+Shortest path: S → B → D → T
+Bottleneck = min(10, 9, 10) = 9
+Update:
+  S→B: 10-9=1    B→D: 9-9=0    D→T: 10-9=1
+  Backward: B→S: 9,  D→B: 9,  T→D: 9
+max_flow = 8 + 9 = 17
+
+<span class="step">Iteration 3:</span>
+BFS from S. S→A res=2, S→B res=1.
+Path: S → A → D → T
+Bottleneck = min(2, 4, 1) = 1
+Update:
+  S→A: 2-1=1    A→D: 4-1=3    D→T: 1-1=0
+  Backward: A→S: 8+1=9,  D→A: 1,  T→D: 9+1=10
+max_flow = 17 + 1 = 18
+
+<span class="step">Iteration 4:</span>
+BFS from S. S→A res=1, S→B res=1.
+Try S → A → D → C → T:  A→D res=3, D→C res=6, C→T res=2
+Bottleneck = min(1, 3, 6, 2) = 1
+Update:
+  S→A: 1-1=0    A→D: 3-1=2    D→C: 6-1=5    C→T: 2-1=1
+  Backward: A→S: 10,  D→A: 2,  C→D: 1,  T→C: 9
+max_flow = 18 + 1 = 19
+
+<span class="step">Iteration 5:</span>
+BFS from S. S→A res=0, S→B res=1.
+Path: S → B → ... B→D res=0. Try other paths from B.
+B has no outgoing residual edges except B→S (backward, doesn't help).
+Actually: A→B res=2 (original capacity). But S→A res=0.
+S→B res=1. From B: B→D res=0, B→A not in original (only A→B).
+So from B, we can go to... nowhere useful.
+
+Wait — let me recheck. Do we have a B→D backward edge? D→B res=9 (backward from iteration 2).
+No, that's D→B not B→D. B→D forward was 9, now 0.
+
+Hmm, actually residual graph has both directions. Let me check:
+B→D forward: 0 (used up). D→B backward: 9 (from flow).
+These are separate edges in residual. B→D:0 means we can't send more S→B→D.
+
+From S, only S→B has residual 1. From B, only backward edges (B→S:9).
+No forward progress possible.
+
+Also try: S→B→... Can B reach T? B→D:0, and no B→C in original.
+Dead end.
+
+<span class="ok">No more augmenting paths. DONE.</span>
+
+<span class="step">MAX FLOW = 19</span>
+
+<span class="step">Verify (flow conservation):</span>
+Out of S: S→A=10 (full), S→B=9 → Total out = 19 ✓
+Into T: C→T=9, D→T=10 → Total in = 19 ✓
+
+Wait, let me recompute. S→A total flow = 10? Let me track cumulative flow:
+  S→A: sent 8 + 1 + 1 = 10 (capacity 10, fully used) ✓
+  S→B: sent 9 (capacity 10, 1 residual left)
+  Total out of S: 10 + 9 = 19 ✓
+
+  C→T: sent 8 + 1 = 9 (capacity 10, 1 residual left)
+  D→T: sent 9 + 1 = 10 (capacity 10, fully used)
+  Total into T: 9 + 10 = 19 ✓
+
+<span class="step">Minimum Cut:</span>
+Run BFS from S in final residual graph:
+  S→A: residual 0 → can't reach A
+  S→B: residual 1 → reach B
+  From B: B→D residual 0, B→S backward → no new vertices
+  Reachable from S = {S, B}
+
+S-side: {S, B}    T-side: {A, C, D, T}
+Min cut edges (original graph, S-side → T-side):
+  S → A (cap 10) + B → D (cap 9) = 19
+
+<span class="ok">Min cut capacity = 19 = Max flow ✓ (Max-Flow Min-Cut Theorem)</span></pre>
+<div class="key-insight">Always verify: total flow out of source = total flow into sink = max flow. Also: max flow = min cut capacity. If these don't match, you made an error somewhere.</div>
+</div>
+</div>
+
+<!-- P10 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 4.2 — Max-Flow Min-Cut Conceptual</span><span class="problem-pts">~5 pts</span></div>
+<div class="problem-body">
+<p>(a) State the Max-Flow Min-Cut Theorem.</p>
+<p>(b) After running Ford-Fulkerson, how do you find the minimum cut?</p>
+<p>(c) Why must we include backward edges in the residual graph? What goes wrong without them?</p>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">(a) Max-Flow Min-Cut Theorem:</span>
+In any flow network, the value of the maximum flow equals the capacity
+of the minimum cut. A cut (S,T) partitions vertices into S (containing
+source) and T (containing sink). Cut capacity = sum of capacities of
+edges going from S to T.
+
+<span class="step">(b) Finding the minimum cut:</span>
+After Ford-Fulkerson terminates (no augmenting path exists):
+1. Run BFS/DFS from source s in the FINAL residual graph
+2. Let S = set of vertices reachable from s
+3. Let T = V \ S (everything else, including t)
+4. The min cut = all edges (u,v) in the ORIGINAL graph where u ∈ S and v ∈ T
+5. The min cut capacity = sum of these edges' original capacities
+
+<span class="step">(c) Why backward edges are necessary:</span>
+Backward edges in the residual graph represent the ability to "undo" flow
+that was previously sent. Without them, the algorithm can get stuck at a
+suboptimal solution.
+
+Example: Imagine a network where the first augmenting path sends flow
+through an edge that "blocks" a better routing. Backward edges allow a
+later iteration to effectively reroute that flow.
+
+Without backward edges: Ford-Fulkerson may produce a flow strictly less
+than the maximum flow. The algorithm would terminate prematurely because
+it can't find augmenting paths, even though better flow assignments exist.</pre>
+</div>
+</div>
+</div>
+
+
+<!-- ╔══════════════════════════════════════════════════════════════╗ -->
+<!-- ║  SECTION 5: NP-COMPLETENESS  (Heavy Hitter)                 ║ -->
+<!-- ╚══════════════════════════════════════════════════════════════╝ -->
+<div class="section" id="s5">
+<div class="section-hdr"><div class="section-title">5. NP-Completeness</div><div class="section-badge badge-high">HIGH PRIORITY</div></div>
+<p class="section-desc">Expect at least one question on definitions, one on reductions/proofs, and possibly one on approximation. These are high-value questions that most students lose points on.</p>
+
+<!-- P11 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 5.1 — Complexity Class Definitions</span><span class="problem-pts">~10 pts</span></div>
+<div class="problem-body">
+<p>(a) Define P, NP, NP-Hard, and NP-Complete. One sentence each.</p>
+<p>(b) What is the relationship between P and NP? Is P ⊆ NP, P = NP, or neither? Explain.</p>
+<p>(c) True or False (with justification):</p>
+<ul>
+<li>i. "NP stands for 'not polynomial.'"</li>
+<li>ii. "Every NP-Hard problem is NP-Complete."</li>
+<li>iii. "If P = NP, then every NP-Complete problem can be solved in polynomial time."</li>
+<li>iv. "Sorting is in NP."</li>
+</ul>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">(a) Definitions:</span>
+<span class="ok">P:</span> The class of decision problems solvable by a deterministic Turing
+   machine in polynomial time.
+
+<span class="ok">NP:</span> The class of decision problems where a given solution (certificate)
+   can be VERIFIED by a deterministic Turing machine in polynomial time.
+
+<span class="ok">NP-Hard:</span> A problem H is NP-Hard if every problem in NP can be reduced
+   to H in polynomial time (H is at least as hard as anything in NP).
+
+<span class="ok">NP-Complete:</span> A problem is NP-Complete if it is both in NP AND NP-Hard
+   (the hardest problems that are still in NP).
+
+<span class="step">(b) Relationship:</span>
+<span class="ok">P ⊆ NP.</span> Every problem solvable in polynomial time is also verifiable
+in polynomial time (if you can compute the answer, you can certainly
+verify a given answer). Whether P = NP is the most famous open problem
+in computer science — it's unknown as of now.
+
+<span class="step">(c) True/False:</span>
+
+i. <span class="warn">FALSE.</span> NP stands for "Nondeterministic Polynomial time." It means
+   a nondeterministic Turing machine can solve it in polynomial time,
+   which is equivalent to saying a deterministic machine can VERIFY
+   a solution in polynomial time. NOT "not polynomial."
+
+ii. <span class="warn">FALSE.</span> NP-Hard problems might not be in NP. Example: the Halting
+    Problem is NP-Hard but not in NP (it's undecidable — you can't even
+    verify a solution). NP-Complete = NP-Hard ∩ NP.
+
+iii. <span class="ok">TRUE.</span> If P = NP, then NP = P, and since NP-Complete problems are
+     in NP, they would be in P, meaning they could all be solved in
+     polynomial time.
+
+iv. <span class="ok">TRUE.</span> Sorting is in P (e.g., merge sort O(n log n)). Since P ⊆ NP,
+    sorting is also in NP. You can verify a sorted array in O(n) by
+    checking each consecutive pair — that's a polynomial-time verifier.</pre>
+</div>
+</div>
+
+<!-- P12 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 5.2 — NP-Complete Proof: Clique</span><span class="problem-pts">~15 pts</span></div>
+<div class="problem-body">
+<p>The <strong>Clique</strong> problem: Given an undirected graph G = (V,E) and an integer k, does G contain a complete subgraph (clique) of size k?</p>
+<p>(a) Show that Clique is in NP.</p>
+<p>(b) Given that 3-SAT is known to be NP-Complete, outline the key idea of why Clique is NP-Hard. (You don't need to give the full formal reduction from 3-SAT — just explain the high-level approach and why it works.)</p>
+<p>(c) Show how to reduce Clique to Independent Set. Prove correctness of your reduction.</p>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">(a) Clique ∈ NP:</span>
+Certificate: A set S of k vertices.
+Verifier:
+  1. Check |S| = k → O(1)
+  2. For every pair (u,v) where u,v ∈ S, check that edge (u,v) ∈ E
+     → O(k²) ≤ O(V²) checks, each O(1) with adjacency matrix
+  Total: O(V²) = polynomial ✓
+If all pairs are edges → accept. Otherwise → reject.
+Therefore <span class="ok">Clique ∈ NP ✓</span>
+
+<span class="step">(b) Why Clique is NP-Hard (high-level 3-SAT → Clique reduction):</span>
+Given a 3-SAT formula with m clauses, construct a graph G where:
+  - Create one vertex for each literal in each clause (so 3m vertices)
+  - Add an edge between two vertices IF:
+    (1) They are in DIFFERENT clauses, AND
+    (2) They are not contradictory (x and ¬x cannot be connected)
+  - Set k = m (number of clauses)
+
+Key insight: A clique of size m in G corresponds to selecting one
+satisfying literal from each clause — which is exactly a satisfying
+assignment for the 3-SAT formula. The "no contradiction" edge rule
+ensures consistency (can't pick both x and ¬x).
+
+This is polynomial: O(m²) to construct the graph.
+3-SAT satisfiable ↔ G has clique of size m.
+Since 3-SAT is NP-Complete → <span class="ok">Clique is NP-Hard ✓</span>
+
+<span class="step">(c) Reduce Clique to Independent Set:</span>
+<span class="note">Reduction:</span> Given Clique instance (G, k), create IS instance (Ḡ, k) where:
+  Ḡ = complement graph of G
+  (edge (u,v) ∈ Ḡ iff (u,v) ∉ G, and vice versa)
+  k stays the same.
+
+Construction time: O(V²) to build complement → polynomial ✓
+
+<span class="note">Correctness (→):</span>
+Suppose G has a clique C of size k.
+In C, every pair of vertices has an edge in G.
+In Ḡ, every pair of vertices in C has NO edge (complement).
+Therefore C is an independent set of size k in Ḡ. ✓
+
+<span class="note">Correctness (←):</span>
+Suppose Ḡ has an independent set I of size k.
+In I, no pair of vertices has an edge in Ḡ.
+In G, every pair of vertices in I HAS an edge (complement).
+Therefore I is a clique of size k in G. ✓
+
+<span class="ok">G has clique of size k ↔ Ḡ has IS of size k. Reduction is polynomial. ✓</span></pre>
+</div>
+</div>
+
+<!-- P13 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 5.3 — Reduction: Hamiltonian Cycle → TSP</span><span class="problem-pts">~10 pts</span></div>
+<div class="problem-body">
+<p>(a) Define the Hamiltonian Cycle problem and the Traveling Salesman Problem (decision version).</p>
+<p>(b) Prove that TSP is NP-Complete by reducing from Hamiltonian Cycle. Show both directions of correctness.</p>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">(a) Definitions:</span>
+<span class="ok">Hamiltonian Cycle (HC):</span> Given a graph G = (V,E), does there exist a
+cycle that visits every vertex exactly once and returns to the start?
+
+<span class="ok">TSP (decision version):</span> Given a complete weighted graph G = (V,E,w)
+and a budget B, does there exist a Hamiltonian cycle with total
+edge weight ≤ B?
+
+<span class="step">(b) Proof that TSP is NP-Complete:</span>
+
+<span class="note">Step 1: TSP ∈ NP</span>
+Certificate: A permutation of vertices (proposed tour).
+Verifier:
+  1. Check it visits all V vertices exactly once → O(V)
+  2. Check each consecutive edge exists and sum weights → O(V)
+  3. Check total weight ≤ B → O(1)
+  Total: O(V) = polynomial ✓
+
+<span class="note">Step 2: HC ≤_p TSP (reduce Hamiltonian Cycle to TSP)</span>
+
+Reduction: Given HC instance G = (V,E), construct TSP instance:
+  - Create complete graph G' on the same V vertices
+  - Assign edge weights:
+      w(u,v) = 1  if (u,v) ∈ E  (edge exists in original)
+      w(u,v) = 2  if (u,v) ∉ E  (edge doesn't exist)
+  - Set budget B = |V|
+
+Construction time: O(V²) to build complete graph → polynomial ✓
+
+<span class="note">Correctness (→):</span>
+If G has a Hamiltonian cycle H, then H uses V edges, all in E.
+In G', each of these edges has weight 1.
+Total tour cost = V × 1 = |V| = B. ✓
+So TSP instance has a tour of cost ≤ B.
+
+<span class="note">Correctness (←):</span>
+If G' has a Hamiltonian tour of cost ≤ B = |V|:
+  The tour uses exactly |V| edges.
+  Each edge weighs either 1 or 2.
+  Total ≤ |V| with |V| edges → every edge must weigh 1.
+  Edges with weight 1 are exactly the edges in original E.
+  Therefore the tour uses only edges from E → it's a Hamiltonian cycle in G. ✓
+
+<span class="ok">HC has solution ↔ TSP has solution. TSP ∈ NP and HC ≤_p TSP → TSP is NP-Complete. ∎</span></pre>
+</div>
+</div>
+
+<!-- P14 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 5.4 — Approximation Algorithms</span><span class="problem-pts">~8 pts</span></div>
+<div class="problem-body">
+<p>(a) Describe the 2-approximation algorithm for Vertex Cover. Why does it guarantee a cover at most twice the optimal size?</p>
+<p>(b) Describe the 2-approximation algorithm for Metric TSP (with triangle inequality). What role does the MST play?</p>
+<p>(c) Why can't we have a constant-factor approximation for general TSP (without triangle inequality)?</p>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">(a) 2-Approx Vertex Cover:</span>
+Algorithm:
+  1. C = ∅ (empty cover)
+  2. While there are uncovered edges:
+     - Pick any uncovered edge (u,v)
+     - Add BOTH u and v to C
+     - Remove all edges incident to u or v
+  3. Return C
+
+Why 2-approximation:
+  Let M = set of edges picked. These edges are a MATCHING (no shared vertices).
+  |C| = 2|M|.
+  The optimal vertex cover OPT must include at least one endpoint of each
+  edge in M (since they share no vertices, OPT ≥ |M|).
+  Therefore |C| = 2|M| ≤ 2·OPT. ✓
+
+<span class="step">(b) 2-Approx Metric TSP:</span>
+Algorithm (requires triangle inequality: w(a,c) ≤ w(a,b) + w(b,c)):
+  1. Find MST of the graph (cost ≤ OPT, since removing one edge from
+     optimal tour gives a spanning tree)
+  2. Double every MST edge → Eulerian circuit (cost = 2 × MST ≤ 2·OPT)
+  3. Shortcut repeated vertices (go directly, skipping visited ones)
+     Triangle inequality guarantees shortcuts don't increase cost.
+  Result: tour cost ≤ 2·MST ≤ 2·OPT ✓
+
+<span class="step">(c) Why no constant approximation for general TSP:</span>
+Without triangle inequality, there is NO polynomial-time constant-factor
+approximation for TSP (unless P = NP).
+
+Proof sketch: If such an approximation existed with ratio c, we could
+use it to solve Hamiltonian Cycle:
+  - Set edges in E to weight 1, missing edges to weight c·n + 1
+  - If HC exists: optimal tour = n. Approximation ≤ c·n.
+  - If HC doesn't exist: any tour uses a heavy edge → cost > c·n.
+  - The approximation distinguishes these cases → solves HC in poly time.
+  Since HC is NP-Complete, this is impossible unless P = NP.</pre>
+</div>
+</div>
+</div>
+
+
+<!-- ╔══════════════════════════════════════════════════════════════╗ -->
+<!-- ║  SECTION 6: GEOMETRIC ALGORITHMS                            ║ -->
+<!-- ╚══════════════════════════════════════════════════════════════╝ -->
+<div class="section" id="s6">
+<div class="section-hdr"><div class="section-title">6. Geometric Algorithms</div><div class="section-badge badge-med">MEDIUM-HIGH</div></div>
+<p class="section-desc">Orientation test, Graham Scan, and Closest Pair. Know the formulas and the step-by-step traces.</p>
+
+<!-- P15 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 6.1 — Orientation Test Calculations</span><span class="problem-pts">~6 pts</span></div>
+<div class="problem-body">
+<p>For each set of three points, compute the orientation and state whether the turn is clockwise (CW), counterclockwise (CCW), or collinear:</p>
+<p>(a) p1 = (0, 0), p2 = (4, 4), p3 = (1, 2)</p>
+<p>(b) p1 = (0, 0), p2 = (4, 4), p3 = (2, 2)</p>
+<p>(c) p1 = (1, 1), p2 = (3, 5), p3 = (5, 2)</p>
+<p>Use the formula: val = (p2.x − p1.x)(p3.y − p1.y) − (p2.y − p1.y)(p3.x − p1.x)</p>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">Formula: val = (p2.x−p1.x)(p3.y−p1.y) − (p2.y−p1.y)(p3.x−p1.x)</span>
+  val > 0 → CCW (left turn)
+  val < 0 → CW (right turn)
+  val = 0 → Collinear
+
+<span class="step">(a) p1=(0,0), p2=(4,4), p3=(1,2):</span>
+  val = (4−0)(2−0) − (4−0)(1−0)
+      = (4)(2) − (4)(1)
+      = 8 − 4 = <span class="ok">4 > 0 → CCW (left turn)</span>
+
+<span class="step">(b) p1=(0,0), p2=(4,4), p3=(2,2):</span>
+  val = (4−0)(2−0) − (4−0)(2−0)
+      = (4)(2) − (4)(2)
+      = 8 − 8 = <span class="note">0 → Collinear</span>
+  (All three points lie on the line y = x)
+
+<span class="step">(c) p1=(1,1), p2=(3,5), p3=(5,2):</span>
+  val = (3−1)(2−1) − (5−1)(5−1)
+      = (2)(1) − (4)(4)
+      = 2 − 16 = <span class="warn">-14 < 0 → CW (right turn)</span></pre>
+</div>
+</div>
+
+<!-- P16 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 6.2 — Graham Scan Trace</span><span class="problem-pts">~15 pts</span></div>
+<div class="problem-body">
+<p>Find the convex hull of the following points using Graham Scan. Show all steps: anchor selection, polar angle sorting, and every push/pop operation on the stack with orientation test calculations.</p>
+<div class="graph-def">Points: A(1,1), B(3,0), C(5,1), D(4,3), E(2,4), F(0,3), G(2,2), H(3,2)</div>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">Step 1: Find anchor (lowest y, leftmost if tie):</span>
+  B(3,0) has lowest y = 0.
+  Anchor = B(3,0)
+
+<span class="step">Step 2: Sort remaining points by polar angle from B(3,0):</span>
+  C(5,1): angle = atan2(1-0, 5-3) = atan2(1,2) ≈ 26.6°
+  D(4,3): angle = atan2(3-0, 4-3) = atan2(3,1) ≈ 71.6°
+  H(3,2): angle = atan2(2-0, 3-3) = atan2(2,0) = 90°
+  A(1,1): angle = atan2(1-0, 1-3) = atan2(1,-2) ≈ 153.4°
+  E(2,4): angle = atan2(4-0, 2-3) = atan2(4,-1) ≈ 104.0°
+  G(2,2): angle = atan2(2-0, 2-3) = atan2(2,-1) ≈ 116.6°
+  F(0,3): angle = atan2(3-0, 0-3) = atan2(3,-3) ≈ 135°
+
+  Sorted by polar angle: C, D, H, E, G, F, A
+
+<span class="step">Step 3: Initialize stack with B, C, D:</span>
+  Stack: [B(3,0), C(5,1), D(4,3)]
+
+<span class="step">Step 4: Process remaining points:</span>
+
+<span class="note">Process H(3,2):</span>
+  orientation(C(5,1), D(4,3), H(3,2)):
+    val = (4-5)(2-1) - (3-1)(3-5) = (-1)(1) - (2)(-2) = -1+4 = 3 > 0 → CCW → KEEP
+  Push H. Stack: [B, C, D, H]
+
+<span class="note">Process E(2,4):</span>
+  orientation(D(4,3), H(3,2), E(2,4)):
+    val = (3-4)(4-3) - (2-3)(2-4) = (-1)(1) - (-1)(-2) = -1-2 = -3 < 0 → CW → POP H
+  orientation(C(5,1), D(4,3), E(2,4)):
+    val = (4-5)(4-1) - (3-1)(2-5) = (-1)(3) - (2)(-3) = -3+6 = 3 > 0 → CCW → KEEP
+  Push E. Stack: [B, C, D, E]
+
+<span class="note">Process G(2,2):</span>
+  orientation(D(4,3), E(2,4), G(2,2)):
+    val = (2-4)(2-3) - (4-3)(2-4) = (-2)(-1) - (1)(-2) = 2+2 = 4 > 0 → CCW → KEEP
+  Push G. Stack: [B, C, D, E, G]
+
+<span class="note">Process F(0,3):</span>
+  orientation(E(2,4), G(2,2), F(0,3)):
+    val = (2-2)(3-4) - (2-4)(0-2) = (0)(-1) - (-2)(-2) = 0-4 = -4 < 0 → CW → POP G
+  orientation(D(4,3), E(2,4), F(0,3)):
+    val = (2-4)(3-3) - (4-3)(0-4) = (-2)(0) - (1)(-4) = 0+4 = 4 > 0 → CCW → KEEP
+  Push F. Stack: [B, C, D, E, F]
+
+<span class="note">Process A(1,1):</span>
+  orientation(E(2,4), F(0,3), A(1,1)):
+    val = (0-2)(1-4) - (3-4)(1-2) = (-2)(-3) - (-1)(-1) = 6-1 = 5 > 0 → CCW → KEEP
+  Push A. Stack: [B, C, D, E, F, A]
+
+<span class="step">Convex Hull: B(3,0) → C(5,1) → D(4,3) → E(2,4) → F(0,3) → A(1,1) → back to B</span>
+<span class="ok">6 hull points. Interior points: G(2,2), H(3,2).</span></pre>
+</div>
+</div>
+
+<!-- P17 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 6.3 — Closest Pair Conceptual</span><span class="problem-pts">~8 pts</span></div>
+<div class="problem-body">
+<p>(a) Describe the divide-and-conquer algorithm for finding the closest pair of points. Include the key "strip" optimization.</p>
+<p>(b) Why do we only need to check the next 7 points in the strip (sorted by y)?</p>
+<p>(c) What is the time complexity and why?</p>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">(a) Algorithm:</span>
+1. Sort all n points by x-coordinate.
+2. Base case: if ≤ 3 points, find closest pair by brute force.
+3. Divide: split points into left half L and right half R at the median x.
+4. Conquer: recursively find closest pair in L (distance δ_L) and R (distance δ_R).
+5. Let δ = min(δ_L, δ_R).
+6. STRIP CHECK:
+   - Find all points within distance δ of the dividing line (the "strip")
+   - Sort strip points by y-coordinate
+   - For each point p in the strip, compare p with the next 7 points
+     in the y-sorted order
+   - If any distance < δ, update δ
+7. Return δ (and the corresponding pair).
+
+<span class="step">(b) Why only 7 points?</span>
+Consider a strip of width 2δ (δ on each side of the dividing line).
+For any point p, we only need to check points within vertical distance δ
+(otherwise the total distance > δ, which can't be closer).
+
+This creates a rectangle of width 2δ and height δ. In such a rectangle,
+at most 8 points can exist with pairwise distance ≥ δ (think of packing
+circles of radius δ/2). So excluding p itself, at most 7 other points
+need to be checked.
+
+This constant-bounded check means the strip step is O(n), not O(n²).
+
+<span class="step">(c) Time complexity: O(n log n)</span>
+- Sorting by x: O(n log n) once
+- Recurrence: T(n) = 2T(n/2) + O(n)
+  - 2T(n/2): two recursive calls on halves
+  - O(n): building the strip + checking 7 neighbors each
+- By Master Theorem: a=2, b=2, f(n)=O(n), log_2(2)=1
+  f(n) = Θ(n^1) → Case 2 → T(n) = <span class="ok">Θ(n log n)</span>
+
+If we sort by y in each recursion: O(n log n) per level → T(n) = O(n log²n).
+Optimization: pre-sort by y once → O(n log n) total.</pre>
+</div>
+</div>
+
+<!-- P18 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 6.4 — Point-in-Polygon</span><span class="problem-pts">~4 pts</span></div>
+<div class="problem-body">
+<p>(a) Describe the ray casting algorithm for determining if a point is inside a polygon.</p>
+<p>(b) A convex polygon has vertices (0,0), (4,0), (5,3), (3,5), (0,4). Is the point (2,2) inside? What about (6,1)?</p>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">(a) Ray Casting Algorithm:</span>
+1. Cast a ray from the point in any direction (usually rightward/horizontal)
+2. Count the number of times the ray intersects edges of the polygon
+3. If count is ODD → point is INSIDE
+   If count is EVEN → point is OUTSIDE
+
+Special cases: ray passes through a vertex or lies along an edge
+require careful handling (not usually tested on exams).
+
+Time: O(n) where n = number of polygon edges.
+
+<span class="step">(b) Polygon: (0,0)→(4,0)→(5,3)→(3,5)→(0,4)→back to (0,0)</span>
+
+Point (2,2): Cast ray rightward (y=2).
+  Edges that intersect y=2:
+  - (0,0)→(4,0): y range [0,0], doesn't cross y=2. No.
+  - (4,0)→(5,3): y range [0,3], crosses y=2. Yes. (1 intersection)
+  - (5,3)→(3,5): y range [3,5], doesn't cross y=2. No.
+  - (3,5)→(0,4): y range [4,5], doesn't cross y=2. No.
+  - (0,4)→(0,0): y range [0,4], crosses y=2 at x=0, which is LEFT of (2,2). Yes. (2 intersections)
+
+  Wait — the ray goes rightward from (2,2), so we only count intersections
+  to the RIGHT (x > 2).
+
+  (0,4)→(0,0) crosses y=2 at x=0. But 0 < 2, so it's to the LEFT. Don't count.
+  (4,0)→(5,3): at y=2, x = 4 + (5-4)·(2-0)/(3-0) = 4 + 2/3 ≈ 4.67. Right of 2. Count.
+
+  Intersections to the right: <span class="ok">1 (odd) → INSIDE ✓</span>
+
+Point (6,1): Cast ray rightward from (6,1).
+  All polygon vertices have x ≤ 5. Any edge crossing y=1 has x ≤ 5 < 6.
+  No intersections to the right.
+  Intersections: <span class="warn">0 (even) → OUTSIDE ✓</span></pre>
+</div>
+</div>
+</div>
+
+
+<!-- ╔══════════════════════════════════════════════════════════════╗ -->
+<!-- ║  SECTION 7: TOPOLOGICAL SORT                                ║ -->
+<!-- ╚══════════════════════════════════════════════════════════════╝ -->
+<div class="section" id="s7">
+<div class="section-hdr"><div class="section-title">7. Topological Sort</div><div class="section-badge badge-med">MEDIUM-HIGH</div></div>
+<p class="section-desc">Kahn's algorithm trace is straightforward and likely on the exam. Also know critical path method.</p>
+
+<!-- P19 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 7.1 — Kahn's Algorithm Trace</span><span class="problem-pts">~10 pts</span></div>
+<div class="problem-body">
+<p>Given the following DAG, find a topological ordering using Kahn's algorithm:</p>
+<div class="graph-def">Vertices: 1, 2, 3, 4, 5, 6, 7, 8
+Edges:
+1 → 2    1 → 3    2 → 4    2 → 5
+3 → 5    3 → 6    4 → 7    5 → 7
+6 → 8    7 → 8</div>
+<p>Show: initial in-degrees, the queue at each step, and the final ordering.</p>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">Initial in-degrees:</span>
+  Vertex:    1  2  3  4  5  6  7  8
+  In-degree: 0  1  1  1  2  1  2  2
+
+Queue starts with all in-degree 0 vertices: [1]
+
+<span class="step">Processing:</span>
+
+Step | Dequeue | Decrement in-degrees of    | New in-degrees        | Queue     | Ordering
+─────┼─────────┼───────────────────────────┼───────────────────────┼───────────┼─────────
+  1  |    1    | 2 (1→0), 3 (1→0)          | 2:0, 3:0              | [2, 3]    | [1]
+  2  |    2    | 4 (1→0), 5 (2→1)          | 4:0, 5:1              | [3, 4]    | [1,2]
+  3  |    3    | 5 (1→0), 6 (1→0)          | 5:0, 6:0              | [4, 5, 6] | [1,2,3]
+  4  |    4    | 7 (2→1)                   | 7:1                   | [5, 6]    | [1,2,3,4]
+  5  |    5    | 7 (1→0)                   | 7:0                   | [6, 7]    | [1,2,3,4,5]
+  6  |    6    | 8 (2→1)                   | 8:1                   | [7]       | [1,2,3,4,5,6]
+  7  |    7    | 8 (1→0)                   | 8:0                   | [8]       | [1,2,3,4,5,6,7]
+  8  |    8    | (none)                    |                       | []        | [1,2,3,4,5,6,7,8]
+
+<span class="ok">Topological ordering: 1, 2, 3, 4, 5, 6, 7, 8</span>
+|ordering| = 8 = |V| → no cycle ✓
+
+<span class="note">Note:</span> Other valid orderings exist (e.g., 1,3,2,6,4,5,7,8) depending on
+queue tie-breaking. Any ordering where every edge goes left-to-right is valid.</pre>
+</div>
+</div>
+
+<!-- P20 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 7.2 — Critical Path Method</span><span class="problem-pts">~8 pts</span></div>
+<div class="problem-body">
+<p>A project has the following tasks and dependencies (edge weights represent task durations):</p>
+<div class="graph-def">Start → A : 3     Start → B : 5
+A → C : 4         B → C : 2        B → D : 6
+C → End : 3       D → End : 2</div>
+<p>(a) What is the critical path (longest path from Start to End)?</p>
+<p>(b) What is the minimum project completion time?</p>
+<p>(c) Which tasks have slack (can be delayed without affecting total time)?</p>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">All paths from Start to End:</span>
+  Path 1: Start → A → C → End = 3 + 4 + 3 = 10
+  Path 2: Start → B → C → End = 5 + 2 + 3 = 10
+  Path 3: Start → B → D → End = 5 + 6 + 2 = 13
+
+<span class="step">(a) Critical path:</span> Start → B → D → End
+<span class="ok">(b) Minimum completion time: 13</span>
+
+<span class="step">(c) Slack analysis:</span>
+Critical path tasks (B, D) have <span class="warn">0 slack</span> — any delay extends the project.
+
+Task A: Earliest start=0, latest start without delaying project:
+  A must finish by time the latest C can start.
+  C must finish by time 13-3=10 (End needs to start by 10 at latest given path 3).
+  C takes 3, so C must start by 7 at latest.
+  But C depends on A (A→C takes 4): A must finish by 7, so A starts by 3 at latest.
+  A's earliest start = 0. Latest start = 3-3=0? Wait...
+
+  Actually: longest path through A: Start→A→C→End = 10. Project total = 13.
+  Slack for path through A = 13 - 10 = <span class="ok">3 units of slack for task A</span>.
+
+Task C via path 1 (through A): slack = 13 - 10 = 3
+Task C via path 2 (through B): slack = 13 - 10 = 3
+
+Since C appears on paths of length 10, and critical path is 13:
+  <span class="ok">C has 3 units of slack.</span>
+  <span class="ok">A has 3 units of slack.</span>
+  <span class="warn">B has 0 slack (on critical path).</span>
+  <span class="warn">D has 0 slack (on critical path).</span></pre>
+</div>
+</div>
+</div>
+
+
+<!-- ╔══════════════════════════════════════════════════════════════╗ -->
+<!-- ║  SECTION 8: BIG-O NOTATION                                  ║ -->
+<!-- ╚══════════════════════════════════════════════════════════════╝ -->
+<div class="section" id="s8">
+<div class="section-hdr"><div class="section-title">8. Big-O Notation & Complexity Analysis</div><div class="section-badge badge-std">STANDARD</div></div>
+<p class="section-desc">Definitions, simplification, and analyzing code. Guaranteed points if you memorize the basics.</p>
+
+<!-- P21 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 8.1 — Big-O Simplification</span><span class="problem-pts">~8 pts</span></div>
+<div class="problem-body">
+<p>Simplify the following to their tightest Big-O bound:</p>
+<p>(a) 5n³ + 3n² + 100n + 999</p>
+<p>(b) 2ⁿ + n¹⁰⁰</p>
+<p>(c) n log n + n√n</p>
+<p>(d) log(n!) (Hint: use Stirling's approximation or properties of logs)</p>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">(a) 5n³ + 3n² + 100n + 999</span>
+  Drop constants, keep dominant term: n³ dominates n², n, and constants.
+  <span class="ok">= O(n³)</span>
+
+<span class="step">(b) 2ⁿ + n¹⁰⁰</span>
+  Exponential always dominates polynomial. For large n, 2ⁿ ≫ n¹⁰⁰.
+  <span class="ok">= O(2ⁿ)</span>
+
+<span class="step">(c) n log n + n√n</span>
+  Compare n log n vs n^(3/2) (since √n = n^(1/2), so n·n^(1/2) = n^(3/2)).
+  n^(3/2) grows faster than n log n (polynomial beats log factor).
+  <span class="ok">= O(n^(3/2)) = O(n√n)</span>
+
+<span class="step">(d) log(n!)</span>
+  log(n!) = log(1) + log(2) + ... + log(n)
+  Upper bound: each term ≤ log(n), so sum ≤ n log n → O(n log n)
+  Lower bound: last n/2 terms ≥ log(n/2) = log n - 1, so sum ≥ (n/2)(log n - 1) → Ω(n log n)
+  By Stirling: n! ≈ (n/e)ⁿ√(2πn), so log(n!) ≈ n log n - n log e + O(log n)
+  <span class="ok">= Θ(n log n)</span></pre>
+</div>
+</div>
+
+<!-- P22 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 8.2 — Formal Big-O Proof</span><span class="problem-pts">~6 pts</span></div>
+<div class="problem-body">
+<p>(a) State the formal definition of f(n) = O(g(n)).</p>
+<p>(b) Using the formal definition, prove that 3n² + 5n = O(n²).</p>
+<p>(c) Using the formal definition, prove that n² ≠ O(n).</p>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">(a) Formal definition:</span>
+f(n) = O(g(n)) if and only if there exist constants c > 0 and n₀ > 0
+such that f(n) ≤ c · g(n) for all n ≥ n₀.
+
+<span class="step">(b) Prove 3n² + 5n = O(n²):</span>
+We need to find c > 0 and n₀ > 0 such that 3n² + 5n ≤ c · n² for all n ≥ n₀.
+
+For n ≥ 1:  5n ≤ 5n²  (since n ≤ n² when n ≥ 1)
+So: 3n² + 5n ≤ 3n² + 5n² = 8n²
+
+Choose <span class="ok">c = 8, n₀ = 1</span>.
+Then 3n² + 5n ≤ 8n² for all n ≥ 1. ✓
+Therefore 3n² + 5n = O(n²). ∎
+
+<span class="step">(c) Prove n² ≠ O(n):</span>
+By contradiction. Assume n² = O(n).
+Then ∃ c > 0, n₀ > 0 such that n² ≤ c · n for all n ≥ n₀.
+Dividing both sides by n (positive): n ≤ c for all n ≥ n₀.
+But this is impossible — n grows without bound, so for n > c, we get n > c.
+<span class="warn">Contradiction.</span> Therefore n² ≠ O(n). ∎</pre>
+</div>
+</div>
+
+<!-- P23 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 8.3 — Analyze Code Complexity</span><span class="problem-pts">~8 pts</span></div>
+<div class="problem-body">
+<p>Determine the time complexity (Big-O) of each code fragment:</p>
+<div class="graph-def">(a)
+for i = 1 to n:
+    for j = 1 to n:
+        for k = 1 to n:
+            print(i + j + k)
+
+(b)
+for i = 1 to n:
+    for j = i to n:
+        print(i + j)
+
+(c)
+for i = 1 to n:
+    j = n
+    while j > 0:
+        j = j / 2
+
+(d)
+function f(n):
+    if n <= 1: return 1
+    return f(n/2) + f(n/2)</div>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">(a) Triple nested loop, each runs n times:</span>
+  n × n × n = <span class="ok">O(n³)</span>
+
+<span class="step">(b) Inner loop runs (n-i+1) times for each i:</span>
+  Total = Σ(i=1 to n) (n-i+1) = n + (n-1) + ... + 1 = n(n+1)/2
+  <span class="ok">= O(n²)</span>
+
+<span class="step">(c) Outer loop: n iterations. Inner while: j starts at n, halves each time.</span>
+  Inner loop runs log₂(n) times (j = n, n/2, n/4, ..., 1).
+  Total = n × log n
+  <span class="ok">= O(n log n)</span>
+
+<span class="step">(d) Recurrence: T(n) = 2T(n/2) + O(1)</span>
+  Master Theorem: a=2, b=2, f(n)=O(1)=O(n⁰)
+  log_b(a) = log₂(2) = 1
+  n⁰ vs n¹ → f(n) = O(n^(1-ε)) → Case 1
+  T(n) = Θ(n^(log₂2)) = <span class="ok">Θ(n)</span>
+
+  Intuition: 2 recursive calls on half the input creates n total nodes
+  in the recursion tree, each doing O(1) work → O(n).</pre>
+</div>
+</div>
+</div>
+
+
+<!-- ╔══════════════════════════════════════════════════════════════╗ -->
+<!-- ║  SECTION 9: GRAPH THEORY BASICS                             ║ -->
+<!-- ╚══════════════════════════════════════════════════════════════╝ -->
+<div class="section" id="s9">
+<div class="section-hdr"><div class="section-title">9. Graph Theory Basics (BFS, DFS, Representations)</div><div class="section-badge badge-std">STANDARD</div></div>
+<p class="section-desc">Foundational knowledge. Quick recall questions worth easy points.</p>
+
+<!-- P24 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 9.1 — BFS and DFS Traversal</span><span class="problem-pts">~8 pts</span></div>
+<div class="problem-body">
+<p>Given this undirected graph:</p>
+<div class="graph-def">Vertices: A, B, C, D, E, F, G
+Edges: A-B, A-C, B-D, B-E, C-F, D-G, E-G</div>
+<p>(a) Perform BFS starting from A. Show the queue at each step and the discovery order. (Process neighbors alphabetically.)</p>
+<p>(b) Perform DFS starting from A. Show the stack/recursion and discovery order. (Process neighbors alphabetically.)</p>
+<p>(c) From the BFS, what is the shortest path (fewest edges) from A to G?</p>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">(a) BFS from A (process neighbors alphabetically):</span>
+
+Step | Dequeue | Enqueue (unvisited neighbors) | Queue after    | Visited
+─────┼─────────┼──────────────────────────────┼────────────────┼────────────────
+  0  |   —     | A                            | [A]            | {A}
+  1  |   A     | B, C                         | [B, C]         | {A,B,C}
+  2  |   B     | D, E                         | [C, D, E]      | {A,B,C,D,E}
+  3  |   C     | F                            | [D, E, F]      | {A,B,C,D,E,F}
+  4  |   D     | G                            | [E, F, G]      | {A,B,C,D,E,F,G}
+  5  |   E     | (G already visited)          | [F, G]         | {A,B,C,D,E,F,G}
+  6  |   F     | (none new)                   | [G]            | {A,B,C,D,E,F,G}
+  7  |   G     | (none new)                   | []             | {A,B,C,D,E,F,G}
+
+<span class="ok">BFS discovery order: A, B, C, D, E, F, G</span>
+
+<span class="step">(b) DFS from A (recursive, alphabetical order):</span>
+
+DFS(A): visit A
+  → DFS(B): visit B
+    → DFS(D): visit D
+      → DFS(G): visit G
+        → neighbors: D(visited), E(unvisited)
+        → DFS(E): visit E
+          → neighbors: B(visited), G(visited)
+          → return
+      → return
+    → return (E already visited)
+  → DFS(C): visit C
+    → DFS(F): visit F
+      → return
+    → return
+  → return
+
+<span class="ok">DFS discovery order: A, B, D, G, E, C, F</span>
+
+<span class="step">(c) Shortest path A to G (BFS):</span>
+Parent pointers from BFS: B←A, C←A, D←B, E←B, F←C, G←D
+Trace: G ← D ← B ← A
+<span class="ok">Shortest path: A → B → D → G (3 edges)</span></pre>
+</div>
+</div>
+
+<!-- P25 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 9.2 — Graph Representations</span><span class="problem-pts">~6 pts</span></div>
+<div class="problem-body">
+<p>For the graph in Problem 9.1:</p>
+<p>(a) Draw the adjacency matrix.</p>
+<p>(b) Write the adjacency list representation.</p>
+<p>(c) Compare space complexity. When is each representation preferred?</p>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">(a) Adjacency Matrix (7×7, undirected so symmetric):</span>
+
+    A  B  C  D  E  F  G
+A [ 0  1  1  0  0  0  0 ]
+B [ 1  0  0  1  1  0  0 ]
+C [ 1  0  0  0  0  1  0 ]
+D [ 0  1  0  0  0  0  1 ]
+E [ 0  1  0  0  0  0  1 ]
+F [ 0  0  1  0  0  0  0 ]
+G [ 0  0  0  1  1  0  0 ]
+
+<span class="step">(b) Adjacency List:</span>
+A: [B, C]
+B: [A, D, E]
+C: [A, F]
+D: [B, G]
+E: [B, G]
+F: [C]
+G: [D, E]
+
+<span class="step">(c) Space comparison:</span>
+Adjacency Matrix: <span class="ok">O(V²)</span> always, regardless of edges.
+  - Check if edge exists: O(1) — constant time lookup
+  - Preferred for DENSE graphs (E ≈ V²) — little wasted space
+
+Adjacency List: <span class="ok">O(V + E)</span> — proportional to actual edges.
+  - Check if edge exists: O(degree) — must scan neighbor list
+  - Iterate all neighbors: O(degree) — efficient
+  - Preferred for SPARSE graphs (E ≪ V²) — saves significant space
+
+This graph: V=7, E=7. Matrix uses 49 cells, list uses ~21 entries.
+For a complete graph K₇: E=21. Matrix uses 49, list uses ~49. Similar.</pre>
+</div>
+</div>
+
+<!-- P26 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 9.3 — Graph Properties</span><span class="problem-pts">~6 pts</span></div>
+<div class="problem-body">
+<p>(a) What is a cut vertex (articulation point)? What is a bridge? Give an example of each from any graph.</p>
+<p>(b) In a tree with 15 vertices, how many edges are there? Is a tree bipartite? Explain.</p>
+<p>(c) State the handshaking lemma. In a graph with 6 vertices and 10 edges, what is the sum of all vertex degrees?</p>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">(a) Definitions:</span>
+<span class="ok">Cut vertex (articulation point):</span> A vertex whose removal disconnects
+the graph (increases the number of connected components).
+
+<span class="ok">Bridge:</span> An edge whose removal disconnects the graph.
+
+Example: In the path graph A — B — C:
+  B is a cut vertex (removing B disconnects A from C).
+  Both edges A-B and B-C are bridges.
+
+<span class="step">(b) Tree with 15 vertices:</span>
+Edges = V - 1 = <span class="ok">14 edges.</span>
+
+Is a tree bipartite? <span class="ok">Yes, always.</span>
+A tree has no cycles, so it certainly has no odd-length cycles.
+A graph is bipartite ↔ it has no odd-length cycles (theorem).
+Alternatively: root the tree, put even-depth vertices in set A and
+odd-depth in set B → valid 2-coloring.
+
+<span class="step">(c) Handshaking Lemma:</span>
+The sum of all vertex degrees in a graph equals 2|E|.
+(Each edge contributes 1 to the degree of each endpoint → counted twice.)
+
+6 vertices, 10 edges: sum of degrees = 2 × 10 = <span class="ok">20</span>.</pre>
+</div>
+</div>
+</div>
+
+
+<!-- ╔══════════════════════════════════════════════════════════════╗ -->
+<!-- ║  SECTION 10: ALGORITHM DESIGN PARADIGMS                     ║ -->
+<!-- ╚══════════════════════════════════════════════════════════════╝ -->
+<div class="section" id="s10">
+<div class="section-hdr"><div class="section-title">10. Algorithm Design Paradigms</div><div class="section-badge badge-std">STANDARD</div></div>
+<p class="section-desc">Greedy, Divide & Conquer, Brute Force. Know when each applies and when greedy fails.</p>
+
+<!-- P27 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 10.1 — Greedy: Activity Selection</span><span class="problem-pts">~8 pts</span></div>
+<div class="problem-body">
+<p>You have 7 activities with start and finish times:</p>
+<div class="graph-def">Activity  |  Start  |  Finish
+    A     |    1    |    4
+    B     |    3    |    5
+    C     |    0    |    6
+    D     |    5    |    7
+    E     |    3    |    9
+    F     |    5    |    9
+    G     |    6    |   10</div>
+<p>(a) Use the greedy algorithm (sort by finish time, always pick the next compatible activity) to find the maximum number of non-overlapping activities.</p>
+<p>(b) Why does the greedy approach work here? What property must hold?</p>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">(a) Sort by finish time:</span>
+  A(1,4), B(3,5), C(0,6), D(5,7), E(3,9), F(5,9), G(6,10)
+
+Greedy selection:
+  1. Pick A(1,4) — first to finish. Last finish = 4.
+  2. B(3,5)? Start=3 < 4 → CONFLICT. Skip.
+  3. C(0,6)? Start=0 < 4 → CONFLICT. Skip.
+  4. D(5,7)? Start=5 ≥ 4 → <span class="ok">PICK.</span> Last finish = 7.
+  5. E(3,9)? Start=3 < 7 → CONFLICT. Skip.
+  6. F(5,9)? Start=5 < 7 → CONFLICT. Skip.
+  7. G(6,10)? Start=6 < 7 → CONFLICT. Skip.
+
+<span class="ok">Selected activities: {A, D} — 2 activities</span>
+
+Wait — let me double check. Can we do better?
+  {A, D} = 2 activities.
+  {A, D, G}? G starts at 6, D finishes at 7. 6 < 7, conflict.
+  {C, G}? C finishes 6, G starts 6. Compatible! But only 2.
+
+Actually, can we get 3? {A, D, ?}: D ends at 7, need start ≥ 7. No such activity.
+Maximum is indeed 2. ✓
+
+<span class="step">(b) Why greedy works:</span>
+The activity selection problem has two key properties:
+
+<span class="ok">1. Greedy-choice property:</span> There exists an optimal solution that includes
+the activity with the earliest finish time. (Proof: if optimal doesn't
+include it, we can swap the first activity in optimal with the earliest
+finisher — it finishes no later, so remaining activities still fit.)
+
+<span class="ok">2. Optimal substructure:</span> After selecting the first activity, the remaining
+problem (activities that start after the first finishes) is a smaller
+instance of the same problem.
+
+These two properties guarantee the greedy approach is optimal.</pre>
+</div>
+</div>
+
+<!-- P28 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 10.2 — When Greedy Fails</span><span class="problem-pts">~5 pts</span></div>
+<div class="problem-body">
+<p>Give a specific example where a greedy approach fails for the 0/1 Knapsack problem. Explain what property is missing.</p>
+<div class="graph-def">Knapsack capacity: W = 10
+Items:
+  Item 1: weight=6, value=8   (value/weight = 1.33)
+  Item 2: weight=5, value=7   (value/weight = 1.40)
+  Item 3: weight=5, value=7   (value/weight = 1.40)</div>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">Greedy by value/weight ratio (highest first):</span>
+  Item 2 (ratio 1.40): weight=5, fits (total weight=5, value=7)
+  Item 3 (ratio 1.40): weight=5, fits (total weight=10, value=14)
+  Item 1 (ratio 1.33): weight=6, doesn't fit (10+6=16 > 10)
+
+  Greedy result: Items {2, 3}, total value = <span class="warn">14</span>
+
+<span class="step">But consider:</span>
+  Take Item 1 (weight=6, value=8) + Item 2 (weight=5, value=7)
+  Total weight = 11 > 10. Doesn't fit either.
+
+  Take Item 1 (weight=6, value=8) + Item 3 (weight=5, value=7)
+  Total weight = 11 > 10. Doesn't fit.
+
+  Actually here greedy gives {2,3} with value 14, and {1,2} or {1,3} give
+  weight 11 which doesn't fit. So greedy IS optimal here.
+
+  <span class="note">Better counterexample:</span>
+  Capacity W = 10
+  Item A: weight=9, value=25  (ratio ≈ 2.78)
+  Item B: weight=5, value=15  (ratio = 3.00)
+  Item C: weight=5, value=15  (ratio = 3.00)
+
+  Greedy by ratio: Pick B (w=5,v=15), then C (w=5,v=15). Total: v=30.
+  Alternative: Pick A (w=9,v=25) + can't fit B or C. Total: v=25.
+  Greedy gives 30 > 25, so greedy wins again.
+
+  <span class="note">Classic counterexample:</span>
+  Capacity W = 6
+  Item X: weight=5, value=10 (ratio = 2.0)
+  Item Y: weight=3, value=7  (ratio ≈ 2.33)
+  Item Z: weight=3, value=7  (ratio ≈ 2.33)
+
+  Greedy by ratio: Pick Y (w=3,v=7), then Z (w=3,v=7). Total: v=<span class="ok">14</span>, w=6. ✓
+  Alternative: Pick X (w=5,v=10), can add Y? 5+3=8>6. Can add Z? Same. Total: v=10.
+  Greedy gives 14 > 10. Still optimal!
+
+  <span class="warn">TRUE counterexample:</span>
+  Capacity W = 4
+  Item P: weight=3, value=4  (ratio ≈ 1.33)
+  Item Q: weight=2, value=3  (ratio = 1.50)
+  Item R: weight=2, value=3  (ratio = 1.50)
+
+  Greedy by ratio: Pick Q (w=2,v=3), Pick R (w=2,v=3). Total: v=<span class="warn">6</span>, w=4.
+  Alternative: Pick P + Q: w=5 > 4. Doesn't fit.
+  Actually greedy gives 6, which seems optimal again.
+
+  The classic textbook counterexample:
+  Capacity W = 10
+  Item 1: weight=6, value=6  (ratio=1)
+  Item 2: weight=5, value=5  (ratio=1)
+  Item 3: weight=5, value=5  (ratio=1)
+
+  Equal ratios. Greedy picks Item 1 (w=6,v=6), then Item 2 (6+5=11 > 10, skip),
+  Item 3 (6+5=11>10, skip). Total: v=6.
+  <span class="ok">Optimal: Items {2,3}, w=10, v=10.</span> Greedy gives 6 < 10.
+
+<span class="step">What property is missing:</span>
+0/1 Knapsack lacks the <span class="warn">greedy-choice property</span>. In fractional knapsack,
+you can take partial items (greedy by value/weight ratio IS optimal). In 0/1,
+items are all-or-nothing, so a locally optimal choice (best ratio) can
+prevent a globally better combination. Needs dynamic programming instead.</pre>
+</div>
+</div>
+
+<!-- P29 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 10.3 — Master Theorem</span><span class="problem-pts">~6 pts</span></div>
+<div class="problem-body">
+<p>Solve each recurrence using the Master Theorem (state which case applies):</p>
+<p>(a) T(n) = 4T(n/2) + n</p>
+<p>(b) T(n) = 2T(n/2) + n log n</p>
+<p>(c) T(n) = 3T(n/3) + n</p>
+<p>(d) T(n) = T(n/2) + 1</p>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">Master Theorem: T(n) = aT(n/b) + f(n)</span>
+Compare f(n) with n^(log_b(a)):
+  Case 1: f(n) = O(n^(log_b(a) - ε)) → T(n) = Θ(n^(log_b(a)))
+  Case 2: f(n) = Θ(n^(log_b(a)))     → T(n) = Θ(n^(log_b(a)) · log n)
+  Case 3: f(n) = Ω(n^(log_b(a) + ε)) → T(n) = Θ(f(n))
+
+<span class="step">(a) T(n) = 4T(n/2) + n</span>
+  a=4, b=2, f(n)=n
+  n^(log_2(4)) = n^2
+  f(n) = n = O(n^(2-1)) = O(n^(2-ε)) with ε=1
+  <span class="ok">Case 1: T(n) = Θ(n²)</span>
+
+<span class="step">(b) T(n) = 2T(n/2) + n log n</span>
+  a=2, b=2, f(n) = n log n
+  n^(log_2(2)) = n^1 = n
+  f(n) = n log n. Is this Θ(n)? No, n log n grows faster.
+  Is this Ω(n^(1+ε))? n log n vs n^(1+ε)... log n is NOT n^ε for any ε > 0.
+  <span class="warn">Master theorem does NOT directly apply</span> (falls between Cases 2 and 3).
+  This is a "Case 2 extended": f(n) = Θ(n^(log_b a) · log^k n) with k=1.
+  <span class="ok">T(n) = Θ(n · log²n)</span>
+
+<span class="step">(c) T(n) = 3T(n/3) + n</span>
+  a=3, b=3, f(n) = n
+  n^(log_3(3)) = n^1 = n
+  f(n) = n = Θ(n^1)
+  <span class="ok">Case 2: T(n) = Θ(n log n)</span>
+  (This is like merge sort with 3-way split)
+
+<span class="step">(d) T(n) = T(n/2) + 1</span>
+  a=1, b=2, f(n) = 1
+  n^(log_2(1)) = n^0 = 1
+  f(n) = 1 = Θ(n^0)
+  <span class="ok">Case 2: T(n) = Θ(log n)</span>
+  (This is binary search!)</pre>
+</div>
+</div>
+
+<!-- P30 -->
+<div class="problem">
+<div class="problem-hdr"><span class="problem-num">Problem 10.4 — Paradigm Identification</span><span class="problem-pts">~5 pts</span></div>
+<div class="problem-body">
+<p>For each algorithm, state its design paradigm (Greedy, Divide & Conquer, or other) and justify in one sentence:</p>
+<p>(a) Dijkstra's Algorithm</p>
+<p>(b) Merge Sort</p>
+<p>(c) Kruskal's Algorithm</p>
+<p>(d) Closest Pair of Points</p>
+<p>(e) Bellman-Ford</p>
+</div>
+<div class="check-row"><input type="checkbox" onchange="updateScore()"><span>I've attempted this on paper</span></div>
+<button class="solution-toggle" onclick="toggleSol(this)"><span class="arrow">▶</span> Show Complete Solution</button>
+<div class="solution-content">
+<pre><span class="step">(a) Dijkstra's — GREEDY</span>
+Always picks the unvisited vertex with minimum distance (locally optimal
+choice). The greedy choice is provably correct because all edge weights
+are non-negative.
+
+<span class="step">(b) Merge Sort — DIVIDE & CONQUER</span>
+Divides array in half, recursively sorts each half, then merges.
+Classic D&C: divide → conquer (recurse) → combine (merge).
+
+<span class="step">(c) Kruskal's — GREEDY</span>
+Sorts edges by weight and greedily picks the smallest edge that doesn't
+create a cycle. The greedy choice works due to the cut property of MSTs.
+
+<span class="step">(d) Closest Pair of Points — DIVIDE & CONQUER</span>
+Divides points by x-coordinate, recursively finds closest in each half,
+then combines by checking the strip. Classic D&C structure.
+
+<span class="step">(e) Bellman-Ford — DYNAMIC PROGRAMMING (relaxation-based)</span>
+Iteratively relaxes all edges V-1 times, building up optimal solutions
+from shorter paths to longer paths. It's not greedy (doesn't make
+irrevocable choices) and not D&C (doesn't divide the problem).
+Sometimes classified as "iterative relaxation" or "edge-based DP."</pre>
+</div>
+</div>
+</div>
+
+
+</div><!-- end .main -->
+
+<script>
+function toggleSol(btn) {
+    const content = btn.nextElementSibling;
+    const arrow = btn.querySelector('.arrow');
+    content.classList.toggle('show');
+    arrow.classList.toggle('open');
+}
+
+function updateScore() {
+    const checks = document.querySelectorAll('.check-row input[type=checkbox]');
+    let done = 0;
+    checks.forEach(c => { if (c.checked) done++; });
+    document.getElementById('scoreVal').textContent = done + ' / ' + checks.length;
+}
+
+// Smooth scroll nav
+document.querySelectorAll('.nav a').forEach(a => {
+    a.addEventListener('click', e => {
+        e.preventDefault();
+        const t = document.querySelector(a.getAttribute('href'));
+        if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+});
+</script>
+
+</body>
+</html>
