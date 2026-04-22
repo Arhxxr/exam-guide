@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSE 5311 Exam 2 — 9-Hour Cram Battle Plan</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            color-scheme:dark;
+            --bg:#0f172a;--card:#1e293b;--accent:#38bdf8;--accent2:#818cf8;
+            --green:#34d399;--yellow:#fbbf24;--red:#f87171;
+            --text:#e2e8f0;--muted:#94a3b8;--border:#334155;--dark:#0d1117;
+        }
+        body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.6}
+        a{color:var(--accent);text-decoration:none}
+
+        /* ── HEADER ── */
+        .header{position:sticky;top:0;z-index:100;background:linear-gradient(135deg,#0f172a,#1e293b);border-bottom:2px solid var(--accent);padding:1rem 1.5rem;box-shadow:0 4px 12px rgba(0,0,0,.4)}
+        .header-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+        .header h1{font-size:1.6rem;color:var(--accent);font-weight:800}
+        .header .sub{font-size:.85rem;color:var(--muted)}
+        .timer-box{background:var(--card);border:2px solid var(--accent);border-radius:8px;padding:.6rem 1rem;text-align:center}
+        .timer-box .label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+        .timer-box .time{color:var(--accent);font-size:1.3rem;font-weight:700;font-variant-numeric:tabular-nums}
+        .readiness{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.6rem 1rem;min-width:200px}
+        .readiness .label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+        .readiness-bar{height:10px;background:var(--border);border-radius:5px;margin-top:4px;overflow:hidden}
+        .readiness-fill{height:100%;border-radius:5px;transition:width .5s ease,background .5s ease;width:35%}
+        .readiness-pct{font-size:.85rem;font-weight:700;margin-top:2px}
+
+        /* ── NAV ── */
+        .nav{background:rgba(15,23,42,.95);border-bottom:1px solid var(--border);padding:.5rem 1.5rem;position:sticky;top:72px;z-index:99;overflow-x:auto;white-space:nowrap;backdrop-filter:blur(8px)}
+        .nav a{display:inline-block;padding:.35rem .7rem;margin-right:.25rem;border-radius:4px;font-size:.78rem;color:var(--muted);transition:all .2s}
+        .nav a:hover,.nav a.active{color:var(--accent);background:rgba(56,189,248,.1)}
+        .nav .sep{color:var(--border);margin:0 .3rem;font-size:.7rem}
+
+        /* ── MAIN ── */
+        .main{max-width:1100px;margin:0 auto;padding:2rem 1.5rem 4rem}
+        .section-title{font-size:1.8rem;font-weight:800;color:var(--accent);margin:2.5rem 0 .5rem;padding-bottom:.5rem;border-bottom:2px solid var(--accent)}
+        .section-desc{color:var(--muted);margin-bottom:1.5rem;font-size:.95rem}
+
+        /* ── HOUR BLOCKS ── */
+        .hour-block{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.5rem;margin-bottom:1.5rem;position:relative;border-left:4px solid var(--accent)}
+        .hour-block.done{border-left-color:var(--green);opacity:.85}
+        .hour-block.done .hour-tag{background:var(--green)}
+        .hour-tag{display:inline-block;background:var(--accent);color:#0f172a;font-weight:800;font-size:.8rem;padding:.2rem .7rem;border-radius:4px;margin-bottom:.5rem}
+        .hour-title{font-size:1.15rem;font-weight:700;color:var(--text);margin-bottom:.25rem}
+        .hour-why{background:rgba(56,189,248,.08);border-left:3px solid var(--accent);padding:.5rem .8rem;margin:.6rem 0;border-radius:0 6px 6px 0;font-size:.85rem;color:var(--muted)}
+        .hour-items{list-style:none;padding:0;margin:.6rem 0 0}
+        .hour-items li{padding:.35rem 0;font-size:.9rem;color:var(--text);display:flex;align-items:flex-start;gap:.5rem}
+        .hour-items li::before{content:"→";color:var(--accent);font-weight:700;flex-shrink:0}
+        .hour-check{position:absolute;top:1.2rem;right:1.2rem;display:flex;align-items:center;gap:.4rem;cursor:pointer;font-size:.8rem;color:var(--muted)}
+        .hour-check input[type=checkbox]{width:18px;height:18px;accent-color:var(--green);cursor:pointer}
+        .hour-tip{background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25);border-radius:6px;padding:.5rem .8rem;margin-top:.6rem;font-size:.82rem;color:var(--yellow)}
+        .hour-tip strong{color:var(--yellow)}
+        .hour-extra{background:rgba(129,140,248,.1);border:1px solid rgba(129,140,248,.2);border-radius:6px;padding:.5rem .8rem;margin-top:.5rem;font-size:.82rem;color:var(--accent2)}
+
+        /* ── CRAM SHEET ── */
+        .sub-title{font-size:1.3rem;font-weight:700;color:var(--accent);margin:2rem 0 .8rem;padding-left:.5rem;border-left:4px solid var(--accent)}
+        table.ct{width:100%;border-collapse:collapse;font-size:.85rem;margin-bottom:1.5rem}
+        table.ct th{background:rgba(56,189,248,.15);color:var(--accent);text-align:left;padding:.55rem .6rem;border-bottom:2px solid var(--accent);font-weight:700}
+        table.ct td{padding:.5rem .6rem;border-bottom:1px solid var(--border);color:var(--text)}
+        table.ct tr:hover td{background:rgba(56,189,248,.04)}
+        table.ct .insight{color:var(--muted);font-size:.82rem}
+
+        /* algo cards */
+        .algo{background:var(--dark);border:1px solid var(--border);border-radius:8px;padding:1.2rem;margin-bottom:1.2rem}
+        .algo-name{font-size:1.05rem;font-weight:700;color:var(--accent);margin-bottom:.5rem}
+        .algo pre{background:rgba(30,41,59,.6);border:1px solid var(--border);border-radius:6px;padding:.8rem;font-size:.82rem;line-height:1.55;overflow-x:auto;color:var(--text);white-space:pre-wrap;margin:.5rem 0}
+        .algo-warn{background:rgba(248,113,113,.1);border-left:3px solid var(--red);padding:.4rem .7rem;border-radius:0 6px 6px 0;font-size:.82rem;color:var(--red);margin-top:.5rem}
+        .algo-note{background:rgba(52,211,153,.08);border-left:3px solid var(--green);padding:.4rem .7rem;border-radius:0 6px 6px 0;font-size:.82rem;color:var(--green);margin-top:.5rem}
+        .algo h4{color:var(--yellow);font-size:.9rem;margin:1rem 0 .3rem}
+
+        /* np defs */
+        .np-def{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.8rem 1rem;margin-bottom:.6rem}
+        .np-def .term{color:var(--accent);font-weight:700;font-size:.95rem}
+        .np-def .desc{color:var(--muted);font-size:.88rem;margin-top:.2rem}
+
+        /* formula box */
+        .fbox{background:var(--dark);border:1px solid var(--border);border-radius:8px;padding:1rem;margin-bottom:1rem}
+        .fline{padding:.4rem 0;border-bottom:1px solid rgba(51,65,85,.5);font-size:.88rem}
+        .fline:last-child{border-bottom:none}
+        .fline .fl{color:var(--accent);font-weight:600;margin-right:.5rem}
+
+        /* decision items */
+        .dec{display:flex;gap:.5rem;padding:.55rem 0;border-bottom:1px solid rgba(51,65,85,.4);font-size:.88rem}
+        .dec:last-child{border-bottom:none}
+        .dec .prob{color:var(--yellow);font-weight:600;min-width:250px;flex-shrink:0}
+        .dec .sol{color:var(--text)}
+
+        /* traps */
+        .trap{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.7rem 1rem;margin-bottom:.5rem;font-size:.88rem}
+        .trap .tnum{color:var(--red);font-weight:700;margin-right:.4rem}
+        .trap .twhy{color:var(--muted);font-size:.82rem;margin-top:.2rem}
+
+        /* collapsible practice */
+        .practice{background:var(--dark);border:1px solid var(--border);border-radius:8px;margin-bottom:1.2rem;overflow:hidden}
+        .practice-q{padding:1rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:600;color:var(--text)}
+        .practice-q:hover{background:rgba(56,189,248,.05)}
+        .practice-q .arrow{color:var(--accent);transition:transform .3s;font-size:1.2rem}
+        .practice-q .arrow.open{transform:rotate(90deg)}
+        .practice-a{padding:0 1rem 1rem;display:none}
+        .practice-a.show{display:block}
+        .practice-a pre{background:rgba(30,41,59,.6);border:1px solid var(--border);border-radius:6px;padding:.8rem;font-size:.82rem;line-height:1.55;overflow-x:auto;color:var(--text);white-space:pre-wrap}
+        .practice-a .step{color:var(--accent);font-weight:600}
+
+        /* chain diagram */
+        .chain{background:var(--dark);border:1px solid var(--border);border-radius:8px;padding:1rem;font-family:monospace;font-size:.88rem;color:var(--muted);line-height:2;margin:1rem 0}
+
+        /* print */
+        @media print{
+            .header,.nav,.hour-check,.timer-box,.readiness,.practice-q .arrow{display:none!important}
+            body{background:#fff;color:#111;font-size:11pt}
+            .hour-block,.algo,.np-def,.trap,.practice,.fbox{border-color:#ccc;background:#f9f9f9;break-inside:avoid}
+            .section-title,.sub-title,.algo-name,.np-def .term,.fline .fl{color:#1a56db}
+            table.ct th{background:#e8f0fe;color:#1a56db}
+            .hour-tag{background:#1a56db;color:#fff}
+        }
+    </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════ HEADER ════════════════════════════════════════ -->
+<div class="header">
+    <div class="header-inner">
+        <div>
+            <h1>9-HOUR CRAM BATTLE PLAN</h1>
+            <div class="sub">CSE 5311 Exam 2 · Wed Apr 22 · 4:30–6:00 PM · Closed Book</div>
+        </div>
+        <div class="timer-box">
+            <div class="label">Time to Exam</div>
+            <div class="time" id="countdown">--:--:--</div>
+        </div>
+        <div class="readiness">
+            <div class="label">Exam Readiness</div>
+            <div class="readiness-bar"><div class="readiness-fill" id="readFill"></div></div>
+            <div class="readiness-pct" id="readPct">35% — You know the basics</div>
+        </div>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════════ NAV ════════════════════════════════════════ -->
+<div class="nav" id="topnav">
+    <a href="#plan">Battle Plan</a>
+    <span class="sep">|</span>
+    <a href="#hour1">H1</a><a href="#hour2">H2</a><a href="#hour3">H3</a><a href="#hour4">H4</a><a href="#hour5">H5</a><a href="#hour6">H6</a><a href="#hour7">H7</a><a href="#hour8">H8</a><a href="#hour9">H9</a>
+    <span class="sep">|</span>
+    <a href="#b1">Complexity</a><a href="#b2">Cheatsheets</a><a href="#b3">NP-Complete</a><a href="#b4">Formulas</a><a href="#b5">Decision</a><a href="#b6">Traps</a><a href="#b7">Practice</a>
+</div>
+
+<!-- ════════════════════════════════════════ MAIN ════════════════════════════════════════ -->
+<div class="main">
+
+<!-- ╔══════════════════════════════════════════════════════════════════╗ -->
+<!-- ║                   SECTION A: THE 9-HOUR PLAN                   ║ -->
+<!-- ╚══════════════════════════════════════════════════════════════════╝ -->
+
+<div id="plan"></div>
+<div class="section-title">SECTION A: The 9-Hour Battle Plan</div>
+<p class="section-desc">You have 3 more hours than the 6-hr plan. That's enough for dedicated practice rounds, a full mock exam, and targeted review. Every extra hour is allocated for maximum ROI. Check off each block as you finish.</p>
+
+<!-- ──── HOUR 1 ──── -->
+<div class="hour-block" id="hour1">
+    <label class="hour-check"><input type="checkbox" data-hour="1" onchange="updateReadiness()"> Done</label>
+    <div class="hour-tag">HOUR 1 · 60 min</div>
+    <div class="hour-title">Algorithm Tracing Foundations — Learn the Patterns</div>
+    <div class="hour-why"><strong>WHY FIRST:</strong> The professor said "questions similar to in-class examples." That means tracing algorithms on graphs step-by-step. These are mechanical — learn the pattern once and you can replicate it every time. This is where the 80% begins.</div>
+    <ul class="hour-items">
+        <li><strong>Dijkstra's Algorithm:</strong> Learn the distance-table format. Initialize all to ∞, source to 0. Pick unvisited min-distance vertex. Relax all neighbors. Mark visited. Repeat.</li>
+        <li><strong>Prim's Algorithm:</strong> Learn the MST-set + key-value format. Start from any vertex. Pick minimum-key vertex not in MST. Update neighbor keys. Track parent edges.</li>
+        <li><strong>Kruskal's Algorithm:</strong> Sort edges by weight. Use Union-Find. For each edge: if endpoints in different sets, add it; otherwise skip (cycle). Stop at V-1 edges.</li>
+        <li><strong>Ford-Fulkerson:</strong> Find augmenting path (BFS = Edmonds-Karp). Find bottleneck. Update residual graph (both forward and backward). Sum bottlenecks = max flow.</li>
+    </ul>
+    <div class="hour-tip"><strong>TIP:</strong> Don't practice yet — just READ the cheatsheets in Section B2 below. Understand the table formats. Hour 2 is where you practice.</div>
+</div>
+
+<!-- ──── HOUR 2 ──── -->
+<div class="hour-block" id="hour2">
+    <label class="hour-check"><input type="checkbox" data-hour="2" onchange="updateReadiness()"> Done</label>
+    <div class="hour-tag">HOUR 2 · 60 min</div>
+    <div class="hour-title">Algorithm Tracing Practice — Hands On Paper</div>
+    <div class="hour-why"><strong>WHY:</strong> The 6-hr plan doesn't have this. You do. Reading ≠ knowing. You need to trace each algorithm BY HAND on paper to build muscle memory. If you get these right on paper now, you WILL get them right on the exam.</div>
+    <ul class="hour-items">
+        <li><strong>Practice Dijkstra's:</strong> Use the graph in Section B7, Problem 1 (6 nodes, A-F). Fill out the FULL distance table on paper. Then check your answer.</li>
+        <li><strong>Practice Kruskal's:</strong> Use Section B7, Problem 2 (6 nodes, 9 edges). Sort the edges, trace Union-Find. Check answer.</li>
+        <li><strong>Practice Prim's:</strong> Use the SAME graph as Kruskal's. Start from vertex 1. You should get the same MST edges (possibly different order).</li>
+        <li><strong>Practice Ford-Fulkerson:</strong> Use Section B7, Problem 3. Find all augmenting paths. Show residual updates. Check answer.</li>
+    </ul>
+    <div class="hour-extra"><strong>9-HR ADVANTAGE:</strong> This dedicated practice hour is the single biggest difference between cramming and actually learning. The 6-hr plan asks you to learn AND practice in one hour. You get to separate them.</div>
+</div>
+
+<!-- ──── HOUR 3 ──── -->
+<div class="hour-block" id="hour3">
+    <label class="hour-check"><input type="checkbox" data-hour="3" onchange="updateReadiness()"> Done</label>
+    <div class="hour-tag">HOUR 3 · 45 min</div>
+    <div class="hour-title">Big-O + Graph Basics — The Foundation Points</div>
+    <div class="hour-why"><strong>WHY:</strong> These are pure memorization/recall questions. No tracing, no proofs — just definitions and facts. Guaranteed points if you know them. Free points if you don't overthink.</div>
+    <ul class="hour-items">
+        <li><strong>Big-O Hierarchy:</strong> 1 &lt; log n &lt; √n &lt; n &lt; n log n &lt; n² &lt; n³ &lt; 2ⁿ &lt; n! — Memorize this sequence cold.</li>
+        <li><strong>Formal Definition:</strong> f(n) = O(g(n)) iff ∃ c &gt; 0, n₀ &gt; 0 such that f(n) ≤ c·g(n) for all n ≥ n₀. Also Ω (≥) and Θ (both).</li>
+        <li><strong>Simplification:</strong> Drop constants (5n² → n²), keep dominant term (n³ + n² → n³), log bases don't matter in Big-O.</li>
+        <li><strong>Adjacency Matrix:</strong> O(V²) space. Check edge in O(1). Good for dense graphs.</li>
+        <li><strong>Adjacency List:</strong> O(V+E) space. Iterate neighbors in O(degree). Good for sparse graphs.</li>
+        <li><strong>BFS:</strong> Queue-based, O(V+E), level-order traversal, shortest path in unweighted graphs.</li>
+        <li><strong>DFS:</strong> Stack/recursion, O(V+E), goes deep first, used for: cycle detection, topological sort, connected components, cut vertices.</li>
+        <li><strong>Graph Types:</strong> Directed/undirected, weighted/unweighted, DAG, bipartite, complete (K_n), connected/disconnected.</li>
+        <li><strong>Tree Facts:</strong> |E| = |V| - 1, connected, acyclic. Any 2 of these 3 properties imply the 3rd.</li>
+        <li><strong>Cut vertex:</strong> removal disconnects graph. <strong>Bridge:</strong> edge whose removal disconnects graph.</li>
+    </ul>
+</div>
+
+<!-- ──── HOUR 4 ──── -->
+<div class="hour-block" id="hour4">
+    <label class="hour-check"><input type="checkbox" data-hour="4" onchange="updateReadiness()"> Done</label>
+    <div class="hour-tag">HOUR 4 · 60 min</div>
+    <div class="hour-title">NP-Completeness — Deep Dive (Not Just Memorization)</div>
+    <div class="hour-why"><strong>WHY:</strong> This is the #1 topic students lose points on because they memorize definitions without understanding the LOGIC. With 60 minutes (vs 45 in the 6-hr plan), you can actually internalize the reduction framework.</div>
+    <ul class="hour-items">
+        <li><strong>P:</strong> Problems solvable in polynomial time. Sorting, shortest path, MST — all in P.</li>
+        <li><strong>NP:</strong> Problems whose solutions can be VERIFIED in polynomial time. NOT "not polynomial." Every P problem is also NP (P ⊆ NP).</li>
+        <li><strong>NP-Hard:</strong> At least as hard as any NP problem. Might not even be in NP (e.g., Halting Problem).</li>
+        <li><strong>NP-Complete:</strong> In NP AND NP-Hard. The hardest problems IN NP. Solve any one in poly time → P = NP.</li>
+        <li><strong>Reduction:</strong> To prove X is NP-Complete: (1) show X ∈ NP (give poly-time verifier), (2) reduce KNOWN NP-Complete → X in poly time.</li>
+        <li><strong>Practice the proof:</strong> Read B3's worked example (IS is NP-Complete via Clique reduction). Then close it and write the proof from memory.</li>
+        <li><strong>Key relationships:</strong> Clique in G = Independent Set in complement(G). IS of size k ↔ Vertex Cover of size n-k.</li>
+        <li><strong>Approximation Algorithms:</strong> 2-approx Vertex Cover (greedily pick edges). 2-approx TSP with triangle inequality.</li>
+        <li><strong>Decision vs Optimization:</strong> Decision = yes/no ("is there a tour of cost ≤ k?"). Optimization = find the best ("find shortest tour"). Decision version is used for NP-Complete proofs.</li>
+    </ul>
+    <div class="hour-tip"><strong>EXAM TRAP:</strong> Reduction direction matters! You reduce FROM the known hard problem TO the new one. "If I could solve NEW in poly time, I could solve KNOWN in poly time." If you get the direction backwards, you prove nothing.</div>
+</div>
+
+<!-- ──── HOUR 5 ──── -->
+<div class="hour-block" id="hour5">
+    <label class="hour-check"><input type="checkbox" data-hour="5" onchange="updateReadiness()"> Done</label>
+    <div class="hour-tag">HOUR 5 · 60 min</div>
+    <div class="hour-title">Network Flow + Bellman-Ford — The Tricky Algorithms</div>
+    <div class="hour-why"><strong>WHY:</strong> Ford-Fulkerson has the most steps of any algorithm on this exam (augmenting paths + residual updates + max-flow min-cut). Bellman-Ford is simpler but has subtleties with negative cycles. Both need dedicated attention.</div>
+    <ul class="hour-items">
+        <li><strong>Ford-Fulkerson Mechanics:</strong> (1) Find augmenting path s→t in residual graph. (2) Find bottleneck = min residual capacity on path. (3) Update: subtract bottleneck from forward edges, ADD to backward edges. (4) Repeat until no path exists.</li>
+        <li><strong>Residual Graph:</strong> Forward edge residual = capacity − flow. Backward edge residual = current flow (allows "undoing"). Both must be tracked.</li>
+        <li><strong>Max-Flow Min-Cut:</strong> After algorithm terminates, find all vertices reachable from source in residual graph = set S. Unreachable = set T. Min cut = edges from S to T in original graph. Cut capacity = max flow.</li>
+        <li><strong>Edmonds-Karp:</strong> Ford-Fulkerson but always use BFS for augmenting path. Guarantees O(VE²). Always terminates.</li>
+        <li><strong>Dinic's:</strong> Build level graph via BFS, find blocking flow via DFS, repeat. O(V²E). Faster in practice.</li>
+        <li><strong>Bellman-Ford:</strong> Initialize dist[s]=0, all others ∞. Repeat V-1 times: for EVERY edge (u,v,w), relax: if dist[u]+w &lt; dist[v], update.</li>
+        <li><strong>Negative Cycle Detection:</strong> Run one MORE iteration (Vth). If ANY edge still relaxes → negative cycle exists → shortest path undefined.</li>
+        <li><strong>Dijkstra vs Bellman-Ford:</strong> Dijkstra = O((V+E)log V) but NO negative weights. Bellman-Ford = O(VE) but handles negatives.</li>
+    </ul>
+    <div class="hour-tip"><strong>PRACTICE:</strong> Trace Bellman-Ford on a small graph with a negative edge (but no negative cycle). Verify no edge relaxes on the Vth iteration.</div>
+</div>
+
+<!-- ──── HOUR 6 ──── -->
+<div class="hour-block" id="hour6">
+    <label class="hour-check"><input type="checkbox" data-hour="6" onchange="updateReadiness()"> Done</label>
+    <div class="hour-tag">HOUR 6 · 45 min</div>
+    <div class="hour-title">Geometric Algorithms — The Detail-Heavy Topic</div>
+    <div class="hour-why"><strong>WHY:</strong> These algorithms have specific formulas and steps that you MUST get right. The orientation test is used in almost every geometric algorithm. Graham Scan is the most likely exam question here.</div>
+    <ul class="hour-items">
+        <li><strong>Orientation Test:</strong> For points p1, p2, p3: val = (p2.x−p1.x)(p3.y−p1.y) − (p2.y−p1.y)(p3.x−p1.x). Positive → CCW. Negative → CW. Zero → Collinear.</li>
+        <li><strong>Graham Scan (O(n log n)):</strong> (1) Find lowest-y point (leftmost if tie) = anchor. (2) Sort remaining by polar angle from anchor. (3) Push first 3 to stack. (4) For each remaining point: while top-2 and new point make CW turn → pop. Then push new point.</li>
+        <li><strong>Jarvis March / Gift Wrapping (O(nh)):</strong> Start from leftmost point. At each step, pick the most counterclockwise point from current. Repeat until back to start. h = number of hull points.</li>
+        <li><strong>Closest Pair (O(n log n)):</strong> Sort by x. Divide into left/right. Recursively find closest in each (δ_L, δ_R). δ = min(δ_L, δ_R). Check strip of width 2δ around midline — for each point, compare with next 7 points sorted by y.</li>
+        <li><strong>Point-in-Polygon:</strong> Cast ray rightward from point. Count intersections with polygon edges. Odd = inside. Even = outside.</li>
+    </ul>
+    <div class="hour-tip"><strong>PRACTICE:</strong> Do Problem 4 in Section B7 — trace Graham Scan on 7 points. Calculate at least 3 orientation tests by hand to make sure you have the formula right.</div>
+</div>
+
+<!-- ──── HOUR 7 ──── -->
+<div class="hour-block" id="hour7">
+    <label class="hour-check"><input type="checkbox" data-hour="7" onchange="updateReadiness()"> Done</label>
+    <div class="hour-tag">HOUR 7 · 45 min</div>
+    <div class="hour-title">Topological Sort + Design Paradigms + Master Theorem</div>
+    <div class="hour-why"><strong>WHY:</strong> Kahn's algorithm is straightforward to trace and likely on the exam. Design paradigms and Master theorem are smaller topics but could be easy points. Don't leave them on the table.</div>
+    <ul class="hour-items">
+        <li><strong>Kahn's Topological Sort (O(V+E)):</strong> (1) Compute in-degree of all vertices. (2) Add all in-degree 0 to queue. (3) While queue not empty: dequeue u, add to ordering, for each neighbor v: decrease in-degree[v], if 0 → enqueue. (4) If ordering has fewer than V vertices → cycle exists.</li>
+        <li><strong>Critical Path Method:</strong> Longest path in DAG. Use topological order, relax edges but MAXIMIZE instead of minimize.</li>
+        <li><strong>Greedy:</strong> Make locally optimal choice at each step. Works when: greedy-choice property (local optimal → global optimal) + optimal substructure. Examples: activity selection (sort by finish time), fractional knapsack.</li>
+        <li><strong>Greedy FAILS:</strong> 0/1 knapsack (need DP), some graph coloring, coin change with arbitrary denominations.</li>
+        <li><strong>Divide & Conquer:</strong> Split → solve subproblems recursively → combine. Examples: merge sort, closest pair, binary search, quicksort.</li>
+        <li><strong>Master Theorem:</strong> T(n) = aT(n/b) + f(n). Case 1: f(n) = O(n^(log_b(a)−ε)) → Θ(n^log_b(a)). Case 2: f(n) = Θ(n^log_b(a)) → Θ(n^log_b(a) · log n). Case 3: f(n) = Ω(n^(log_b(a)+ε)) and regularity → Θ(f(n)).</li>
+        <li><strong>Common recurrences:</strong> T(n)=2T(n/2)+O(n) → O(n log n) [merge sort]. T(n)=T(n/2)+O(1) → O(log n) [binary search]. T(n)=2T(n/2)+O(1) → O(n) [tree traversal].</li>
+    </ul>
+</div>
+
+<!-- ──── HOUR 8 ──── -->
+<div class="hour-block" id="hour8" style="border-left-color:var(--yellow)">
+    <label class="hour-check"><input type="checkbox" data-hour="8" onchange="updateReadiness()"> Done</label>
+    <div class="hour-tag" style="background:var(--yellow)">HOUR 8 · 60 min · ★ THE GAME CHANGER</div>
+    <div class="hour-title">Full Practice Exam Simulation</div>
+    <div class="hour-why"><strong>WHY:</strong> This is the KILLER advantage of 9 hours. Simulating exam conditions is the #1 predictor of exam performance. Your brain needs to practice RECALLING under pressure, not just reading. The 6-hr plan can't afford this. You can.</div>
+    <ul class="hour-items">
+        <li><strong>Set a 45-minute timer.</strong> No looking at the cram sheet. Grab blank paper.</li>
+        <li><strong>Q1 (10 min):</strong> Trace Dijkstra's on a NEW graph — make one up with 5 vertices, source = first vertex. Full distance table.</li>
+        <li><strong>Q2 (10 min):</strong> Trace Ford-Fulkerson on Section B7 Problem 3 (but try from memory first). Show all augmenting paths.</li>
+        <li><strong>Q3 (10 min):</strong> Write a complete NP-Completeness proof: "Prove Independent Set is NP-Complete." Full structure.</li>
+        <li><strong>Q4 (8 min):</strong> Trace Graham Scan on 6 points of your choice. Show orientation tests.</li>
+        <li><strong>Q5 (7 min):</strong> Trace Kahn's topological sort on a DAG you draw with 6 vertices.</li>
+        <li><strong>After 45 min:</strong> Check answers against cram sheet. Mark what you got wrong → that's your Hour 9 focus.</li>
+    </ul>
+    <div class="hour-extra"><strong>SCORING YOURSELF:</strong> If you got 4/5 right → you're on track for 80%+. If 3/5 → spend Hour 9 on the topics you missed. If 2/5 → re-read the cheatsheets for those topics, then try again quickly.</div>
+</div>
+
+<!-- ──── HOUR 9 ──── -->
+<div class="hour-block" id="hour9" style="border-left-color:var(--green)">
+    <label class="hour-check"><input type="checkbox" data-hour="9" onchange="updateReadiness()"> Done</label>
+    <div class="hour-tag" style="background:var(--green)">HOUR 9 · 45 min · FINAL PUSH</div>
+    <div class="hour-title">Targeted Review + Final Memorization + Sleep</div>
+    <div class="hour-why"><strong>WHY:</strong> Targeted review of weak spots beats re-reading everything. Plus, your final memorization pass right before sleep is when your brain consolidates most effectively.</div>
+    <ul class="hour-items">
+        <li><strong>First 20 min:</strong> Fix whatever you got wrong in the practice exam. Re-read ONLY those cheatsheets. Try the problem again from memory.</li>
+        <li><strong>Next 10 min:</strong> Final pass through the Master Complexity Table (B1). Cover the answers, quiz yourself aloud.</li>
+        <li><strong>Next 10 min:</strong> Read Common Exam Traps (B6) one last time. Read the NP-Completeness definitions one more time.</li>
+        <li><strong>Last 5 min:</strong> Skim "When to Use What" (B5) and Key Formulas (B4). Let them be the last thing in your brain.</li>
+        <li><strong>THEN SLEEP.</strong> Seriously. A rested brain scores 10-15% higher than an exhausted one. You've done 9 hours — trust the work.</li>
+    </ul>
+    <div class="hour-tip"><strong>MORNING OF:</strong> When you wake up, spend 15 min skimming the complexity table and formulas. That's it. Don't cram new material. Walk in confident.</div>
+</div>
+
+
+<!-- ╔══════════════════════════════════════════════════════════════════╗ -->
+<!-- ║                    SECTION B: THE CRAM SHEET                   ║ -->
+<!-- ╚══════════════════════════════════════════════════════════════════╝ -->
+
+<div class="section-title" id="cramsheet">SECTION B: The Cram Sheet</div>
+<p class="section-desc">Everything you need to MEMORIZE. Review before bed. Review when you wake up. Walk into the exam with this in your brain.</p>
+
+<!-- ═══════════════ B1: COMPLEXITY TABLE ═══════════════ -->
+<div class="sub-title" id="b1">B1: Master Complexity Table</div>
+<p style="color:var(--muted);margin-bottom:.8rem;font-size:.88rem">Memorize these. You WILL be asked. Cover the Time column and quiz yourself.</p>
+
+<table class="ct">
+<thead><tr><th>Algorithm</th><th>Time</th><th>Space</th><th>Key Insight</th></tr></thead>
+<tbody>
+<tr><td>BFS</td><td>O(V + E)</td><td>O(V)</td><td class="insight">Queue. Shortest path in unweighted graphs. Level-order.</td></tr>
+<tr><td>DFS</td><td>O(V + E)</td><td>O(V)</td><td class="insight">Stack/recursion. Cycle detection, connected components, topological sort.</td></tr>
+<tr><td>Dijkstra (min-heap)</td><td>O((V+E) log V)</td><td>O(V)</td><td class="insight">Greedy pick of min-distance unvisited. NO negative weights.</td></tr>
+<tr><td>Dijkstra (array)</td><td>O(V²)</td><td>O(V)</td><td class="insight">Same algo, linear scan for min. Better for dense graphs.</td></tr>
+<tr><td>Bellman-Ford</td><td>O(VE)</td><td>O(V)</td><td class="insight">Relax ALL edges V-1 times. Handles negative weights. Detects negative cycles.</td></tr>
+<tr><td>Kruskal's</td><td>O(E log E)</td><td>O(V + E)</td><td class="insight">Sort edges, Union-Find. MST for sparse graphs.</td></tr>
+<tr><td>Prim's (min-heap)</td><td>O((V+E) log V)</td><td>O(V)</td><td class="insight">Grow MST from vertex, greedy pick min-key. Good general purpose.</td></tr>
+<tr><td>Prim's (array)</td><td>O(V²)</td><td>O(V)</td><td class="insight">Same algo, linear scan. Better for dense graphs.</td></tr>
+<tr><td>Ford-Fulkerson (DFS)</td><td>O(E · max_flow)</td><td>O(V + E)</td><td class="insight">DFS for augmenting paths. May not terminate with irrational caps.</td></tr>
+<tr><td>Edmonds-Karp (BFS)</td><td>O(VE²)</td><td>O(V + E)</td><td class="insight">Ford-Fulkerson + BFS. Always terminates. Preferred on exams.</td></tr>
+<tr><td>Dinic's</td><td>O(V²E)</td><td>O(V + E)</td><td class="insight">Level graph + blocking flows. Faster in practice.</td></tr>
+<tr><td>Kahn's Topological Sort</td><td>O(V + E)</td><td>O(V)</td><td class="insight">In-degree queue. DAG only. Detects cycles if output &lt; V vertices.</td></tr>
+<tr><td>Graham Scan</td><td>O(n log n)</td><td>O(n)</td><td class="insight">Sort by polar angle, stack-based. Standard convex hull.</td></tr>
+<tr><td>Jarvis March</td><td>O(nh)</td><td>O(n)</td><td class="insight">Gift wrapping. h = hull points. Good when h ≪ n.</td></tr>
+<tr><td>Closest Pair (D&C)</td><td>O(n log n)</td><td>O(n)</td><td class="insight">Divide, recurse, check strip of 2δ. Compare next 7 by y.</td></tr>
+<tr><td>NP-Complete (best known)</td><td>O(2ⁿ) or worse</td><td>Varies</td><td class="insight">No poly-time solution known unless P = NP.</td></tr>
+</tbody>
+</table>
+
+
+<!-- ═══════════════ B2: ALGORITHM CHEATSHEETS ═══════════════ -->
+<div class="sub-title" id="b2">B2: Algorithm Step-by-Step Cheatsheets</div>
+<p style="color:var(--muted);margin-bottom:.8rem;font-size:.88rem">The EXACT steps to trace on the exam + worked examples. Memorize the format.</p>
+
+<!-- Dijkstra -->
+<div class="algo">
+    <div class="algo-name">Dijkstra's Algorithm — Shortest Path (No Negative Weights)</div>
+<pre>INPUT: Weighted graph G, source vertex s
+OUTPUT: Shortest distances dist[], parent pointers parent[]
+
+1. Initialize: dist[s] = 0, dist[v] = ∞ for all v ≠ s
+   parent[v] = null for all v
+2. unvisited = {all vertices}
+3. While unvisited is not empty:
+   a. Pick u ∈ unvisited with MINIMUM dist[u]
+   b. Remove u from unvisited (mark as visited)
+   c. For each neighbor v of u where v is unvisited:
+      if dist[u] + weight(u,v) < dist[v]:
+          dist[v] = dist[u] + weight(u,v)
+          parent[v] = u
+4. Return dist[], parent[]</pre>
+    <h4>Worked Example: Graph with 5 vertices</h4>
+    <p style="font-size:.85rem;color:var(--muted)">Edges: A→B:4, A→C:1, B→D:1, C→B:2, C→D:5, D→E:3. Source = A.</p>
+<pre>Step | Pick | Visited      | d[A] | d[B] | d[C] | d[D] | d[E] | Updated
+─────┼──────┼──────────────┼──────┼──────┼──────┼──────┼──────┼────────
+Init |  —   | {}           |  0   |  ∞   |  ∞   |  ∞   |  ∞   |  —
+  1  |  A   | {A}          |  0   |  4   |  1   |  ∞   |  ∞   | B=4,C=1
+  2  |  C   | {A,C}        |  0   |  3   |  1   |  6   |  ∞   | B=3,D=6
+  3  |  B   | {A,C,B}      |  0   |  3   |  1   |  4   |  ∞   | D=4
+  4  |  D   | {A,C,B,D}    |  0   |  3   |  1   |  4   |  7   | E=7
+  5  |  E   | {A,C,B,D,E}  |  0   |  3   |  1   |  4   |  7   | —
+
+Shortest paths: A→A=0, A→C→B=3, A→C=1, A→C→B→D=4, A→C→B→D→E=7</pre>
+    <div class="algo-warn">⚠️ FAILS with negative edge weights. Use Bellman-Ford instead. Dijkstra's greedy assumption breaks when a "shortcut" through a negative edge is missed.</div>
+</div>
+
+<!-- Prim's -->
+<div class="algo">
+    <div class="algo-name">Prim's Algorithm — Minimum Spanning Tree</div>
+<pre>INPUT: Weighted undirected graph G
+OUTPUT: MST edge set
+
+1. Pick any starting vertex s. MST_set = {s}
+2. key[s] = 0, key[v] = ∞ for all v ≠ s, parent[v] = null
+3. While MST_set doesn't contain all vertices:
+   a. Pick vertex u NOT in MST_set with minimum key[u]
+   b. Add u to MST_set
+   c. For each edge (u,v,w) where v NOT in MST_set:
+      if w < key[v]:
+          key[v] = w
+          parent[v] = u
+4. MST edges = {(parent[v], v) for all v ≠ s}</pre>
+    <h4>Worked Example: 5 vertices, starting from A</h4>
+    <p style="font-size:.85rem;color:var(--muted)">Edges: A-B:4, A-C:1, B-C:2, B-D:5, C-D:8, D-E:3.</p>
+<pre>Step | Pick | MST Set      | key[A] | key[B] | key[C] | key[D] | key[E] | Edge Added
+─────┼──────┼──────────────┼────────┼────────┼────────┼────────┼────────┼──────────
+Init |  —   | {}           |   0    |   ∞    |   ∞    |   ∞    |   ∞    |    —
+  1  |  A   | {A}          |   0    |   4    |   1    |   ∞    |   ∞    |    —
+  2  |  C   | {A,C}        |   0    |   2    |   1    |   8    |   ∞    |   A-C(1)
+  3  |  B   | {A,C,B}      |   0    |   2    |   1    |   5    |   ∞    |   C-B(2)
+  4  |  D   | {A,C,B,D}    |   0    |   2    |   1    |   5    |   3    |   B-D(5)
+  5  |  E   | {A,C,B,D,E}  |   0    |   2    |   1    |   5    |   3    |   D-E(3)
+
+MST edges: A-C(1), C-B(2), B-D(5), D-E(3). Total weight = 11.</pre>
+    <div class="algo-note">✓ Good for dense graphs (O(V²) with array). Same MST result as Kruskal's, different build order.</div>
+</div>
+
+<!-- Kruskal's -->
+<div class="algo">
+    <div class="algo-name">Kruskal's Algorithm — Minimum Spanning Tree</div>
+<pre>INPUT: Weighted undirected graph G with E edges and V vertices
+OUTPUT: MST edge set
+
+1. Sort ALL edges by weight (ascending)
+2. Initialize Union-Find: each vertex in its own set (parent[v]=v, rank[v]=0)
+3. mst_edges = []
+4. For each edge (u, v, w) in sorted order:
+   if find(u) ≠ find(v):       // different components
+       mst_edges.add((u,v,w))
+       union(u, v)             // merge components
+   else:
+       skip                    // would create cycle
+5. Stop when |mst_edges| = V-1
+6. Return mst_edges
+
+Union-Find operations:
+  find(x): follow parent pointers to root (with path compression)
+  union(x,y): attach smaller-rank tree under larger-rank root</pre>
+    <h4>Worked Example: 4 vertices</h4>
+    <p style="font-size:.85rem;color:var(--muted)">Edges: A-B:4, A-C:1, B-C:2, B-D:5, C-D:3.</p>
+<pre>Sorted edges: A-C(1), B-C(2), C-D(3), A-B(4), B-D(5)
+
+Edge  | Wt | find(u) | find(v) | Action | Reason               | MST so far
+──────┼────┼─────────┼─────────┼────────┼──────────────────────┼──────────
+A-C   |  1 |    A    |    C    |  ADD   | Different components  | {A-C}
+B-C   |  2 |    B    |    A*   |  ADD   | Different components  | {A-C, B-C}
+C-D   |  3 |    A*   |    D    |  ADD   | Different components  | {A-C, B-C, C-D}
+A-B   |  4 |    A    |    A    |  SKIP  | Same component (cycle)| —
+B-D   |  5 |    A    |    A    |  SKIP  | Same component (cycle)| —
+*after union
+
+MST edges: A-C(1), B-C(2), C-D(3). Total = 6. V-1 = 3 edges. ✓</pre>
+    <div class="algo-note">✓ Good for sparse graphs. Exactly V-1 edges in any MST. If graph is disconnected, gives MSF (minimum spanning forest).</div>
+</div>
+
+<!-- Ford-Fulkerson -->
+<div class="algo">
+    <div class="algo-name">Ford-Fulkerson / Edmonds-Karp — Maximum Flow</div>
+<pre>INPUT: Directed graph G with source s, sink t, capacities c(u,v)
+OUTPUT: Maximum flow value
+
+1. Initialize: flow(u,v) = 0 for all edges
+2. Build residual graph: residual(u,v) = c(u,v) - flow(u,v)
+                         residual(v,u) = flow(u,v)  // backward edge
+3. While ∃ augmenting path P from s to t in residual graph:
+   (Use BFS for Edmonds-Karp — guarantees O(VE²))
+   a. bottleneck = min residual capacity along P
+   b. For each edge (u,v) on path P:
+      - residual(u,v) -= bottleneck  (use capacity)
+      - residual(v,u) += bottleneck  (allow undo)
+   c. max_flow += bottleneck
+4. Return max_flow
+
+To find MIN CUT after algorithm:
+  - Run BFS from s in final residual graph
+  - S = reachable vertices, T = unreachable vertices
+  - Min cut = edges from S to T in ORIGINAL graph
+  - Min cut capacity = max flow (Max-Flow Min-Cut Theorem)</pre>
+    <h4>Worked Example</h4>
+    <p style="font-size:.85rem;color:var(--muted)">Network: S→A:10, S→B:8, A→B:2, A→T:6, B→T:10.</p>
+<pre>Iteration 1: BFS finds path S → A → T
+  Bottleneck = min(10, 6) = 6
+  Update: residual(S,A)=4, residual(A,T)=0, residual(A,S)=6, residual(T,A)=6
+  max_flow = 6
+
+Iteration 2: BFS finds path S → B → T
+  Bottleneck = min(8, 10) = 8
+  Update: residual(S,B)=0, residual(B,T)=2, residual(B,S)=8, residual(T,B)=8
+  max_flow = 6 + 8 = 14
+
+Iteration 3: BFS finds path S → A → B → T
+  Bottleneck = min(4, 2, 2) = 2
+  Update: residual(S,A)=2, residual(A,B)=0, residual(B,T)=0
+  max_flow = 14 + 2 = 16
+
+No more augmenting paths. MAX FLOW = 16.
+
+Min cut: S reachable = {S,A}. Cut edges: S→B(8), A→B(2), A→T(6).
+Hmm wait — let me recheck. Actually with these capacities: S→A cap 10, S→B cap 8...
+After all flow: flow(S,A)=8, flow(S,B)=8, flow(A,B)=2, flow(A,T)=6, flow(B,T)=10.
+Total out of S = 8+8 = 16. Total into T = 6+10 = 16. ✓</pre>
+    <div class="algo-warn">⚠️ You MUST update both forward AND backward edges. Backward edges allow the algorithm to "undo" bad choices. Forgetting backward edges = wrong answer.</div>
+</div>
+
+<!-- Bellman-Ford -->
+<div class="algo">
+    <div class="algo-name">Bellman-Ford — Shortest Path (Negative Weights OK)</div>
+<pre>INPUT: Weighted directed graph G, source s
+OUTPUT: Shortest distances, or "negative cycle detected"
+
+1. Initialize: dist[s] = 0, dist[v] = ∞ for all v ≠ s
+2. Repeat (|V| - 1) times:
+   For each edge (u, v, w) in graph:
+       if dist[u] + w < dist[v]:
+           dist[v] = dist[u] + w
+           parent[v] = u
+3. Check for negative cycle (ONE more pass):
+   For each edge (u, v, w):
+       if dist[u] + w < dist[v]:
+           → NEGATIVE CYCLE EXISTS (shortest path undefined)</pre>
+    <h4>Worked Example: 4 vertices with a negative edge</h4>
+    <p style="font-size:.85rem;color:var(--muted)">Edges: A→B:4, A→C:3, B→C:-2, C→D:1. Source = A.</p>
+<pre>Edge order for each iteration: (A,B,4), (A,C,3), (B,C,-2), (C,D,1)
+
+           | dist[A] | dist[B] | dist[C] | dist[D]
+───────────┼─────────┼─────────┼─────────┼────────
+Init       |    0    |    ∞    |    ∞    |    ∞
+Iter 1:
+  A→B(4)   |    0    |    4    |    ∞    |    ∞     ← 0+4<∞, update B
+  A→C(3)   |    0    |    4    |    3    |    ∞     ← 0+3<∞, update C
+  B→C(-2)  |    0    |    4    |    2    |    ∞     ← 4+(-2)=2<3, update C
+  C→D(1)   |    0    |    4    |    2    |    3     ← 2+1=3<∞, update D
+Iter 2:
+  A→B(4)   |    0    |    4    |    2    |    3     ← no change
+  A→C(3)   |    0    |    4    |    2    |    3     ← no change
+  B→C(-2)  |    0    |    4    |    2    |    3     ← 4-2=2, not < 2
+  C→D(1)   |    0    |    4    |    2    |    3     ← 2+1=3, not < 3
+Iter 3:
+  (no changes — converged)
+
+Negative cycle check (Iter 4): No edge relaxes → NO negative cycle.
+Shortest paths: A→A=0, A→B=4, A→B→C=2, A→B→C→D=3.</pre>
+    <div class="algo-note">✓ V-1 iterations guarantees correctness (longest shortest path has at most V-1 edges). If it converges early, no need to continue — but on an exam, show all iterations.</div>
+</div>
+
+<!-- Kahn's -->
+<div class="algo">
+    <div class="algo-name">Kahn's Algorithm — Topological Sort (DAG Only)</div>
+<pre>INPUT: Directed Acyclic Graph (DAG) G
+OUTPUT: Topological ordering (linear order where u comes before v for every edge u→v)
+
+1. Compute in-degree[v] for all vertices
+2. queue = all vertices with in-degree 0
+3. ordering = []
+4. While queue is not empty:
+   a. Dequeue vertex u
+   b. Append u to ordering
+   c. For each neighbor v of u:
+      in-degree[v] -= 1
+      if in-degree[v] == 0: enqueue v
+5. If |ordering| < |V| → graph has a cycle (not a DAG!)
+6. Return ordering</pre>
+    <h4>Worked Example: 6-vertex DAG</h4>
+    <p style="font-size:.85rem;color:var(--muted)">Edges: A→C, A→D, B→D, C→E, D→E, D→F, E→F.</p>
+<pre>Initial in-degrees: A=0, B=0, C=1, D=2, E=2, F=2
+Queue starts: [A, B]
+
+Step | Dequeue | Process edges      | In-degrees after    | Queue after  | Ordering
+─────┼─────────┼───────────────────┼─────────────────────┼──────────────┼─────────
+  1  |    A    | A→C (C:0), A→D    | C=0,D=1,E=2,F=2    | [B, C]       | [A]
+  2  |    B    | B→D (D:0)         | C=0,D=0,E=2,F=2    | [C, D]       | [A,B]
+  3  |    C    | C→E               | D=0,E=1,F=2        | [D]          | [A,B,C]
+  4  |    D    | D→E (E:0), D→F   | E=0,F=1            | [E]          | [A,B,C,D]
+  5  |    E    | E→F (F:0)        | F=0                 | [F]          | [A,B,C,D,E]
+  6  |    F    | (none)            |                     | []           | [A,B,C,D,E,F]
+
+Result: A, B, C, D, E, F  (one valid topological ordering — others exist)</pre>
+    <div class="algo-warn">⚠️ Only works on DAGs. If output has fewer than V vertices → cycle exists. Multiple valid orderings may exist (depends on queue tie-breaking).</div>
+</div>
+
+<!-- Graham Scan -->
+<div class="algo">
+    <div class="algo-name">Graham Scan — Convex Hull, O(n log n)</div>
+<pre>INPUT: Set of n points in 2D
+OUTPUT: Vertices of convex hull in counterclockwise order
+
+1. Find the point with lowest y-coordinate (leftmost if tie) → call it p₀
+2. Sort remaining points by polar angle with respect to p₀
+   (Use orientation test to compare angles. If same angle, keep closer point.)
+3. Push p₀, p₁, p₂ onto stack
+4. For each remaining point pᵢ (i = 3 to n-1):
+   While orientation(second-to-top, top, pᵢ) is CLOCKWISE (or collinear):
+       pop from stack
+   Push pᵢ
+5. Stack contains the convex hull vertices in CCW order
+
+Orientation test for points p1, p2, p3:
+  val = (p2.x - p1.x)(p3.y - p1.y) - (p2.y - p1.y)(p3.x - p1.x)
+  val > 0 → counterclockwise (LEFT turn) → KEEP
+  val < 0 → clockwise (RIGHT turn) → POP
+  val = 0 → collinear → POP (keep farthest point only)</pre>
+    <h4>Worked Example: 6 points</h4>
+    <p style="font-size:.85rem;color:var(--muted)">Points: P0(0,0), P1(4,0), P2(3,3), P3(1,2), P4(2,4), P5(5,2).</p>
+<pre>Step 1: Lowest y-point = P0(0,0) ✓
+
+Step 2: Sort by polar angle from P0:
+  P1(4,0) → angle ≈ 0°
+  P5(5,2) → angle ≈ 21.8°
+  P2(3,3) → angle ≈ 45°
+  P3(1,2) → angle ≈ 63.4°
+  P4(2,4) → angle ≈ 63.4° (same angle as P3, but farther → P3 first)
+  Sorted: P1, P5, P2, P3, P4
+
+Step 3: Push P0, P1, P5
+  Stack: [P0, P1, P5]
+
+Step 4: Process P2(3,3):
+  orientation(P1, P5, P2): (5-4)(3-0)-(2-0)(3-4) = 3-(-2) = 5 > 0 → CCW → KEEP
+  Push P2. Stack: [P0, P1, P5, P2]
+
+  Process P3(1,2):
+  orientation(P5, P2, P3): (3-5)(2-2)-(3-2)(1-5) = 0-(-4) = 4 > 0 → CCW → KEEP
+  Push P3. Stack: [P0, P1, P5, P2, P3]
+
+  Process P4(2,4):
+  orientation(P2, P3, P4): (1-3)(4-3)-(2-3)(2-3) = -2-(-1) = -1 < 0 → CW → POP P3
+  orientation(P5, P2, P4): (3-5)(4-2)-(3-2)(2-5) = -4-(-3) = -1 < 0 → CW → POP P2
+  orientation(P1, P5, P4): (5-4)(4-0)-(2-0)(2-4) = 4-(-4) = 8 > 0 → CCW → KEEP
+  Push P4. Stack: [P0, P1, P5, P4]
+
+Convex Hull: P0(0,0) → P1(4,0) → P5(5,2) → P4(2,4) → back to P0</pre>
+</div>
+
+<!-- BFS/DFS -->
+<div class="algo">
+    <div class="algo-name">BFS & DFS — Graph Traversal</div>
+<pre>BFS (Breadth-First Search):
+  1. Start from source s. Mark s as visited. Enqueue s.
+  2. While queue not empty:
+     a. Dequeue vertex u
+     b. For each unvisited neighbor v of u:
+        Mark v visited, enqueue v, set parent[v] = u
+  → Visits level by level. Gives shortest path in UNWEIGHTED graph.
+
+DFS (Depth-First Search):
+  1. Start from source s. Mark s as visited.
+  2. For each unvisited neighbor v of s:
+     Recursively DFS(v)
+  (Or use explicit stack instead of recursion)
+  → Goes as deep as possible before backtracking.
+
+Both are O(V + E) time, O(V) space.</pre>
+    <h4>Quick Example: Graph A-B, A-C, B-D, C-D, D-E</h4>
+<pre>BFS from A: Visit A → Queue [B,C] → Visit B → Queue [C,D] → Visit C → Queue [D] → Visit D → Queue [E] → Visit E
+  Order: A, B, C, D, E
+
+DFS from A (alphabetical neighbor order): Visit A → recurse B → recurse D → recurse C (already visited? skip) → recurse E
+  Order: A, B, D, C, E  (depends on neighbor ordering)</pre>
+</div>
+
+<!-- Closest Pair -->
+<div class="algo">
+    <div class="algo-name">Closest Pair of Points — Divide & Conquer, O(n log n)</div>
+<pre>INPUT: Set of n points in 2D
+OUTPUT: The two closest points and their distance
+
+1. Sort all points by x-coordinate
+2. RECURSIVE FUNCTION closest(points):
+   a. Base case: if ≤ 3 points, check all pairs (brute force)
+   b. Divide: split into left half and right half at midpoint
+   c. Conquer: δ_L = closest(left), δ_R = closest(right)
+   d. δ = min(δ_L, δ_R)
+   e. STRIP CHECK (the key insight!):
+      - Find all points within distance δ of the midline
+      - Sort these strip points by y-coordinate
+      - For each point, compare with the NEXT 7 points in y-sorted order
+      - Update δ if a closer pair is found
+   f. Return δ
+
+WHY 7 POINTS? In a δ×2δ rectangle, at most 8 points can fit with
+pairwise distance ≥ δ. So checking 7 neighbors is sufficient.</pre>
+    <div class="algo-note">✓ The strip check is what makes this O(n log n) instead of O(n²). Without it, you'd miss pairs that cross the dividing line.</div>
+</div>
+
+<!-- Jarvis March -->
+<div class="algo">
+    <div class="algo-name">Jarvis March (Gift Wrapping) — Convex Hull, O(nh)</div>
+<pre>INPUT: Set of n points
+OUTPUT: Convex hull vertices in order
+
+1. Start from the LEFTMOST point (guaranteed on hull)
+2. current = leftmost
+3. Repeat:
+   a. next = any other point
+   b. For each point p:
+      if orientation(current, next, p) is CLOCKWISE:
+          next = p   (p is "more counterclockwise" than next)
+   c. Add next to hull
+   d. current = next
+   Until current == leftmost (back to start)
+
+Comparison with Graham Scan:
+  Graham Scan: O(n log n) always. Better when many hull points.
+  Jarvis March: O(nh) where h = hull size. Better when h is very small (h ≪ n).</pre>
+</div>
+
+
+<!-- ═══════════════ B3: NP-COMPLETENESS ═══════════════ -->
+<div class="sub-title" id="b3">B3: NP-Completeness Deep Reference</div>
+
+<div class="np-def">
+    <div class="term">P (Polynomial Time)</div>
+    <div class="desc">Problems where a SOLUTION can be FOUND in polynomial time. Examples: sorting O(n log n), shortest path O(VE), MST O(E log E). These are "easy" problems.</div>
+</div>
+<div class="np-def">
+    <div class="term">NP (Nondeterministic Polynomial Time)</div>
+    <div class="desc">Problems where a given SOLUTION can be VERIFIED in polynomial time. NOT "not polynomial"! Example: given a proposed Hamiltonian cycle, you can verify it visits all vertices in O(V) time. Note: P ⊆ NP (every P problem is also NP).</div>
+</div>
+<div class="np-def">
+    <div class="term">NP-Hard</div>
+    <div class="desc">At least as hard as ANY problem in NP. Every NP problem can be reduced to it in poly time. NP-Hard problems might NOT be in NP themselves (e.g., Halting Problem is NP-Hard but not in NP).</div>
+</div>
+<div class="np-def">
+    <div class="term">NP-Complete</div>
+    <div class="desc">Both NP AND NP-Hard. The hardest problems INSIDE NP. If you solve ANY NP-Complete problem in poly time → P = NP (million-dollar Millennium Prize). All NP-Complete problems are polynomially equivalent.</div>
+</div>
+
+<div style="background:rgba(251,191,36,.1);border-left:4px solid var(--yellow);padding:1rem;border-radius:0 8px 8px 0;margin:1.2rem 0">
+    <div style="color:var(--yellow);font-weight:700;font-size:1rem;margin-bottom:.5rem">CRITICAL: How to Prove a Problem X is NP-Complete</div>
+    <div style="color:var(--text);font-size:.9rem;line-height:1.7">
+        <strong style="color:var(--accent)">Step 1 — Show X ∈ NP:</strong> Give a polynomial-time VERIFIER. "Given a candidate solution (certificate), I can check if it's valid in poly time."<br>
+        <strong style="color:var(--accent)">Step 2 — Reduce from known NPC:</strong> Take a KNOWN NP-Complete problem Y and show Y ≤_p X (Y reduces to X in poly time). This means: "If I could solve X efficiently, I could solve Y efficiently."<br>
+        <strong style="color:var(--red)">DIRECTION MATTERS:</strong> You reduce FROM known hard TO new problem. NOT the other way around. Reducing new→known proves nothing.
+    </div>
+</div>
+
+<h4 style="color:var(--accent);margin:1.2rem 0 .5rem">Full Worked Proof: Independent Set is NP-Complete</h4>
+<div class="algo">
+<pre><strong>Claim:</strong> Independent Set (IS) is NP-Complete.
+<strong>Definition:</strong> Given graph G and integer k, does G contain k vertices with NO edges between any pair?
+
+<strong>Step 1: IS ∈ NP</strong>
+  Certificate: A set S of k vertices.
+  Verifier: Check |S| = k (O(1)). For every pair (u,v) in S, check no edge exists (O(k²) ≤ O(V²)).
+  This is polynomial. ✓ IS ∈ NP.
+
+<strong>Step 2: Reduce Clique ≤_p IS</strong>
+  Known: Clique is NP-Complete.
+
+  Reduction: Given instance (G, k) of Clique, construct instance (Ḡ, k) of IS where:
+    Ḡ = complement of G (edge exists in Ḡ iff it does NOT exist in G)
+    k stays the same
+
+  Construction time: O(V²) to build complement → polynomial ✓
+
+  Correctness:
+    (→) If G has a clique of size k → those k vertices are all connected in G
+        → NO edges between them in Ḡ → they form an IS of size k in Ḡ ✓
+    (←) If Ḡ has an IS of size k → those k vertices have NO edges in Ḡ
+        → ALL edges exist between them in G → they form a clique of size k in G ✓
+
+  Therefore: Clique has solution ↔ IS has solution. Reduction is polynomial.
+
+<strong>Conclusion:</strong> IS ∈ NP and Clique ≤_p IS → IS is NP-Complete. ∎</pre>
+</div>
+
+<div style="color:var(--accent);font-weight:700;margin:1.2rem 0 .5rem;font-size:1rem">The Reduction Chain</div>
+<div class="chain">SAT (Boolean Satisfiability) — the "original" NP-Complete problem (Cook-Levin Theorem)
+  ↓ reduces to
+3-SAT (each clause has exactly 3 literals)
+  ↓ reduces to
+CLIQUE (find complete subgraph of size k)
+  ↓ reduces to (via complement graph)
+INDEPENDENT SET (find k vertices with no edges between them)
+  ↓ reduces to (IS size k ↔ VC size n-k)
+VERTEX COVER (find k vertices that touch every edge)
+
+Separate chain:
+HAMILTONIAN CYCLE (visit every vertex exactly once, return to start)
+  ↓ reduces to (add edge weights)
+TSP (Traveling Salesman: find shortest Hamiltonian cycle)</div>
+
+<div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1rem;margin:1rem 0">
+    <div style="color:var(--accent);font-weight:700;margin-bottom:.5rem">Key NP-Complete Problems — Definitions</div>
+    <div style="font-size:.88rem;color:var(--text);line-height:1.8">
+        <strong style="color:var(--yellow)">SAT:</strong> Given a Boolean formula, is there an assignment of T/F to variables that makes it TRUE?<br>
+        <strong style="color:var(--yellow)">3-SAT:</strong> SAT where each clause has exactly 3 literals. Still NP-Complete.<br>
+        <strong style="color:var(--yellow)">Clique:</strong> Given graph G and integer k, does G contain a complete subgraph of k vertices (all pairs connected)?<br>
+        <strong style="color:var(--yellow)">Independent Set:</strong> Given G and k, are there k vertices with NO edges between any pair?<br>
+        <strong style="color:var(--yellow)">Vertex Cover:</strong> Given G and k, are there k vertices such that every edge has at least one endpoint in the set?<br>
+        <strong style="color:var(--yellow)">Hamiltonian Cycle:</strong> Does G contain a cycle that visits every vertex exactly once?<br>
+        <strong style="color:var(--yellow)">TSP:</strong> Given weighted complete graph and budget B, is there a Hamiltonian cycle of total weight ≤ B?
+    </div>
+</div>
+
+<div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1rem;margin:1rem 0">
+    <div style="color:var(--accent);font-weight:700;margin-bottom:.5rem">Key Relationships (Exam Favorites)</div>
+    <div style="font-size:.88rem;color:var(--text);line-height:1.8">
+        <strong style="color:var(--accent)">Clique ↔ Independent Set:</strong> Clique of size k in G = IS of size k in complement graph Ḡ. (Complement: flip all edges.)<br>
+        <strong style="color:var(--accent)">Independent Set ↔ Vertex Cover:</strong> IS of size k in G ↔ VC of size (n−k) in G. (Remove IS vertices → remaining are VC.)<br>
+        <strong style="color:var(--accent)">Implication:</strong> All three are polynomially equivalent. Solve one in poly time → solve all in poly time.<br>
+        <strong style="color:var(--accent)">Ham. Cycle → TSP:</strong> Set all edge weights to 1. Ham. cycle exists ↔ TSP tour of cost n exists.
+    </div>
+</div>
+
+<div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1rem;margin:1rem 0">
+    <div style="color:var(--accent);font-weight:700;margin-bottom:.5rem">Approximation Algorithms</div>
+    <div style="font-size:.88rem;color:var(--text);line-height:1.8">
+        <strong style="color:var(--green)">2-Approx Vertex Cover:</strong> While edges remain: pick any edge (u,v), add BOTH u and v to cover, remove all edges incident to u and v. Result is at most 2× optimal.<br>
+        <strong style="color:var(--green)">2-Approx Metric TSP:</strong> (Requires triangle inequality.) Find MST, do DFS preorder traversal, shortcut repeated vertices. Cost ≤ 2 × optimal TSP.<br>
+        <strong style="color:var(--green)">1.5-Approx TSP (Christofides):</strong> MST + minimum matching on odd-degree vertices + Eulerian circuit + shortcutting. (Know it exists, probably won't need details.)
+    </div>
+</div>
+
+<div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1rem;margin:1rem 0">
+    <div style="color:var(--accent);font-weight:700;margin-bottom:.5rem">Decision vs Optimization</div>
+    <div style="font-size:.88rem;color:var(--text);line-height:1.8">
+        <strong>Decision problem:</strong> Answer is YES or NO. "Does a Hamiltonian cycle exist?" "Is there a vertex cover of size ≤ k?"<br>
+        <strong>Optimization problem:</strong> Find the BEST solution. "Find the shortest tour." "Find the smallest vertex cover."<br>
+        <strong>Key point:</strong> NP-Completeness is defined for DECISION problems. If the decision version is hard, the optimization version is at least as hard.
+    </div>
+</div>
+
+
+<!-- ═══════════════ B4: FORMULAS ═══════════════ -->
+<div class="sub-title" id="b4">B4: Key Formulas & Definitions to Memorize</div>
+
+<div class="fbox">
+    <div class="fline"><span class="fl">Big-O:</span> f(n) = O(g(n)) iff ∃ c > 0, n₀ > 0 such that f(n) ≤ c·g(n) for all n ≥ n₀</div>
+    <div class="fline"><span class="fl">Big-Ω:</span> f(n) = Ω(g(n)) iff ∃ c > 0, n₀ > 0 such that f(n) ≥ c·g(n) for all n ≥ n₀</div>
+    <div class="fline"><span class="fl">Big-Θ:</span> f(n) = Θ(g(n)) iff f(n) = O(g(n)) AND f(n) = Ω(g(n))</div>
+    <div class="fline"><span class="fl">Hierarchy:</span> 1 &lt; log n &lt; √n &lt; n &lt; n log n &lt; n² &lt; n³ &lt; 2ⁿ &lt; n!</div>
+    <div class="fline"><span class="fl">Orientation:</span> val = (p2.x−p1.x)(p3.y−p1.y) − (p2.y−p1.y)(p3.x−p1.x) → &gt;0: CCW, &lt;0: CW, =0: collinear</div>
+    <div class="fline"><span class="fl">Max-Flow Min-Cut:</span> Maximum flow value = Minimum cut capacity</div>
+    <div class="fline"><span class="fl">Handshaking:</span> Sum of all vertex degrees = 2|E|</div>
+    <div class="fline"><span class="fl">Tree:</span> |E| = |V| − 1, connected, acyclic (any 2 imply the 3rd)</div>
+    <div class="fline"><span class="fl">MST Cut Property:</span> Lightest edge crossing any cut is in some MST</div>
+    <div class="fline"><span class="fl">MST Cycle Property:</span> Heaviest edge in any cycle is NOT in any MST</div>
+    <div class="fline"><span class="fl">Relaxation:</span> if dist[v] > dist[u] + w(u,v) then dist[v] = dist[u] + w(u,v)</div>
+    <div class="fline"><span class="fl">Master Thm Case 1:</span> T(n)=aT(n/b)+O(n^d) where d &lt; log_b(a) → T(n) = Θ(n^(log_b(a)))</div>
+    <div class="fline"><span class="fl">Master Thm Case 2:</span> d = log_b(a) → T(n) = Θ(n^d · log n)</div>
+    <div class="fline"><span class="fl">Master Thm Case 3:</span> d &gt; log_b(a) → T(n) = Θ(n^d)</div>
+    <div class="fline"><span class="fl">Common:</span> T(n)=2T(n/2)+O(n) → O(n log n) · T(n)=T(n/2)+O(1) → O(log n) · T(n)=2T(n/2)+O(1) → O(n)</div>
+</div>
+
+
+<!-- ═══════════════ B5: DECISION GUIDE ═══════════════ -->
+<div class="sub-title" id="b5">B5: "When to Use What" Decision Guide</div>
+
+<div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1rem">
+<div class="dec"><div class="prob">Shortest path, NO negative weights</div><div class="sol">→ <strong>Dijkstra's</strong>: O((V+E)log V) with heap, O(V²) with array.</div></div>
+<div class="dec"><div class="prob">Shortest path, negative weights</div><div class="sol">→ <strong>Bellman-Ford</strong>: O(VE). Detects negative cycles too.</div></div>
+<div class="dec"><div class="prob">Shortest path in a DAG</div><div class="sol">→ <strong>Topological sort + relaxation</strong>: O(V+E). Fastest option.</div></div>
+<div class="dec"><div class="prob">All-pairs shortest path</div><div class="sol">→ <strong>Floyd-Warshall</strong>: O(V³). Or run Dijkstra/BF from each vertex.</div></div>
+<div class="dec"><div class="prob">MST, sparse graph (E ≪ V²)</div><div class="sol">→ <strong>Kruskal's</strong>: O(E log E). Sort edges + Union-Find.</div></div>
+<div class="dec"><div class="prob">MST, dense graph (E ≈ V²)</div><div class="sol">→ <strong>Prim's</strong>: O(V²) with array. Grows from a vertex.</div></div>
+<div class="dec"><div class="prob">Maximum flow in network</div><div class="sol">→ <strong>Edmonds-Karp</strong> (BFS-based Ford-Fulkerson): O(VE²). Always terminates.</div></div>
+<div class="dec"><div class="prob">Topological ordering</div><div class="sol">→ <strong>Kahn's</strong>: O(V+E). Queue-based, clean to trace. Also detects cycles.</div></div>
+<div class="dec"><div class="prob">Convex hull, general case</div><div class="sol">→ <strong>Graham Scan</strong>: O(n log n). Standard choice.</div></div>
+<div class="dec"><div class="prob">Convex hull, few hull points</div><div class="sol">→ <strong>Jarvis March</strong>: O(nh). Better when h ≪ n.</div></div>
+<div class="dec"><div class="prob">Closest pair of points</div><div class="sol">→ <strong>Divide & Conquer</strong>: O(n log n). Don't forget the strip check.</div></div>
+<div class="dec"><div class="prob">Point inside polygon?</div><div class="sol">→ <strong>Ray casting</strong>: O(n). Cast ray, count edge intersections, odd = inside.</div></div>
+<div class="dec"><div class="prob">Prove problem is NP-Complete</div><div class="sol">→ (1) Show ∈ NP (poly verifier). (2) Reduce known NPC → your problem. Direction: FROM known TO new.</div></div>
+<div class="dec"><div class="prob">Detect cycle in directed graph</div><div class="sol">→ <strong>DFS</strong> (back edge = cycle) or <strong>Kahn's</strong> (output &lt; V vertices = cycle).</div></div>
+<div class="dec"><div class="prob">Connected components</div><div class="sol">→ <strong>BFS or DFS</strong> from each unvisited vertex. Count components.</div></div>
+</div>
+
+
+<!-- ═══════════════ B6: EXAM TRAPS ═══════════════ -->
+<div class="sub-title" id="b6">B6: 20 Common Exam Traps & Mistakes</div>
+<p style="color:var(--muted);margin-bottom:.8rem;font-size:.88rem">Read this TWICE. These are the mistakes that drop you from 80% to 60%.</p>
+
+<div class="trap"><span class="tnum">TRAP 1:</span> Using Dijkstra with negative edge weights.
+<div class="twhy">Dijkstra's greedy assumption fails — it may "lock in" a longer path before discovering a shorter one via a negative edge. Use Bellman-Ford instead.</div></div>
+
+<div class="trap"><span class="tnum">TRAP 2:</span> Thinking NP means "not polynomial."
+<div class="twhy">NP = Nondeterministic Polynomial = verifiable in poly time. P ⊆ NP. Many NP problems ARE polynomial (all P problems are NP).</div></div>
+
+<div class="trap"><span class="tnum">TRAP 3:</span> Confusing NP-Hard and NP-Complete.
+<div class="twhy">NP-Complete = NP-Hard AND in NP. NP-Hard can be outside NP entirely (e.g., Halting Problem). NP-Complete is the intersection.</div></div>
+
+<div class="trap"><span class="tnum">TRAP 4:</span> Reducing in the WRONG direction for NP-Complete proofs.
+<div class="twhy">To prove X is NP-Complete: reduce FROM known NPC TO X. "Known ≤_p X." If you reduce X → Known, you only prove X is no harder than Known (useless).</div></div>
+
+<div class="trap"><span class="tnum">TRAP 5:</span> Forgetting backward edges in Ford-Fulkerson residual graph.
+<div class="twhy">Backward edges allow "undoing" flow. Without them, the algorithm may get stuck at a suboptimal flow and miss the true max flow.</div></div>
+
+<div class="trap"><span class="tnum">TRAP 6:</span> Assuming greedy always gives optimal.
+<div class="twhy">Greedy only works with greedy-choice property + optimal substructure. 0/1 knapsack, graph coloring, and many problems need DP or other approaches.</div></div>
+
+<div class="trap"><span class="tnum">TRAP 7:</span> Kruskal's: skipping edges that connect "visited" vertices instead of checking for cycles.
+<div class="twhy">Kruskal's skips edges that create CYCLES (same Union-Find component), not edges to "visited" vertices. This isn't Prim's.</div></div>
+
+<div class="trap"><span class="tnum">TRAP 8:</span> Bellman-Ford: running V iterations instead of V-1.
+<div class="twhy">V-1 iterations for finding shortest paths. The Vth iteration is ONLY for detecting negative cycles (not updating distances).</div></div>
+
+<div class="trap"><span class="tnum">TRAP 9:</span> Saying negative cycle means "longer path."
+<div class="twhy">A negative cycle means shortest path is UNDEFINED (−∞). You can loop through the cycle forever, decreasing the cost infinitely.</div></div>
+
+<div class="trap"><span class="tnum">TRAP 10:</span> Topological sort on a graph with cycles.
+<div class="twhy">Topological sort ONLY works on DAGs (Directed Acyclic Graphs). If a cycle exists, no valid topological ordering exists.</div></div>
+
+<div class="trap"><span class="tnum">TRAP 11:</span> Graham Scan: sorting by x-coordinate instead of polar angle.
+<div class="twhy">Graham Scan sorts by polar angle from the anchor point (lowest-y). Sorting by x gives you something, but not the convex hull.</div></div>
+
+<div class="trap"><span class="tnum">TRAP 12:</span> Forgetting the strip check in closest pair.
+<div class="twhy">The closest pair might cross the dividing line. The strip of width 2δ is where you find it. Skip this → potentially wrong answer.</div></div>
+
+<div class="trap"><span class="tnum">TRAP 13:</span> Orientation test sign convention mix-up.
+<div class="twhy">Positive = CCW (left turn). Negative = CW (right turn). Zero = collinear. Getting this backwards flips your entire convex hull.</div></div>
+
+<div class="trap"><span class="tnum">TRAP 14:</span> Thinking all NP problems are hard.
+<div class="twhy">P ⊆ NP. Sorting is in NP (you can verify a sorted array in O(n)). NP contains easy AND hard problems. NP-Complete problems are the hard ones.</div></div>
+
+<div class="trap"><span class="tnum">TRAP 15:</span> Adding more than V-1 edges in MST.
+<div class="twhy">Any spanning tree of V vertices has exactly V-1 edges. Adding more creates a cycle. Kruskal's should stop at V-1 edges.</div></div>
+
+<div class="trap"><span class="tnum">TRAP 16:</span> Confusing Prim's and Dijkstra's.
+<div class="twhy">Both use greedy vertex selection, but: Prim's stores EDGE WEIGHT to MST set (key[v] = min edge weight). Dijkstra stores TOTAL DISTANCE from source (dist[v] = dist[u] + w). Different purposes, similar structure.</div></div>
+
+<div class="trap"><span class="tnum">TRAP 17:</span> Saying Kruskal's and Prim's give different MSTs.
+<div class="twhy">Both give a MINIMUM spanning tree. If edge weights are unique, both give the SAME MST (just built in different order). With ties, different MSTs are possible but same total weight.</div></div>
+
+<div class="trap"><span class="tnum">TRAP 18:</span> Ford-Fulkerson: confusing capacity with flow.
+<div class="twhy">Residual capacity = original capacity − current flow (forward) or current flow (backward). The residual graph changes every iteration.</div></div>
+
+<div class="trap"><span class="tnum">TRAP 19:</span> Forgetting that Edmonds-Karp is just Ford-Fulkerson with BFS.
+<div class="twhy">Plain Ford-Fulkerson (DFS) may not terminate with irrational capacities. Edmonds-Karp (BFS) guarantees termination and O(VE²). Always use BFS on exams unless told otherwise.</div></div>
+
+<div class="trap"><span class="tnum">TRAP 20:</span> Not showing work on algorithm tracing questions.
+<div class="twhy">Even if your final answer is right, professors grade the STEPS. Show the full table, every iteration. Partial credit comes from showing correct intermediate steps.</div></div>
+
+
+<!-- ═══════════════ B7: PRACTICE PROBLEMS ═══════════════ -->
+<div class="sub-title" id="b7">B7: Practice Problems with Full Solutions</div>
+<p style="color:var(--muted);margin-bottom:.8rem;font-size:.88rem">Try each problem on paper FIRST. Click to reveal the solution. The 6-hr plan doesn't have these — use your extra time wisely.</p>
+
+<!-- Problem 1: Dijkstra -->
+<div class="practice">
+    <div class="practice-q" onclick="togglePractice(this)">
+        <span>Problem 1: Trace Dijkstra's Algorithm</span>
+        <span class="arrow">▶</span>
+    </div>
+    <div class="practice-a">
+        <p style="margin-bottom:.8rem;font-size:.9rem"><strong>Graph (directed):</strong> Vertices A-F. Edges: A→B:4, A→C:2, B→C:1, B→D:5, C→D:8, C→E:10, D→E:2, D→F:6, E→F:3. <strong>Source = A.</strong> Show full distance table with parent pointers.</p>
+<pre><span class="step">Solution:</span>
+
+Step | Pick | Visited        | d[A] | d[B] | d[C] | d[D] | d[E] | d[F] | Updates
+─────┼──────┼────────────────┼──────┼──────┼──────┼──────┼──────┼──────┼────────────────
+Init |  —   | {}             |  0   |  ∞   |  ∞   |  ∞   |  ∞   |  ∞   | —
+  1  |  A   | {A}            |  0   |  4   |  2   |  ∞   |  ∞   |  ∞   | B=0+4=4, C=0+2=2
+  2  |  C   | {A,C}          |  0   |  4   |  2   | 10   | 12   |  ∞   | D=2+8=10, E=2+10=12
+  3  |  B   | {A,C,B}        |  0   |  4   |  2   |  9   | 12   |  ∞   | D=min(10,4+5)=9
+  4  |  D   | {A,C,B,D}      |  0   |  4   |  2   |  9   | 11   | 15   | E=min(12,9+2)=11, F=9+6=15
+  5  |  E   | {A,C,B,D,E}    |  0   |  4   |  2   |  9   | 11   | 14   | F=min(15,11+3)=14
+  6  |  F   | {A,C,B,D,E,F}  |  0   |  4   |  2   |  9   | 11   | 14   | —
+
+<span class="step">Shortest Paths:</span>
+  A → A = 0
+  A → C = 2  (direct)
+  A → B = 4  (direct)
+  A → B → D = 9
+  A → B → D → E = 11
+  A → B → D → E → F = 14
+
+<span class="step">Parent pointers:</span> B←A, C←A, D←B, E←D, F←E</pre>
+    </div>
+</div>
+
+<!-- Problem 2: Kruskal -->
+<div class="practice">
+    <div class="practice-q" onclick="togglePractice(this)">
+        <span>Problem 2: Trace Kruskal's Algorithm</span>
+        <span class="arrow">▶</span>
+    </div>
+    <div class="practice-a">
+        <p style="margin-bottom:.8rem;font-size:.9rem"><strong>Undirected graph:</strong> Vertices 1-6. Edges: (1,2):3, (1,3):1, (2,3):7, (2,4):5, (3,4):2, (3,5):4, (4,5):6, (4,6):8, (5,6):9. Find MST using Kruskal's with Union-Find.</p>
+<pre><span class="step">Step 1: Sort edges by weight:</span>
+  (1,3):1, (3,4):2, (1,2):3, (3,5):4, (2,4):5, (4,5):6, (2,3):7, (4,6):8, (5,6):9
+
+<span class="step">Step 2: Process edges with Union-Find:</span>
+Initial sets: {1}, {2}, {3}, {4}, {5}, {6}
+
+Edge    | Wt | find(u) | find(v) | Action | Reason               | Components after
+────────┼────┼─────────┼─────────┼────────┼──────────────────────┼────────────────────
+(1,3)   |  1 |    1    |    3    |  ADD   | Different components  | {1,3},{2},{4},{5},{6}
+(3,4)   |  2 |    1    |    4    |  ADD   | Different components  | {1,3,4},{2},{5},{6}
+(1,2)   |  3 |    1    |    2    |  ADD   | Different components  | {1,2,3,4},{5},{6}
+(3,5)   |  4 |    1    |    5    |  ADD   | Different components  | {1,2,3,4,5},{6}
+(2,4)   |  5 |    1    |    1    |  SKIP  | Same component (cycle)| —
+(4,5)   |  6 |    1    |    1    |  SKIP  | Same component (cycle)| —
+(2,3)   |  7 |    —    |    —    |  SKIP  | (already have V-1=5 edges, stop)
+(4,6)   |  8 |    1    |    6    |  ADD   | Different components  | {1,2,3,4,5,6}
+
+Wait — let me recount. V=6, so we need V-1=5 edges.
+After (3,5):4 we have 4 edges. We need 1 more.
+(2,4):5 → same component → SKIP
+(4,5):6 → same component → SKIP
+(2,3):7 → same component → SKIP
+(4,6):8 → find(4)=1, find(6)=6 → Different → ADD ✓ (5th edge!)
+
+<span class="step">MST edges:</span> (1,3):1, (3,4):2, (1,2):3, (3,5):4, (4,6):8
+<span class="step">Total weight:</span> 1 + 2 + 3 + 4 + 8 = 18
+<span class="step">V-1 = 5 edges ✓</span></pre>
+    </div>
+</div>
+
+<!-- Problem 3: Ford-Fulkerson -->
+<div class="practice">
+    <div class="practice-q" onclick="togglePractice(this)">
+        <span>Problem 3: Find Maximum Flow (Ford-Fulkerson)</span>
+        <span class="arrow">▶</span>
+    </div>
+    <div class="practice-a">
+        <p style="margin-bottom:.8rem;font-size:.9rem"><strong>Flow network:</strong> S→A:16, S→B:13, A→B:4, A→C:12, B→C:9, B→D:14, C→D:7, C→T:20, D→T:4. Source = S, Sink = T. Find max flow using Edmonds-Karp (BFS).</p>
+<pre><span class="step">Iteration 1:</span> BFS path: S → A → C → T
+  Bottleneck = min(16, 12, 20) = 12
+  Update residual:
+    S→A: 16-12=4,  A→C: 12-12=0,  C→T: 20-12=8
+    Backward: A→S: 12, C→A: 12, T→C: 12
+  max_flow = 12
+
+<span class="step">Iteration 2:</span> BFS path: S → B → D → T
+  Bottleneck = min(13, 14, 4) = 4
+  Update residual:
+    S→B: 13-4=9,  B→D: 14-4=10,  D→T: 4-4=0
+    Backward: B→S: 4, D→B: 4, T→D: 4
+  max_flow = 12 + 4 = 16
+
+<span class="step">Iteration 3:</span> BFS path: S → B → C → T
+  Bottleneck = min(9, 9, 8) = 8
+  Update residual:
+    S→B: 9-8=1,  B→C: 9-8=1,  C→T: 8-8=0
+    Backward: B→S: 4+8=12, C→B: 8, T→C: 12+8=20
+  max_flow = 16 + 8 = 24
+
+<span class="step">Iteration 4:</span> BFS path: S → B → C → D → T?
+  C→T residual = 0 (used up). C→D residual = 7.
+  But D→T residual = 0 (used up).
+
+  Try: S → A → B → C → D → ...? A→B residual = 4, but D→T = 0.
+
+  No more augmenting paths to T with positive residual capacity.
+
+  Actually let me re-check. S→B residual = 1, B→C residual = 1.
+  S→A residual = 4, A→B residual = 4.
+
+  BFS: S → A → B → C → D → T?  D→T = 0. Dead end.
+  S → A → B → D → T?  D→T = 0. Dead end.
+  S → B → D → ...? D→T = 0. Dead end.
+
+  No valid augmenting path. DONE.
+
+<span class="step">MAX FLOW = 24</span>
+
+<span class="step">Verify:</span>
+  Flow out of S: S→A = 12, S→B = 12. Total = 24 ✓
+  Flow into T: C→T = 20, D→T = 4. Total = 24 ✓
+
+<span class="step">Min Cut:</span>
+  Reachable from S in residual: {S, A, B}  (S→A:4>0, S→B:1>0, A→B:4>0, but B→D:10>0...
+  Actually B→D residual = 10 > 0, so D is reachable. D→T = 0, so T not reachable from D.
+  B→C residual = 1 > 0, so C reachable. C→T = 0, C→D = 7 > 0.
+  Reachable = {S, A, B, C, D}. Not reachable = {T}.
+  Min cut edges (original graph, from reachable to T): C→T (cap 20) + D→T (cap 4) = 24 ✓</pre>
+    </div>
+</div>
+
+<!-- Problem 4: Graham Scan -->
+<div class="practice">
+    <div class="practice-q" onclick="togglePractice(this)">
+        <span>Problem 4: Trace Graham Scan (Convex Hull)</span>
+        <span class="arrow">▶</span>
+    </div>
+    <div class="practice-a">
+        <p style="margin-bottom:.8rem;font-size:.9rem"><strong>Points:</strong> A(0,0), B(1,4), C(2,1), D(3,5), E(4,0), F(5,3), G(1,2). Find convex hull using Graham Scan.</p>
+<pre><span class="step">Step 1: Find anchor (lowest y, leftmost if tie):</span>
+  A(0,0) and E(4,0) both have y=0. A is leftmost → anchor = A(0,0).
+
+<span class="step">Step 2: Sort by polar angle from A(0,0):</span>
+  E(4,0): angle = 0° (directly right)
+  C(2,1): angle = arctan(1/2) ≈ 26.6°
+  F(5,3): angle = arctan(3/5) ≈ 31.0°
+  G(1,2): angle = arctan(2/1) ≈ 63.4°
+  B(1,4): angle = arctan(4/1) ≈ 76.0°
+  D(3,5): angle = arctan(5/3) ≈ 59.0°
+
+  Sorted order: E, C, F, D, G, B
+
+<span class="step">Step 3: Initialize stack with A, E, C:</span>
+  Stack: [A(0,0), E(4,0), C(2,1)]
+
+<span class="step">Step 4: Process remaining points:</span>
+
+Process F(5,3):
+  orientation(E(4,0), C(2,1), F(5,3)):
+    val = (2-4)(3-0) - (1-0)(5-4) = (-2)(3) - (1)(1) = -6-1 = -7 < 0 → CW → POP C
+  orientation(A(0,0), E(4,0), F(5,3)):
+    val = (4-0)(3-0) - (0-0)(5-0) = 12-0 = 12 > 0 → CCW → KEEP
+  Push F. Stack: [A, E, F]
+
+Process D(3,5):
+  orientation(E(4,0), F(5,3), D(3,5)):
+    val = (5-4)(5-0) - (3-0)(3-4) = 5-(-3) = 8 > 0 → CCW → KEEP
+  Push D. Stack: [A, E, F, D]
+
+Process G(1,2):
+  orientation(F(5,3), D(3,5), G(1,2)):
+    val = (3-5)(2-3) - (5-3)(1-5) = (-2)(-1) - (2)(-4) = 2+8 = 10 > 0 → CCW → KEEP
+  Push G. Stack: [A, E, F, D, G]
+
+Process B(1,4):
+  orientation(D(3,5), G(1,2), B(1,4)):
+    val = (1-3)(4-5) - (2-5)(1-3) = (-2)(-1) - (-3)(-2) = 2-6 = -4 < 0 → CW → POP G
+  orientation(F(5,3), D(3,5), B(1,4)):
+    val = (3-5)(4-3) - (5-3)(1-5) = (-2)(1) - (2)(-4) = -2+8 = 6 > 0 → CCW → KEEP
+  Push B. Stack: [A, E, F, D, B]
+
+<span class="step">Convex Hull: A(0,0) → E(4,0) → F(5,3) → D(3,5) → B(1,4) → back to A</span>
+5 hull points. Interior points: C(2,1) and G(1,2).</pre>
+    </div>
+</div>
+
+<!-- Problem 5: NP-Complete Proof -->
+<div class="practice">
+    <div class="practice-q" onclick="togglePractice(this)">
+        <span>Problem 5: Prove Vertex Cover is NP-Complete</span>
+        <span class="arrow">▶</span>
+    </div>
+    <div class="practice-a">
+        <p style="margin-bottom:.8rem;font-size:.9rem"><strong>Problem:</strong> Given graph G = (V,E) and integer k, does G have a vertex cover of size ≤ k? (A vertex cover is a set S ⊆ V such that every edge has at least one endpoint in S.) Prove this is NP-Complete.</p>
+<pre><span class="step">Claim: Vertex Cover (VC) is NP-Complete.</span>
+
+<span class="step">Step 1: Show VC ∈ NP</span>
+  Certificate: A set S of vertices with |S| ≤ k.
+  Verifier:
+    1. Check |S| ≤ k → O(1)
+    2. For every edge (u,v) ∈ E, check that u ∈ S OR v ∈ S → O(E)
+    Total: O(V + E) = polynomial ✓
+  Therefore VC ∈ NP.
+
+<span class="step">Step 2: Reduce Independent Set (IS) ≤_p VC</span>
+  Known: Independent Set is NP-Complete.
+
+  Reduction: Given IS instance (G, j), create VC instance (G, k) where:
+    - Use the SAME graph G
+    - Set k = |V| - j  (that's it!)
+
+  Construction time: O(1) → polynomial ✓
+
+  Correctness proof:
+
+  (→) Suppose G has an IS of size j (call it I).
+      Let S = V \ I (all vertices NOT in I). |S| = |V| - j = k.
+      Claim: S is a vertex cover.
+      Proof: Take any edge (u,v). Since I is independent, u and v
+      CANNOT both be in I. So at least one of them is in S = V \ I.
+      Therefore S covers every edge. S is a VC of size k. ✓
+
+  (←) Suppose G has a VC of size k (call it S).
+      Let I = V \ S. |I| = |V| - k = |V| - (|V| - j) = j.
+      Claim: I is an independent set.
+      Proof: Suppose for contradiction that I contains adjacent vertices
+      u and v. Then edge (u,v) has neither endpoint in S (since both
+      are in I = V \ S). But S is a vertex cover — contradiction!
+      Therefore I has no adjacent vertices. I is an IS of size j. ✓
+
+  IS has solution ↔ VC has solution. Reduction is polynomial.
+
+<span class="step">Conclusion: VC ∈ NP and IS ≤_p VC → Vertex Cover is NP-Complete. ∎</span>
+
+<span class="step">Key exam note:</span> The reduction from IS to VC is one of the simplest.
+Same graph, k = n - j. The insight: removing an IS leaves a VC, and vice versa.</pre>
+    </div>
+</div>
+
+
+</div><!-- end .main -->
+
+<!-- ════════════════════════════════════════ JAVASCRIPT ════════════════════════════════════════ -->
+<script>
+// Countdown timer to exam: April 22, 2026, 4:30 PM CDT (UTC-5)
+const examDate = new Date('2026-04-22T16:30:00-05:00');
+
+function updateCountdown() {
+    const now = new Date();
+    const diff = examDate - now;
+    const el = document.getElementById('countdown');
+    if (diff <= 0) { el.textContent = 'EXAM TIME — GO!'; el.style.color = '#f87171'; return; }
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    el.textContent = h + 'h ' + String(m).padStart(2,'0') + 'm ' + String(s).padStart(2,'0') + 's';
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// Readiness meter
+const hourWeights = {1:8, 2:12, 3:8, 4:10, 5:9, 6:7, 7:6, 8:12, 9:6}; // points out of ~78 base
+const baseReadiness = 22; // out of 100 — starting knowledge
+const maxGain = 100 - baseReadiness;
+const totalWeight = Object.values(hourWeights).reduce((a,b)=>a+b,0);
+
+function updateReadiness() {
+    let earned = 0;
+    document.querySelectorAll('.hour-check input[type=checkbox]').forEach(cb => {
+        if (cb.checked) {
+            const h = parseInt(cb.dataset.hour);
+            earned += hourWeights[h] || 0;
+            cb.closest('.hour-block').classList.add('done');
+        } else {
+            cb.closest('.hour-block').classList.remove('done');
+        }
+    });
+    const pct = Math.round(baseReadiness + (earned / totalWeight) * maxGain);
+    const fill = document.getElementById('readFill');
+    const label = document.getElementById('readPct');
+    fill.style.width = pct + '%';
+    if (pct < 50) { fill.style.background = '#f87171'; label.textContent = pct + '% — Keep going'; }
+    else if (pct < 70) { fill.style.background = '#fbbf24'; label.textContent = pct + '% — Getting there'; }
+    else if (pct < 85) { fill.style.background = '#38bdf8'; label.textContent = pct + '% — Looking strong'; }
+    else { fill.style.background = '#34d399'; label.textContent = pct + '% — Ready to crush it'; }
+}
+updateReadiness();
+
+// Collapsible practice problems
+function togglePractice(el) {
+    const answer = el.nextElementSibling;
+    const arrow = el.querySelector('.arrow');
+    answer.classList.toggle('show');
+    arrow.classList.toggle('open');
+}
+
+// Smooth scroll
+document.querySelectorAll('.nav a').forEach(a => {
+    a.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+});
+
+// Active nav highlighting
+const sections = [];
+document.querySelectorAll('[id]').forEach(el => { if (el.id) sections.push(el); });
+const navLinks = document.querySelectorAll('.nav a');
+
+window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+        if (s.getBoundingClientRect().top < 150) current = s.id;
+    });
+    navLinks.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+});
+</script>
+
+</body>
+</html>
