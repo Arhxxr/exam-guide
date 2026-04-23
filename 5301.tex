@@ -1,0 +1,992 @@
+\documentclass[11pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{mathptmx}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{multicol}
+
+\geometry{top=0.75in, bottom=0.75in, left=0.8in, right=0.8in}
+
+% Colors
+\definecolor{accentblue}{HTML}{1a73e8}
+\definecolor{darkgreen}{HTML}{1e7e34}
+\definecolor{warningred}{HTML}{c62828}
+\definecolor{tipblue}{HTML}{0d47a1}
+\definecolor{formulabg}{HTML}{f5f5f5}
+\definecolor{examplebg}{HTML}{fffde7}
+\definecolor{lightgray}{HTML}{f0f0f0}
+
+% tcolorbox environments
+\tcbuselibrary{skins, breakable}
+
+\newtcolorbox{formulabox}[1][]{%
+  colback=formulabg, colframe=accentblue,
+  fonttitle=\bfseries\color{accentblue},
+  title=#1, breakable,
+  boxrule=1.2pt, arc=3pt,
+  left=6pt, right=6pt, top=4pt, bottom=4pt
+}
+
+\newtcolorbox{examplebox}[1][]{%
+  colback=examplebg, colframe=orange!70!black,
+  fonttitle=\bfseries,
+  title=#1, breakable,
+  boxrule=0.8pt, arc=3pt,
+  left=6pt, right=6pt, top=4pt, bottom=4pt
+}
+
+\newtcolorbox{warningbox}{%
+  colback=red!5, colframe=warningred,
+  fontupper=\small,
+  boxrule=0.8pt, arc=3pt, breakable,
+  left=6pt, right=6pt, top=4pt, bottom=4pt
+}
+
+\newtcolorbox{tipbox}{%
+  colback=blue!5, colframe=tipblue,
+  fontupper=\small,
+  boxrule=0.8pt, arc=3pt, breakable,
+  left=6pt, right=6pt, top=4pt, bottom=4pt
+}
+
+\newtcolorbox{cheatbox}[1][]{%
+  colback=green!3, colframe=darkgreen,
+  fonttitle=\bfseries\color{darkgreen},
+  title=#1, breakable,
+  boxrule=1.5pt, arc=3pt,
+  left=6pt, right=6pt, top=4pt, bottom=4pt
+}
+
+% Section formatting
+\titleformat{\section}{\Large\bfseries\color{accentblue}}{}{0em}{}[\vspace{-4pt}\textcolor{accentblue}{\hrule height 1pt}]
+\titleformat{\subsection}{\large\bfseries\color{darkgreen}}{}{0em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{orange!70!black}}{}{0em}{}
+
+% Header/footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{gray}{CSE 5301 -- Exam 2 Study Guide}}
+\fancyhead[R]{\small\textcolor{gray}{Sessions 13--23}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% Shortcuts
+\newcommand{\ans}[1]{\textbf{\textcolor{darkgreen}{#1}}}
+\newcommand{\step}[1]{\par\hangindent=1.5em\hangafter=1 $\rightarrow$ #1}
+\newcommand{\warn}[1]{\begin{warningbox}\textbf{Warning:} #1\end{warningbox}}
+\newcommand{\tip}[1]{\begin{tipbox}\textbf{Key Insight:} #1\end{tipbox}}
+
+\hypersetup{colorlinks=true, linkcolor=accentblue, urlcolor=accentblue}
+
+\begin{document}
+
+% =============================================
+% TITLE PAGE
+% =============================================
+\begin{center}
+{\LARGE\bfseries\color{accentblue} CSE 5301 --- Exam 2 Ultimate Study Guide}\\[6pt]
+{\large Sessions 13--23 \quad$\vert$\quad April 23, 2026 \quad$\vert$\quad Prof.\ Negin Fraidouni}\\[4pt]
+{\small Z-table \& T-table provided $\vert$ 1 A4 cheat sheet (front+back, formulas only) $\vert$ Calculator needed}
+\end{center}
+
+\vspace{6pt}
+
+\begin{tcolorbox}[colback=lightgray, colframe=accentblue, title={\textbf{Table of Contents (by Exam Weight)}}, fonttitle=\bfseries\color{accentblue}]
+\begin{enumerate}[leftmargin=*]
+  \item \hyperlink{sec:hyp}{\textbf{Hypothesis Testing}} (z-test, t-test, paired t-test) --- \textcolor{warningred}{\textbf{HIGH PRIORITY}}
+  \item \hyperlink{sec:ci}{\textbf{Confidence Intervals / Interval Estimation}} --- \textcolor{warningred}{\textbf{HIGH PRIORITY}}
+  \item \hyperlink{sec:info}{\textbf{Information Theory}} (Entropy, MI, KL-Divergence) --- \textcolor{warningred}{\textbf{HIGH PRIORITY}}
+  \item \hyperlink{sec:clt}{\textbf{Central Limit Theorem \& Normal Distribution}} --- \textcolor{warningred}{\textbf{HIGH PRIORITY}}
+  \item \hyperlink{sec:mle}{\textbf{Maximum Likelihood Estimation}} --- \textcolor{orange!80!black}{\textbf{MEDIUM}}
+  \item \hyperlink{sec:bayes}{\textbf{Bayesian Networks}} --- \textcolor{orange!80!black}{\textbf{MEDIUM}}
+  \item \hyperlink{sec:reg}{\textbf{Correlation \& Linear Regression}} --- \textcolor{orange!80!black}{\textbf{MEDIUM}}
+  \item \hyperlink{sec:stat}{\textbf{Statistical Inference Foundations}} --- \textcolor{gray}{\textbf{SUPPORTING}}
+  \item \hyperlink{sec:cheat}{\textbf{Cheat Sheet --- All Formulas}}
+  \item \hyperlink{sec:practice}{\textbf{Full Practice Exam}}
+\end{enumerate}
+\end{tcolorbox}
+
+% =============================================
+% SECTION 1: HYPOTHESIS TESTING
+% =============================================
+\newpage
+\hypertarget{sec:hyp}{}
+\section{Hypothesis Testing \hfill \textcolor{warningred}{\small HIGHEST EXAM WEIGHT}}
+
+Hypothesis testing lets us make decisions about population parameters using sample data. We start with a \textbf{null hypothesis} ($H_0$: the status quo) and an \textbf{alternative hypothesis} ($H_1$: what we're trying to prove). We calculate a test statistic and compare it to a threshold to decide whether to reject $H_0$.
+
+\subsection{The 5-Step Framework (USE THIS EVERY TIME)}
+\begin{enumerate}
+  \item \textbf{State hypotheses:} $H_0$ and $H_1$
+  \item \textbf{Choose significance level:} $\alpha$ (usually 0.05 or 0.01)
+  \item \textbf{Compute the test statistic:} $z$ or $t$
+  \item \textbf{Find p-value OR compare to critical value}
+  \item \textbf{Conclusion:} Reject $H_0$ or Fail to reject $H_0$
+\end{enumerate}
+
+\warn{NEVER say ``accept $H_0$'' --- always say ``fail to reject $H_0$''. This is a common point-deduction trap.}
+
+% --- Z-TEST ---
+\subsection{1a. Z-Test ($\sigma$ known)}
+
+\begin{formulabox}[Z-Test Statistic]
+\[ z = \frac{\bar{x} - \mu_0}{\sigma / \sqrt{n}} \]
+\textbf{When to use:} Population standard deviation $\sigma$ is \textbf{KNOWN}; $n$ is large ($\geq 30$) or population is normal.
+\end{formulabox}
+
+\begin{examplebox}[Practice --- Z-Test (HW6 Q3, 15 pts)]
+\textbf{Problem:} A sensor has known $\sigma = 0.25$ and reference mean $\mu_0 = 5$. We take 10 measurements from a new sensor: $\{4.5, 5.2, 4.3, 4.5, 4.9, 5.5, 4.2, 5.1, 4.1, 4.5\}$. Is the new sensor significantly different?
+
+\step{\textbf{Hypotheses:} $H_0: \mu = 5$, \quad $H_1: \mu \neq 5$ (two-tailed)}
+\step{\textbf{Significance:} $\alpha = 0.05$}
+\step{\textbf{Sample mean:} $\bar{x} = 46.8/10 = 4.68$}
+\step{\textbf{Test statistic:} $z = \dfrac{4.68 - 5}{0.25/\sqrt{10}} = \dfrac{-0.32}{0.07906} = \mathbf{-4.0477}$}
+\step{\textbf{p-value:} $p = 2 \times P(Z < -4.0477) \approx \mathbf{0.0001}$ (two-tailed)}
+\step{\textbf{Conclusion:} $p \ll 0.05$, so \ans{REJECT $H_0$}. The new sensor is significantly different.}
+\end{examplebox}
+
+\begin{examplebox}[Practice --- Z-Test (HW6 Q4, 13 pts)]
+\textbf{Problem:} Previous studies: $\mu_0 = 1.8$\,m, $\sigma = 0.3$\,m. Sample of $n=36$: $\bar{x} = 1.6839$. Has height changed? ($\alpha = 0.01$)
+
+\step{\textbf{Hypotheses:} $H_0: \mu = 1.8$, \quad $H_1: \mu \neq 1.8$}
+\step{$z = (1.6839 - 1.8) / (0.3/\sqrt{36}) = -0.1161 / 0.05 = \mathbf{-2.3222}$}
+\step{\textbf{Critical value at $\alpha=0.01$ two-tailed:} $z_{0.005} = \pm 2.5758$}
+\step{$|z| = 2.32 < 2.58$, and $p = 0.0202 > 0.01$}
+\step{\textbf{Conclusion:} \ans{FAIL TO REJECT $H_0$} at 1\% level. Not enough evidence.}
+\end{examplebox}
+
+% --- T-TEST ---
+\subsection{1b. One-Sample T-Test ($\sigma$ unknown)}
+
+\begin{formulabox}[T-Test Statistic]
+\[ t = \frac{\bar{x} - \mu_0}{s / \sqrt{n}}, \qquad df = n - 1 \]
+where $s = \sqrt{\dfrac{\sum(x_i - \bar{x})^2}{n-1}}$ is the sample standard deviation.
+
+\medskip
+\textbf{When to use:} Population $\sigma$ is \textbf{UNKNOWN} $\rightarrow$ use sample $s$ instead. Typically small sample ($n < 30$), but works for any $n$. Use t-table with $df = n-1$.
+\end{formulabox}
+
+\begin{examplebox}[Practice --- One-Sample T-Test (HW6 Q1, 15 pts)]
+\textbf{Problem:} Algorithm runtime data ($n=15$): $\{17.5, 16.3, 18.4, 14.9, 16, 16.5, 18.5, 15.9, 18, 18.5, 18.1, 15.3, 17.6, 17.7, 17.8\}$. Population mean $\mu_0 = 16.5$. Is there a difference?
+
+\step{\textbf{Hypotheses:} $H_0: \mu = 16.5$, \quad $H_1: \mu \neq 16.5$ (two-tailed)}
+\step{\textbf{Sample stats:} $n = 15$, $\bar{x} = 17.1333$, $s = 1.2069$}
+\step{$t = (17.1333 - 16.5) / (1.2069/\sqrt{15}) = 0.6333 / 0.3116 = \mathbf{2.0323}$}
+\step{$df = 14$, p-value (two-tailed) $= 0.0615$}
+\step{\textbf{Conclusion:} $p = 0.0615 > 0.05$, so \ans{FAIL TO REJECT $H_0$}. No significant difference.}
+\end{examplebox}
+
+\begin{examplebox}[Practice --- One-Sided T-Test (HW6 Q5, 15 pts)]
+\textbf{Problem:} Method 1 scores: $\{10,4,6,7,12,5,7,4,12,10,9,10,8,5,9\}$. Population (Method 2) mean $= 8$. Does Method 1 outperform?
+
+\step{\textbf{Hypotheses:} $H_0: \mu \leq 8$, \quad $H_1: \mu > 8$ (right-tailed)}
+\step{$n = 15$, $\bar{x} = 7.8667$, $s = 2.6957$}
+\step{$t = (7.8667 - 8) / (2.6957/\sqrt{15}) = -0.1333/0.6961 = \mathbf{-0.1916}$}
+\step{$df = 14$, p-value (right-tailed) $= 0.5746$}
+\step{\textbf{Conclusion:} $p = 0.57 > 0.05$, \ans{FAIL TO REJECT $H_0$}. Method 1 does NOT outperform.}
+\end{examplebox}
+
+% --- TWO-SAMPLE T-TEST ---
+\subsection{1c. Two-Sample (Welch) T-Test}
+
+\begin{formulabox}[Two-Sample T-Test (Independent Groups)]
+\[ t = \frac{\bar{x}_1 - \bar{x}_2}{\sqrt{s_1^2/n_1 + s_2^2/n_2}} \]
+\[ \text{Welch } df \approx \frac{(s_1^2/n_1 + s_2^2/n_2)^2}{\dfrac{(s_1^2/n_1)^2}{n_1-1} + \dfrac{(s_2^2/n_2)^2}{n_2-1}} \]
+\textbf{When to use:} Comparing means of \textbf{two independent groups}; $\sigma_1$ and $\sigma_2$ unknown.
+\end{formulabox}
+
+\begin{examplebox}[Practice --- Two-Sample T-Test (HW6 Q2, 20 pts)]
+\textbf{Problem:} Body fat \% --- Men ($n=13$): $\{13.3,6,20,8,14,19,18,25,16,24,15,1,15\}$; Women ($n=10$): $\{22,16,21.7,21,30,26,12,23.2,28,23\}$. Significant difference?
+
+\step{\textbf{Hypotheses:} $H_0: \mu_{\text{men}} = \mu_{\text{women}}$, \quad $H_1: \mu_{\text{men}} \neq \mu_{\text{women}}$}
+\step{\textbf{Men:} $\bar{x}_1 = 14.9462$, $s_1 = 6.8426$}
+\step{\textbf{Women:} $\bar{x}_2 = 22.29$, $s_2 = 5.3197$}
+\step{$t = (14.9462 - 22.29) / \sqrt{6.8426^2/13 + 5.3197^2/10} = -7.3438 / 2.5363 = \mathbf{-2.8958}$}
+\step{Welch $df \approx 20.99$, $p = 0.0086$}
+\step{\textbf{Conclusion:} $p = 0.0086 < 0.05$, \ans{REJECT $H_0$}. Significant difference exists.}
+\end{examplebox}
+
+% --- PAIRED T-TEST ---
+\subsection{1d. Paired T-Test}
+
+\begin{formulabox}[Paired T-Test]
+Compute differences: $d_i = x_{1i} - x_{2i}$ for each pair.\\
+$\bar{d}$ = mean of differences, \quad $s_d$ = std dev of differences.
+\[ t = \frac{\bar{d}}{s_d / \sqrt{n}}, \qquad df = n - 1 \]
+\textbf{When to use:} Same subjects measured \textbf{TWICE} (before/after, test1/test2). Data comes in \textbf{PAIRS}.
+\end{formulabox}
+
+\begin{examplebox}[Practice --- Paired T-Test (HW6 Q6, 20 pts)]
+\textbf{Problem:} 16 students take 2 exams. Are the exams equally difficult?
+
+\begin{center}
+\small
+\begin{tabular}{lccc}
+\toprule
+\textbf{Student} & \textbf{Exam 1} & \textbf{Exam 2} & \textbf{$d = E1 - E2$} \\
+\midrule
+Bob & 63 & 69 & $-6$ \\
+Nina & 65 & 65 & 0 \\
+Tim & 56 & 62 & $-6$ \\
+Kate & 100 & 91 & 9 \\
+Alonzo & 88 & 78 & 10 \\
+Jose & 83 & 87 & $-4$ \\
+Nikhil & 77 & 79 & $-2$ \\
+Julia & 92 & 88 & 4 \\
+Tohru & 90 & 85 & 5 \\
+Michael & 84 & 92 & $-8$ \\
+Jean & 68 & 69 & $-1$ \\
+Indra & 74 & 81 & $-7$ \\
+Susan & 87 & 84 & 3 \\
+Allen & 64 & 75 & $-11$ \\
+Paul & 71 & 84 & $-13$ \\
+Edwina & 88 & 82 & 6 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\step{\textbf{Hypotheses:} $H_0: \mu_d = 0$, \quad $H_1: \mu_d \neq 0$}
+\step{$\bar{d} = -1.3125$, $s_d = 7.0021$, $n = 16$}
+\step{$t = -1.3125 / (7.0021/\sqrt{16}) = -1.3125 / 1.7505 = \mathbf{-0.7498}$}
+\step{$df = 15$, $p = 0.4650$}
+\step{\textbf{Conclusion:} $p = 0.465 > 0.05$, \ans{FAIL TO REJECT $H_0$}. Exams are equally difficult.}
+\end{examplebox}
+
+% --- TYPE I AND TYPE II ERRORS ---
+\subsection{1e. Type I \& Type II Errors}
+
+\begin{center}
+\begin{tabular}{l|c|c}
+\toprule
+ & \textbf{$H_0$ is TRUE} & \textbf{$H_0$ is FALSE} \\
+\midrule
+\textbf{Reject $H_0$} & \textcolor{warningred}{Type I Error ($\alpha$) -- False Positive} & \textcolor{darkgreen}{Correct! (Power $= 1-\beta$)} \\
+\textbf{Fail to Reject $H_0$} & \textcolor{darkgreen}{Correct!} & \textcolor{warningred}{Type II Error ($\beta$) -- False Negative} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{itemize}[nosep]
+  \item $\alpha$ \textbf{(significance level):} Probability of rejecting $H_0$ when it's actually true. You choose this.
+  \item $\beta$: Probability of failing to reject $H_0$ when it's actually false.
+  \item \textbf{Power} $= 1 - \beta$: Probability of correctly rejecting a false $H_0$.
+\end{itemize}
+
+\warn{Type I = False Positive = rejecting a true $H_0$. \quad Type II = False Negative = keeping a false $H_0$. \\ Remember: Type I = 1st kind of mistake = being too eager to reject.}
+
+% --- Z-TEST FOR PROPORTIONS ---
+\subsection{1f. Z-Test for Proportions}
+
+\begin{formulabox}[Z-Test for Proportions]
+\[ z = \frac{\hat{p} - p_0}{\sqrt{p_0(1 - p_0) / n}} \]
+where $\hat{p}$ = sample proportion, $p_0$ = hypothesized proportion.
+
+\medskip
+\textbf{When to use:} Testing whether a population proportion equals a claimed value. Need $np_0 \geq 5$ and $n(1-p_0) \geq 5$.
+\end{formulabox}
+
+\begin{examplebox}[Practice --- Z-Test for Proportions (Session 21 --- Clinton Poll)]
+\textbf{Problem:} A politician claims 50\% support. A poll of $n=518$ voters finds 45\% support ($\hat{p}=0.45$). At $\alpha=0.05$, is the true proportion different from 50\%?
+
+\step{\textbf{Hypotheses:} $H_0: p = 0.5$, \quad $H_1: p \neq 0.5$ (two-tailed)}
+\step{$z = \dfrac{0.45 - 0.5}{\sqrt{0.5 \times 0.5 / 518}} = \dfrac{-0.05}{\sqrt{0.000483}} = \dfrac{-0.05}{0.02198} = \mathbf{-2.275}$}
+\step{\textbf{p-value (two-tailed):} $p = 2 \times P(Z < -2.275) \approx 0.023$}
+\step{\textbf{Conclusion:} $p = 0.023 < 0.05$, so \ans{REJECT $H_0$}. The true proportion significantly differs from 50\%.}
+\end{examplebox}
+
+% --- MORE LECTURE EXAMPLES ---
+\subsection{1g. More Worked Examples from Lecture}
+
+\begin{examplebox}[Practice --- Z-Test (Session 20 --- Blood Glucose)]
+\textbf{Problem:} Normal blood glucose: $\mu_0=100$ mg/dL, $\sigma=15$. Sample of $n=36$ patients on new diet: $\bar{x}=108$. At $\alpha=0.05$, does the diet change blood glucose?
+
+\step{\textbf{Hypotheses:} $H_0: \mu = 100$, \quad $H_1: \mu \neq 100$}
+\step{$z = (108 - 100) / (15/\sqrt{36}) = 8 / 2.5 = \mathbf{3.20}$}
+\step{\textbf{p-value:} $2 \times P(Z > 3.20) \approx 0.0014$}
+\step{\textbf{Conclusion:} $p \ll 0.05$, \ans{REJECT $H_0$}. The diet significantly changes blood glucose.}
+\end{examplebox}
+
+\begin{examplebox}[Practice --- One-Sample T-Test (Session 21 --- Potato Yield)]
+\textbf{Problem:} Farmer claims new fertilizer yields more than 20 tons/acre. Sample of $n=12$: $\bar{x}=22.1$, $s=3.2$. At $\alpha=0.05$, is the claim supported?
+
+\step{\textbf{Hypotheses:} $H_0: \mu \leq 20$, \quad $H_1: \mu > 20$ (right-tailed)}
+\step{$t = (22.1 - 20) / (3.2/\sqrt{12}) = 2.1 / 0.9238 = \mathbf{2.273}$}
+\step{$df = 11$, $t_{0.05,11} = 1.796$ (one-tailed critical value)}
+\step{$t = 2.273 > 1.796$}
+\step{\textbf{Conclusion:} \ans{REJECT $H_0$}. Significant evidence the fertilizer yields more than 20 tons/acre.}
+\end{examplebox}
+
+\begin{tipbox}
+\textbf{Decision Tree: Which test to use?}\\[4pt]
+$\sigma$ known? $\rightarrow$ \textbf{Z-test} \\
+$\sigma$ unknown, one sample? $\rightarrow$ \textbf{One-sample t-test} \\
+$\sigma$ unknown, two independent groups? $\rightarrow$ \textbf{Two-sample (Welch) t-test} \\
+$\sigma$ unknown, paired/matched data? $\rightarrow$ \textbf{Paired t-test} \\
+Testing a proportion? $\rightarrow$ \textbf{Z-test for proportions} \\
+One-sided claim (greater/less)? $\rightarrow$ \textbf{One-tailed test} \\
+``Different from''? $\rightarrow$ \textbf{Two-tailed test}
+\end{tipbox}
+
+% =============================================
+% SECTION 2: CONFIDENCE INTERVALS
+% =============================================
+\newpage
+\hypertarget{sec:ci}{}
+\section{Confidence Intervals / Interval Estimation \hfill \textcolor{warningred}{\small HIGH}}
+
+Instead of estimating a parameter with a single number (point estimate), we give a range $[\hat{\theta}_l, \hat{\theta}_h]$ that likely contains the true value. The \textbf{confidence level} $(1-\alpha)$ is the probability the interval captures the true parameter.
+
+\subsection{2a. Z-Interval ($\sigma$ known, large $n$)}
+
+\begin{formulabox}[Confidence Interval for Mean ($\sigma$ known)]
+\[ \text{CI} = \left[\; \bar{x} - z_{\alpha/2} \cdot \frac{\sigma}{\sqrt{n}},\;\; \bar{x} + z_{\alpha/2} \cdot \frac{\sigma}{\sqrt{n}} \;\right] \]
+Margin of Error $= z_{\alpha/2} \cdot \sigma/\sqrt{n}$
+\end{formulabox}
+
+\subsection{2b. CI with Unknown $\sigma$ --- Three Approaches}
+
+\begin{formulabox}[Three Approaches for Unknown $\sigma$]
+\textbf{Approach 1: Upper Bound (Conservative)}\\
+If $\sigma \leq \sigma_{\max}$: \quad $\text{CI} = \bar{x} \pm z_{\alpha/2} \cdot \sigma_{\max}/\sqrt{n}$ \quad (wider but always valid)
+
+\medskip
+\textbf{Approach 2: Sample Standard Deviation}\\
+$S = \sqrt{\sum(x_k - \bar{x})^2 / (n-1)}$, \quad $\text{CI} = \bar{x} \pm z_{\alpha/2} \cdot S/\sqrt{n}$ \quad (use $t$ for small $n$)
+
+\medskip
+\textbf{Approach 3: Bernoulli Special Case}\\
+Conservative ($\sigma_{\max} = 0.5$): \quad $\text{CI} = \bar{x} \pm z_{\alpha/2} / (2\sqrt{n})$\\
+Estimated variance: \quad $\text{CI} = \bar{x} \pm z_{\alpha/2} \cdot \sqrt{\bar{x}(1-\bar{x})/n}$
+\end{formulabox}
+
+\subsection{2c. T-Interval ($\sigma$ unknown, small $n$)}
+
+\begin{formulabox}[Confidence Interval Using T-Distribution]
+\[ \text{CI} = \left[\; \bar{x} - t_{\alpha/2,\,df} \cdot \frac{s}{\sqrt{n}},\;\; \bar{x} + t_{\alpha/2,\,df} \cdot \frac{s}{\sqrt{n}} \;\right], \qquad df = n-1 \]
+\end{formulabox}
+
+\tip{Common $z_{\alpha/2}$ values (MEMORIZE):\\
+90\% CI ($\alpha=0.10$): $z_{0.05} = 1.645$ \quad$\vert$\quad
+95\% CI ($\alpha=0.05$): $z_{0.025} = 1.96$ \quad$\vert$\quad
+99\% CI ($\alpha=0.01$): $z_{0.005} = 2.576$}
+
+\begin{examplebox}[Practice --- Confidence Interval]
+\textbf{Problem:} $n=50$ light bulbs, $\bar{x} = 1200$ hours, known $\sigma = 100$. Find the 95\% CI.
+
+\step{\textbf{Identify:} $\sigma$ known, $n$ large $\rightarrow$ Z-interval}
+\step{$z_{\alpha/2} = z_{0.025} = 1.96$}
+\step{Margin of error $= 1.96 \times 100/\sqrt{50} = 1.96 \times 14.14 = 27.72$}
+\step{$\text{CI} = [1200 - 27.72,\; 1200 + 27.72] = \ans{[1172.28,\; 1227.72]}$}
+\step{Interpretation: We are 95\% confident the true mean lifetime is between 1172.28 and 1227.72 hours.}
+\end{examplebox}
+
+\begin{examplebox}[Practice --- Bernoulli CI]
+\textbf{Problem:} Poll of $n=400$ voters, 220 support candidate A ($\bar{x} = 0.55$). Find 95\% CI using (a) conservative and (b) estimated variance.
+
+\step{\textbf{(a) Conservative:} $\text{CI} = [0.55 - 1.96/(2\sqrt{400}),\; 0.55 + 1.96/(2\sqrt{400})] = \ans{[0.501,\; 0.599]}$}
+\step{\textbf{(b) Estimated:} $\hat{\sigma} = \sqrt{0.55 \times 0.45 / 400} = 0.02487$}
+\step{$\text{CI} = [0.55 - 1.96 \times 0.02487,\; 0.55 + 1.96 \times 0.02487] = \ans{[0.501,\; 0.599]}$}
+\step{(In this case they're very close; the conservative method is wider in general.)}
+\end{examplebox}
+
+% =============================================
+% SECTION 3: INFORMATION THEORY
+% =============================================
+\newpage
+\hypertarget{sec:info}{}
+\section{Information Theory \hfill \textcolor{warningred}{\small HIGH}}
+
+Measures the amount of ``surprise'' or ``uncertainty'' in random variables. Entropy tells us how unpredictable a source is. Mutual information tells us how much knowing one variable tells us about another.
+
+\begin{formulabox}[All Information Theory Formulas]
+\textbf{Self-Information} (of a single event):\quad $I(x) = -\log_2(P(x))$ [bits],\quad $= -\ln(P(x))$ [nats],\quad $= -\log_{10}(P(x))$ [Hartleys]
+
+\medskip
+\textbf{Entropy} (average uncertainty of $X$):
+\[ H(X) = -\sum_i P(x_i) \cdot \log_2(P(x_i)) \]
+
+\textbf{Joint Entropy:}
+\[ H(X,Y) = -\sum_x \sum_y P(x,y) \cdot \log_2(P(x,y)) \]
+
+\textbf{Conditional Entropy:}
+\[ H(X|Y) = -\sum_x \sum_y P(x,y) \cdot \log_2(P(x|y)), \qquad \text{where } P(x|y) = P(x,y)/P(y) \]
+
+\textbf{Mutual Information:}
+\[ I(X;Y) = \sum_x \sum_y P(x,y) \cdot \log_2\!\left[\frac{P(x,y)}{P(x) \cdot P(y)}\right] \]
+Shortcuts: $I(X;Y) = H(X) + H(Y) - H(X,Y) = H(X) - H(X|Y) = H(Y) - H(Y|X)$
+
+\medskip
+\textbf{KL-Divergence} (Relative Entropy):
+\[ D(P \| Q) = \sum_i P(i) \cdot \log_2\!\left[\frac{P(i)}{Q(i)}\right] \]
+$D(P\|Q) \neq D(Q\|P)$ (NOT symmetric!)\quad $D(P\|Q) \geq 0$ always.
+
+\medskip
+\textbf{Unit Conversions:}\quad $H_{\text{Hartleys}} = H_{\text{bits}} \times 0.3010$\qquad $H_{\text{nats}} = H_{\text{bits}} \times 0.6931$
+\end{formulabox}
+
+\subsubsection{Important Identities \& Bounds}
+\begin{itemize}[nosep]
+  \item \textbf{Chain Rule:} $H(X,Y) = H(X) + H(Y|X) = H(Y) + H(X|Y)$
+  \item \textbf{Conditional Entropy Identity:} $H(X|Y) = H(X,Y) - H(Y)$
+  \item \textbf{Bounds on Joint Entropy:} $\max(H(X), H(Y)) \leq H(X,Y) \leq H(X) + H(Y)$
+  \item \textbf{Mutual Information:} $I(X;Y) \geq 0$ always.\quad $I(X;Y) = 0 \iff X$ and $Y$ are independent.
+\end{itemize}
+
+\warn{Entropy is MAXIMIZED when all outcomes are equally likely. For $n$ equally likely outcomes: $H = \log_2(n)$. KL-Divergence is NOT symmetric.}
+
+\begin{examplebox}[Practice --- Full Information Theory Problem (HW4 Q1, 70 pts total)]
+\textbf{Problem:} Given joint distribution $P(X,Y)$:
+
+\begin{center}
+\begin{tabular}{c|ccc}
+\toprule
+$P(X,Y)$ & $X=2$ & $X=4$ & $X=6$ \\
+\midrule
+$Y=2$ & 0.01 & 0.15 & 0.08 \\
+$Y=4$ & 0.20 & 0.09 & 0.10 \\
+$Y=6$ & 0.08 & 0.12 & 0.17 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Find $H(X)$:}
+\step{\textbf{Marginals:} $P(X{=}2)=0.29$, $P(X{=}4)=0.36$, $P(X{=}6)=0.35$}
+\step{$H(X) = -[0.29 \log_2(0.29) + 0.36 \log_2(0.36) + 0.35 \log_2(0.35)] = \ans{1.5786 \text{ bits}}$}
+
+\textbf{Find $H(Y)$:}
+\step{\textbf{Marginals:} $P(Y{=}2)=0.24$, $P(Y{=}4)=0.39$, $P(Y{=}6)=0.37$}
+\step{$H(Y) = \ans{1.5547 \text{ bits}}$}
+
+\textbf{Find $D(X \| Y)$:}
+\step{$D(X\|Y) = 0.29 \log_2(0.29/0.24) + 0.36 \log_2(0.36/0.39) + 0.35 \log_2(0.35/0.37) = \ans{0.0095 \text{ bits}}$}
+
+\textbf{Find $H(X,Y)$:}
+\step{$H(X,Y) = -\sum P(x,y) \log_2(P(x,y))$ for all 9 cells $= \ans{2.9709 \text{ bits}}$}
+
+\textbf{Find $I(X;Y)$:}
+\step{$I(X;Y) = H(X) + H(Y) - H(X,Y) = 1.5786 + 1.5547 - 2.9709 = \ans{0.1624 \text{ bits}}$}
+\step{Verify: $H(Y) - H(Y|X) = 1.5547 - 1.3923 = 0.1624$ \checkmark}
+\end{examplebox}
+
+\begin{examplebox}[Practice --- Entropy of Dice (HW4 Q3)]
+\textbf{Balanced die:} Each face $P(i) = 1/6$.\quad $H = \log_2(6) = \ans{2.5850 \text{ bits}}$
+
+\textbf{Loaded die:} $P(1)=0.2$, $P(2)=0.4$, $P(3){=}P(4){=}P(5){=}P(6)=0.1$
+\step{$H = -[0.2 \log_2(0.2) + 0.4 \log_2(0.4) + 4 \times 0.1 \log_2(0.1)] = \ans{2.3219 \text{ bits}}$}
+\step{Loaded die has LOWER entropy (more predictable). Makes sense!}
+\end{examplebox}
+
+\begin{examplebox}[Practice --- Information Content (HW4 Q2)]
+\textbf{Problem:} Roll a fair die twice, get sequence $\{2, 3\}$. How many bits of information?
+
+\step{$P(2,3) = (1/6)(1/6) = 1/36$}
+\step{$I = -\log_2(1/36) = \log_2(36) = 2 \log_2(6) = 2 \times 2.585 = \ans{5.1699 \text{ bits}}$}
+\end{examplebox}
+
+\begin{examplebox}[Practice --- Unit Conversion (HW4 Q4)]
+\textbf{Problem:} $H = 3.6$ bits. Convert to Hartleys and nats.
+
+\step{Hartleys $= 3.6 \times \log_{10}(2) = 3.6 \times 0.3010 = \ans{1.0837 \text{ Hartleys}}$}
+\step{Nats $= 3.6 \times \ln(2) = 3.6 \times 0.6931 = \ans{2.4953 \text{ nats}}$}
+\end{examplebox}
+
+% =============================================
+% SECTION 4: CLT & NORMAL
+% =============================================
+\newpage
+\hypertarget{sec:clt}{}
+\section{Central Limit Theorem \& Normal Distribution \hfill \textcolor{warningred}{\small HIGH}}
+
+\subsection{Central Limit Theorem (CLT)}
+If $X_1, X_2, \ldots, X_n$ are i.i.d.\ random variables with mean $\mu$ and variance $\sigma^2$, then for large $n$:
+\begin{itemize}[nosep]
+  \item The sample mean $\bar{X}$ is approximately Normal: $\bar{X} \sim N(\mu,\; \sigma^2/n)$
+  \item The sum $S_n$ is approximately Normal: $S_n \sim N(n\mu,\; n\sigma^2)$
+  \item Rule of thumb: $n \geq 30$ is ``large enough.''
+\end{itemize}
+
+\subsubsection{Law of Large Numbers (LLN)}
+As $n \to \infty$, the sample mean $\bar{X}_n$ converges to the population mean $\mu$.\\
+\textbf{Weak LLN:} For any $\varepsilon > 0$, $P(|\bar{X}_n - \mu| > \varepsilon) \to 0$ as $n \to \infty$.\\
+{\small\textcolor{gray}{CLT tells you the \emph{shape} of the distribution (Normal); LLN tells you the sample mean \emph{converges} to the true mean.}}
+
+\begin{formulabox}[Standardization \& Normal Approximation]
+\textbf{Z-Score:}
+\begin{align*}
+\text{Individual } X: &\quad Z = \frac{X - \mu}{\sigma} \\
+\text{Sample mean } \bar{X}: &\quad Z = \frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \\
+\text{Sum } S_n: &\quad Z = \frac{S_n - n\mu}{\sigma\sqrt{n}}
+\end{align*}
+
+\textbf{Normal Approximation to Binomial:}\\
+$X \sim \text{Binomial}(n, p)$: \quad $\mu = np$, \quad $\sigma = \sqrt{np(1-p)}$\\
+With continuity correction: $P(X < k) \approx P\!\left(Z < \dfrac{k - 0.5 - np}{\sqrt{np(1-p)}}\right)$
+
+\medskip
+\textbf{Inverse Z (Finding values from percentiles):} $x = \mu + z \cdot \sigma$
+\end{formulabox}
+
+\begin{examplebox}[Practice --- CLT for Sample Mean (HW5 Q1, 10 pts)]
+\textbf{Problem:} $n=100$ people, $E[X_i]=150$\,cm, $\sigma=25$\,cm. Find $P(\bar{X} < 145)$.
+
+\step{\textbf{Standard error:} $\sigma_{\bar{x}} = 25/\sqrt{100} = 2.5$}
+\step{$Z = (145 - 150)/2.5 = -2.0$}
+\step{$P(Z < -2.0) = \ans{0.0228}$ (from Z-table)}
+\end{examplebox}
+
+\begin{examplebox}[Practice --- Finding Percentiles (HW5 Q2, 12 pts each)]
+\textbf{Problem:} Heights $\sim N(65, 6^2)$. (a) Height below which shortest 30\% fall; (b) height above which tallest 5\% fall.
+
+\step{\textbf{(a)} Need $P(X < x) = 0.30 \rightarrow z = -0.5244$}
+\step{$x = 65 + (-0.5244)(6) = 65 - 3.15 = \ans{61.85 \text{ inches}}$}
+\step{\textbf{(b)} Need $P(X > x) = 0.05 \rightarrow P(X < x) = 0.95 \rightarrow z = 1.6449$}
+\step{$x = 65 + (1.6449)(6) = 65 + 9.87 = \ans{74.87 \text{ inches}}$}
+\end{examplebox}
+
+\begin{examplebox}[Practice --- Normal Approx to Binomial (HW5 Q3)]
+\textbf{Problem:} $n=2000$ chips, failure rate $p=0.063$. Find $P(X < 135)$.
+
+\step{$\mu = np = 126$, $\sigma = \sqrt{np(1-p)} = \sqrt{118.062} = 10.8657$}
+\step{With continuity correction: $Z = (134.5 - 126)/10.8657 = 0.7823$}
+\step{$P(Z < 0.7823) = \ans{0.7830}$}
+\end{examplebox}
+
+\begin{examplebox}[Practice --- CLT for Sum (HW5 Q4)]
+\textbf{Problem:} Waiting time: $\mu=20$\,s, $\sigma=8$\,s. Find $P(900 < S_{50} < 1100)$.
+
+\step{$E[S_{50}] = 50 \times 20 = 1000$, $\sigma_S = 8\sqrt{50} = 56.57$}
+\step{$Z_1 = (900-1000)/56.57 = -1.7678$}
+\step{$Z_2 = (1100-1000)/56.57 = 1.7678$}
+\step{$P = \Phi(1.7678) - \Phi(-1.7678) = 0.9615 - 0.0385 = \ans{0.9229}$}
+\end{examplebox}
+
+% =============================================
+% SECTION 5: MLE
+% =============================================
+\newpage
+\hypertarget{sec:mle}{}
+\section{Maximum Likelihood Estimation \hfill \textcolor{orange!80!black}{\small MEDIUM}}
+
+MLE finds the parameter value $\theta$ that makes the observed data most probable. We write the likelihood function, take its log, differentiate, set to 0, and solve.
+
+\begin{formulabox}[MLE Procedure \& Common Results]
+\textbf{Procedure:}
+\begin{enumerate}[nosep]
+  \item Write the likelihood: $L(\theta) = \prod P(x_i | \theta)$
+  \item Take the log-likelihood: $\ell(\theta) = \ln L(\theta) = \sum \ln P(x_i | \theta)$
+  \item Differentiate: $d\ell/d\theta = 0$
+  \item Solve for $\hat{\theta}$ (the MLE)
+  \item Verify it's a maximum (second derivative $< 0$)
+\end{enumerate}
+
+\medskip
+\textbf{Common MLEs:}\\
+\begin{tabular}{ll}
+Normal$(\mu, \sigma^2)$: & $\hat{\mu} = \bar{x}$, \quad $\hat{\sigma}^2 = \frac{1}{n}\sum(x_i - \bar{x})^2$ \\
+Bernoulli$(p)$: & $\hat{p} = \bar{x}$ \\
+Poisson$(\lambda)$: & $\hat{\lambda} = \bar{x}$ \\
+Exponential$(\lambda)$: & $\hat{\lambda} = 1/\bar{x}$ \\
+\end{tabular}
+
+\medskip
+\textbf{Properties:} Consistent ($\hat{\theta} \to \theta$ as $n \to \infty$), asymptotically normal and efficient, invariant (if $\hat{\theta}$ is MLE of $\theta$, then $g(\hat{\theta})$ is MLE of $g(\theta)$).
+\end{formulabox}
+
+\begin{examplebox}[Practice --- MLE for Normal Distribution]
+\textbf{Problem:} Data: $\{3, 5, 7, 9, 11\}$. Assuming Normal$(\mu, \sigma^2)$, find MLE for $\mu$ and $\sigma^2$.
+
+\step{$\hat{\mu} = \bar{x} = (3+5+7+9+11)/5 = 35/5 = 7$}
+\step{$\hat{\sigma}^2 = \frac{1}{5}[(3{-}7)^2 + (5{-}7)^2 + (7{-}7)^2 + (9{-}7)^2 + (11{-}7)^2] = \frac{40}{5} = \ans{\hat{\mu} = 7,\; \hat{\sigma}^2 = 8}$}
+\step{\emph{Note: MLE uses $1/n$, NOT $1/(n{-}1)$. The sample variance $S^2$ uses $1/(n{-}1)$.}}
+\end{examplebox}
+
+\begin{examplebox}[Practice --- MLE for Exponential]
+\textbf{Problem:} Lifetimes (hours): $\{2.1, 3.5, 1.8, 4.2, 2.9\}$. Find MLE for $\lambda$ if $X \sim \text{Exp}(\lambda)$.
+
+\step{$\bar{x} = 14.5/5 = 2.9$}
+\step{$\hat{\lambda} = 1/\bar{x} = 1/2.9 = \ans{0.3448}$}
+\end{examplebox}
+
+% =============================================
+% SECTION 6: BAYESIAN NETWORKS
+% =============================================
+\newpage
+\hypertarget{sec:bayes}{}
+\section{Bayesian Networks \hfill \textcolor{orange!80!black}{\small MEDIUM}}
+
+A Bayesian Network (BN) is a directed acyclic graph (DAG) where nodes represent random variables and edges represent probabilistic dependencies. Each node has a conditional probability table (CPT).
+
+\begin{formulabox}[Bayesian Network Formulas]
+\textbf{Joint Probability:}
+\[ P(X_1, X_2, \ldots, X_n) = \prod_{i=1}^{n} P(X_i \mid \text{Parents}(X_i)) \]
+
+\textbf{Key Concepts:}
+\begin{itemize}[nosep]
+  \item Parent node: directly influences child
+  \item Root node: no parents $\rightarrow$ uses marginal $P(X)$
+  \item Conditional independence: $X \perp Y \mid Z$ if knowing $Z$ makes $X$ and $Y$ independent
+  \item d-separation: determines conditional independence in the graph
+\end{itemize}
+
+\medskip
+\textbf{Markov Blanket of node $X$:}
+\[ \text{MB}(X) = \text{Parents}(X) \cup \text{Children}(X) \cup \text{Other parents of Children}(X) \]
+Given its Markov blanket, $X$ is conditionally independent of ALL other nodes.
+
+\medskip
+\textbf{Local Markov Property:} Each node is conditionally independent of its non-descendants given its parents: $X \perp \text{NonDesc}(X) \mid \text{Parents}(X)$
+
+\medskip
+\textbf{Inference:}\quad $P(A \mid B{=}b) = P(A, B{=}b) / P(B{=}b)$\\
+Use marginalization: $P(B{=}b) = \sum_A P(A, B{=}b)$
+\end{formulabox}
+
+\begin{examplebox}[Practice --- Bayesian Network Computation]
+\textbf{Problem:} BN: Rain $\to$ Sprinkler, Rain $\to$ WetGrass, Sprinkler $\to$ WetGrass.\\
+Given: $P(R{=}T)=0.2$, $P(S{=}T|R{=}T)=0.01$, $P(S{=}T|R{=}F)=0.4$, $P(W{=}T|S{=}T,R{=}T)=0.99$, $P(W{=}T|S{=}T,R{=}F)=0.90$, $P(W{=}T|S{=}F,R{=}T)=0.80$, $P(W{=}T|S{=}F,R{=}F)=0.0$.\\
+Find $P(\text{Rain}{=}T \mid \text{WetGrass}{=}T)$.
+
+\step{\textbf{Use Bayes:} $P(R{=}T|W{=}T) = P(W{=}T|R{=}T) \cdot P(R{=}T) / P(W{=}T)$}
+\step{$P(W{=}T|R{=}T)$: Marginalize over $S$:}
+\step{$= 0.99 \times 0.01 + 0.80 \times 0.99 = 0.0099 + 0.792 = 0.8019$}
+\step{$P(W{=}T|R{=}F) = 0.90 \times 0.4 + 0.0 \times 0.6 = 0.36$}
+\step{$P(W{=}T) = 0.8019 \times 0.2 + 0.36 \times 0.8 = 0.16038 + 0.288 = 0.44838$}
+\step{$P(R{=}T|W{=}T) = 0.16038 / 0.44838 = \ans{0.3577}$}
+\end{examplebox}
+
+\begin{examplebox}[Practice --- Alarm Network (Session 22)]
+\textbf{Problem:} Classic BN: Burglary$(B) \to$ Alarm$(A) \leftarrow$ Earthquake$(E)$, Alarm $\to$ JohnCalls$(J)$, Alarm $\to$ MaryCalls$(M)$.
+
+\step{\textbf{Joint factorization:} $P(B,E,A,J,M) = P(B) \cdot P(E) \cdot P(A|B,E) \cdot P(J|A) \cdot P(M|A)$}
+\step{\textbf{Key insight:} This is the ``explaining away'' example --- if the alarm went off, it's more likely to be burglary, but if we also know there was an earthquake, the probability of burglary goes down.}
+\step{\textbf{Markov blanket of $B$:} $\{A, E\}$ --- $B$ is independent of $J,M$ given $A$.}
+\end{examplebox}
+
+\begin{examplebox}[Practice --- BN: Joint Probability Computation]
+\textbf{Problem:} Chain: $A \to B \to C$. $P(A{=}1)=0.3$, $P(B{=}1|A{=}1)=0.8$, $P(B{=}1|A{=}0)=0.2$, $P(C{=}1|B{=}1)=0.9$, $P(C{=}1|B{=}0)=0.1$. Find $P(A{=}1, B{=}1, C{=}0)$.
+
+\step{\textbf{Chain rule:} $P(A,B,C) = P(A) \cdot P(B|A) \cdot P(C|B)$}
+\step{$P(A{=}1, B{=}1, C{=}0) = 0.3 \times 0.8 \times (1-0.9) = 0.3 \times 0.8 \times 0.1 = \ans{0.024}$}
+\end{examplebox}
+
+% =============================================
+% SECTION 7: REGRESSION
+% =============================================
+\newpage
+\hypertarget{sec:reg}{}
+\section{Correlation \& Linear Regression \hfill \textcolor{orange!80!black}{\small MEDIUM}}
+
+Linear regression fits a line $\hat{y} = b_0 + b_1 x$ to data points. Correlation ($r$) measures the strength and direction of the linear relationship between two variables.
+
+$\rho$ (rho) = population correlation (true but unknown). \quad $r$ = sample correlation (computed from data). $r$ estimates $\rho$.
+
+\begin{formulabox}[Regression \& Correlation Formulas]
+\textbf{Pearson's $r$:}
+\[ r = \frac{n\sum x_i y_i - (\sum x_i)(\sum y_i)}{\sqrt{[n\sum x_i^2 - (\sum x_i)^2][n\sum y_i^2 - (\sum y_i)^2]}} \]
+Also: $r = S_{xy} / (S_x \cdot S_y)$ where $S_{xy} = \sum(x_i - \bar{x})(y_i - \bar{y})/(n-1)$.\\
+Properties: $-1 \leq r \leq 1$. \quad $r=1$: perfect positive. \quad $r=-1$: perfect negative. \quad $r=0$: no linear relationship.
+
+\medskip
+\textbf{Regression Coefficients:}
+\[ b_1 = \frac{n\sum x_i y_i - (\sum x_i)(\sum y_i)}{n\sum x_i^2 - (\sum x_i)^2} \qquad \text{Also: } b_1 = r \cdot (S_y / S_x) \]
+\[ b_0 = \bar{y} - b_1 \bar{x} \qquad\qquad \hat{y} = b_0 + b_1 x \]
+
+\textbf{Coefficient of Determination:} $R^2 = r^2$ = proportion of variance in $Y$ explained by $X$.
+
+\medskip
+\textbf{Residual:} $e_i = y_i - \hat{y}_i$ (actual minus predicted)
+
+\medskip
+\textbf{Sum of Squares:}\\
+$\text{SST} = \sum(y_i - \bar{y})^2$ (Total) \qquad $\text{SSR} = \sum(\hat{y}_i - \bar{y})^2$ (Regression) \qquad $\text{SSE} = \sum(y_i - \hat{y}_i)^2$ (Error)\\
+$\text{SST} = \text{SSR} + \text{SSE}$ \qquad $R^2 = \text{SSR}/\text{SST} = 1 - \text{SSE}/\text{SST}$
+\end{formulabox}
+
+\begin{examplebox}[Practice --- Linear Regression]
+\textbf{Problem:} Data: $x = \{1,2,3,4,5\}$, $y = \{2,4,5,4,5\}$. Find the regression line.
+
+\step{\textbf{Sums:} $n=5$, $\sum x = 15$, $\sum y = 20$, $\sum xy = 67$, $\sum x^2 = 55$}
+\step{$\bar{x} = 3$, $\bar{y} = 4$}
+\step{$b_1 = (5 \times 67 - 15 \times 20)/(5 \times 55 - 15^2) = (335-300)/(275-225) = 35/50 = 0.7$}
+\step{$b_0 = 4 - 0.7 \times 3 = 4 - 2.1 = 1.9$}
+\step{Regression line: $\ans{\hat{y} = 1.9 + 0.7x}$}
+\end{examplebox}
+
+\begin{examplebox}[Practice --- Correlation Interpretation (Session 23)]
+\textbf{Problem:} E-commerce study finds $r = 0.98$ between ad spending ($x$) and revenue ($y$). If $S_x = 200$, $S_y = 5000$, find $b_1$.
+
+\step{$r = 0.98$: Very strong positive linear relationship.}
+\step{$R^2 = 0.98^2 = 0.9604$: 96.04\% of variance in revenue explained by ad spending.}
+\step{\textbf{Slope shortcut:} $b_1 = r \times (S_y/S_x) = 0.98 \times (5000/200) = 0.98 \times 25 = \ans{24.5}$}
+\step{Interpretation: For every \$1 increase in ad spending, revenue increases by $\approx$\$24.50.}
+\end{examplebox}
+
+\warn{Correlation $\neq$ Causation! High $r$ only means a linear association exists, not that $x$ causes $y$. Also, $r$ only captures \emph{linear} relationships --- two variables could have a strong nonlinear relationship with $r \approx 0$.}
+
+% =============================================
+% SECTION 8: STATISTICAL INFERENCE FOUNDATIONS
+% =============================================
+\newpage
+\hypertarget{sec:stat}{}
+\section{Statistical Inference Foundations \hfill \textcolor{gray}{\small SUPPORTING}}
+
+\begin{itemize}[nosep]
+  \item \textbf{Population:} The entire group we want to study.
+  \item \textbf{Sample:} A subset of the population we actually observe.
+  \item \textbf{Parameter:} A number describing the population ($\mu$, $\sigma$, $p$). UNKNOWN.
+  \item \textbf{Statistic:} A number computed from the sample ($\bar{x}$, $s$, $\hat{p}$). KNOWN.
+  \item \textbf{Point Estimator:} A single value estimate for a parameter (e.g., $\bar{x}$ for $\mu$).
+  \item \textbf{Unbiased Estimator:} $E[\hat{\theta}] = \theta$ (on average, hits the true value).
+  \item \textbf{Bias:} $B(\hat{\theta}) = E[\hat{\theta}] - \theta$
+  \item \textbf{Mean Squared Error:} $\text{MSE}(\hat{\theta}) = \text{Var}(\hat{\theta}) + [\text{Bias}(\hat{\theta})]^2$
+\end{itemize}
+
+{\small\textcolor{gray}{If unbiased (Bias=0), then MSE = Var. The MLE $\hat{\sigma}^2 = (1/n)\sum(x_i - \bar{x})^2$ is biased; the sample variance $S^2 = (1/(n{-}1))\sum(x_i - \bar{x})^2$ is unbiased.}}
+
+\subsubsection{Frequentist vs.\ Bayesian}
+\begin{itemize}[nosep]
+  \item \textbf{Frequentist:} Parameters are fixed but unknown constants. Probability = long-run frequency. Uses MLE, confidence intervals.
+  \item \textbf{Bayesian:} Parameters are random variables with prior distributions. Updates beliefs using Bayes' theorem. Uses posterior distributions, credible intervals.
+\end{itemize}
+
+\subsubsection{Order Statistics}
+If $X_1, \ldots, X_n$ are i.i.d.\ with CDF $F(x)$ and PDF $f(x)$, the $k$-th order statistic $X_{(k)}$ is the $k$-th smallest value.
+\[ f_{(k)}(x) = \frac{n!}{(k-1)!(n-k)!} \cdot [F(x)]^{k-1} \cdot [1-F(x)]^{n-k} \cdot f(x) \]
+Special cases: $X_{(1)} = \min$, $X_{(n)} = \max$.\\
+$f_{(1)}(x) = n[1-F(x)]^{n-1} f(x)$ \qquad $f_{(n)}(x) = n[F(x)]^{n-1} f(x)$
+
+\begin{formulabox}[Sample Statistics]
+Sample mean: $\bar{x} = \frac{1}{n} \sum x_i$ \qquad
+Sample variance: $S^2 = \frac{\sum(x_i - \bar{x})^2}{n-1} = \frac{\sum x_i^2 - n\bar{x}^2}{n-1}$
+
+\medskip
+\textbf{Properties:} $E[\bar{X}] = \mu$ (unbiased), \quad $\text{Var}(\bar{X}) = \sigma^2/n$, \quad $E[S^2] = \sigma^2$ (unbiased)
+\end{formulabox}
+
+% =============================================
+% CHEAT SHEET
+% =============================================
+\newpage
+\hypertarget{sec:cheat}{}
+\section{A4 CHEAT SHEET --- All Formulas}
+{\small\textcolor{orange!80!black}{Print this section on ONE A4 sheet (front \& back). No solved questions --- formulas only!}}
+
+\begin{cheatbox}[FRONT SIDE]
+\small
+\textbf{Z-Score}\\
+$Z = (X - \mu)/\sigma$ \quad$|$\quad $Z = (\bar{X} - \mu)/(\sigma/\sqrt{n})$ \quad$|$\quad $Z = (S_n - n\mu)/(\sigma\sqrt{n})$
+
+\medskip
+\textbf{Confidence Intervals}\\
+Known $\sigma$: $\text{CI} = \bar{x} \pm z_{\alpha/2} \cdot \sigma/\sqrt{n}$\\
+Unknown $\sigma$: $\text{CI} = \bar{x} \pm z_{\alpha/2} \cdot S/\sqrt{n}$ (large $n$) \quad or \quad $\bar{x} \pm t_{\alpha/2,n-1} \cdot S/\sqrt{n}$ (small $n$)\\
+Bernoulli: $\text{CI} = \bar{x} \pm z_{\alpha/2} \sqrt{\bar{x}(1-\bar{x})/n}$ \quad Conservative: $\bar{x} \pm z_{\alpha/2}/(2\sqrt{n})$\\
+$z_{0.05}=1.645$ (90\%) \;$|$\; $z_{0.025}=1.96$ (95\%) \;$|$\; $z_{0.005}=2.576$ (99\%)
+
+\medskip
+\textbf{Hypothesis Testing}\\
+Z-test: $z = (\bar{x} - \mu_0)/(\sigma/\sqrt{n})$ [$\sigma$ known]\\
+T-test: $t = (\bar{x} - \mu_0)/(s/\sqrt{n})$, $df=n{-}1$ [$\sigma$ unknown]\\
+Two-sample: $t = (\bar{x}_1 - \bar{x}_2)/\sqrt{s_1^2/n_1 + s_2^2/n_2}$\\
+Paired: $t = \bar{d}/(s_d/\sqrt{n})$, $df=n{-}1$\\
+Proportion: $z = (\hat{p} - p_0)/\sqrt{p_0(1-p_0)/n}$\\
+Two-tailed: reject if $|$test stat$|$ $>$ critical value OR $p < \alpha$\\
+Right-tailed: reject if test stat $>$ critical value \quad Left-tailed: reject if test stat $< -$critical\\
+Type I error ($\alpha$): reject true $H_0$ \;$|$\; Type II error ($\beta$): keep false $H_0$
+
+\medskip
+\textbf{Sample Variance}\\
+$S^2 = \sum(x_i - \bar{x})^2/(n{-}1) = (\sum x_i^2 - n\bar{x}^2)/(n{-}1)$
+
+\medskip
+\textbf{Binomial Approximation (CLT)}\\
+$X \sim \text{Bin}(n,p)$: $\mu = np$, $\sigma = \sqrt{np(1{-}p)}$\\
+$P(X < k) \approx \Phi\!\left(\dfrac{k - 0.5 - np}{\sqrt{np(1{-}p)}}\right)$ [continuity correction]
+\end{cheatbox}
+
+\begin{cheatbox}[BACK SIDE]
+\small
+\textbf{Information Theory}\\
+Self-info: $I(x) = -\log_2(P(x))$ \quad Entropy: $H(X) = -\sum P(x) \log_2(P(x))$\\
+Joint: $H(X,Y) = -\sum P(x,y) \log_2(P(x,y))$ \quad Cond: $H(X|Y) = -\sum P(x,y) \log_2(P(x|y))$\\
+MI: $I(X;Y) = H(X) + H(Y) - H(X,Y) = H(X) - H(X|Y) = H(Y) - H(Y|X)$\\
+KL: $D(P\|Q) = \sum P(i) \log_2(P(i)/Q(i))$ [NOT symmetric, $\geq 0$]\\
+Chain rule: $H(X,Y) = H(X) + H(Y|X)$ \quad Bounds: $\max(H(X),H(Y)) \leq H(X,Y) \leq H(X)+H(Y)$\\
+$I(X;Y) \geq 0$, $I(X;Y) = 0 \iff$ independent \quad Units: bits$\to$Hartleys $\times 0.3010$; bits$\to$nats $\times 0.6931$
+
+\medskip
+\textbf{MLE Common Results}\\
+Normal: $\hat{\mu}=\bar{x}$, $\hat{\sigma}^2 = (1/n)\sum(x_i - \bar{x})^2$ \quad Bernoulli: $\hat{p}=\bar{x}$ \quad Poisson: $\hat{\lambda}=\bar{x}$ \quad Exp: $\hat{\lambda}=1/\bar{x}$\\
+Procedure: $L(\theta)=\prod P(x_i|\theta) \to \ell(\theta)=\sum\ln P(x_i|\theta) \to d\ell/d\theta=0 \to$ solve
+
+\medskip
+\textbf{Linear Regression}\\
+$b_1 = (n\sum xy - \sum x \sum y)/(n\sum x^2 - (\sum x)^2)$ \quad Also: $b_1 = r \cdot (S_y/S_x)$\\
+$b_0 = \bar{y} - b_1\bar{x}$ \quad $\hat{y} = b_0 + b_1 x$\\
+$r = (n\sum xy - \sum x \sum y)/\sqrt{[n\sum x^2 - (\sum x)^2][n\sum y^2 - (\sum y)^2]}$\\
+$R^2 = r^2$ \quad $\text{SST} = \text{SSR} + \text{SSE}$ \quad $R^2 = 1 - \text{SSE}/\text{SST}$
+
+\medskip
+\textbf{Bayesian Networks}\\
+Joint: $P(X_1,\ldots,X_n) = \prod P(X_i|\text{Parents}(X_i))$ \quad Bayes: $P(A|B) = P(B|A)P(A)/P(B)$\\
+Marginalization: $P(B) = \sum_A P(A,B)$\\
+Markov blanket$(X)$ = Parents $\cup$ Children $\cup$ CoParents \quad Local Markov: $X \perp \text{NonDesc}(X) | \text{Parents}(X)$
+
+\medskip
+\textbf{Decision: Which Test?}\\
+$\sigma$ known $\to$ Z-test \quad $\sigma$ unknown, 1 sample $\to$ t-test ($df=n{-}1$) \quad 2 indep groups $\to$ Welch t\\
+Paired data $\to$ Paired t ($df=n{-}1$) \quad Proportion $\to$ $z = (\hat{p}-p_0)/\sqrt{p_0(1-p_0)/n}$
+
+\medskip
+\textbf{Order Statistics}\\
+$f_{(k)}(x) = \frac{n!}{(k{-}1)!(n{-}k)!} F(x)^{k-1}(1{-}F(x))^{n-k}f(x)$\\
+Min: $f_{(1)} = n(1{-}F)^{n-1}f$ \quad Max: $f_{(n)} = nF^{n-1}f$
+
+\medskip
+\textbf{MSE \& Bias}\\
+$\text{MSE}(\hat{\theta}) = \text{Var}(\hat{\theta}) + [\text{Bias}(\hat{\theta})]^2$ \quad $\text{Bias}(\hat{\theta}) = E[\hat{\theta}] - \theta$ \quad LLN: $\bar{X}_n \to \mu$ as $n \to \infty$
+\end{cheatbox}
+
+% =============================================
+% FULL PRACTICE EXAM
+% =============================================
+\newpage
+\hypertarget{sec:practice}{}
+\section{Full Practice Exam}
+{\small\textcolor{orange!80!black}{These mirror the format, difficulty, and point distribution of HW5 \& HW6. The professor said ``questions will be similar to examples and homework.''}}
+
+\subsection*{Question 1 --- Information Theory (20 points)}
+A communication channel transmits symbols A, B, C with probabilities $P(A)=0.5$, $P(B)=0.3$, $P(C)=0.2$.
+\begin{enumerate}[label=(\alph*)]
+  \item Find the entropy $H$ of this source. (7 pts)
+  \item Find the information content of receiving symbol C. (3 pts)
+  \item A second source transmits the same symbols with equal probability. Which source has higher entropy? Explain. (5 pts)
+  \item Convert your answer from (a) to nats. (5 pts)
+\end{enumerate}
+
+\begin{examplebox}[Solution --- Question 1]
+\step{\textbf{(a)} $H = -[0.5\log_2(0.5) + 0.3\log_2(0.3) + 0.2\log_2(0.2)]$}
+\step{$= -[0.5(-1) + 0.3(-1.7370) + 0.2(-2.3219)] = -(-1.4855) = \ans{1.4855 \text{ bits}}$}
+\step{\textbf{(b)} $I(C) = -\log_2(0.2) = \log_2(5) = \ans{2.3219 \text{ bits}}$}
+\step{\textbf{(c)} Equal probability source: $H = \log_2(3) = 1.585$ bits. \ans{The equal-probability source has HIGHER entropy} because entropy is maximized when all outcomes are equally likely.}
+\step{\textbf{(d)} $H_{\text{nats}} = 1.4855 \times \ln(2) = 1.4855 \times 0.6931 = \ans{1.0296 \text{ nats}}$}
+\end{examplebox}
+
+\subsection*{Question 2 --- CLT / Normal Distribution (20 points)}
+The download speed of an internet service has mean $\mu=50$ Mbps and $\sigma=8$ Mbps.
+\begin{enumerate}[label=(\alph*)]
+  \item For a sample of $n=64$ users, find the probability that the average download speed is less than 48 Mbps. (10 pts)
+  \item Find the download speed below which the slowest 10\% of individual users fall. (10 pts)
+\end{enumerate}
+
+\begin{examplebox}[Solution --- Question 2]
+\step{\textbf{(a)} $\sigma_{\bar{x}} = 8/\sqrt{64} = 1.0$, \quad $Z = (48-50)/1.0 = -2.0$}
+\step{$P(\bar{X} < 48) = P(Z < -2.0) = \ans{0.0228}$}
+\step{\textbf{(b)} Need $P(X < x) = 0.10 \rightarrow z = -1.2816$}
+\step{$x = 50 + (-1.2816)(8) = 50 - 10.25 = \ans{39.75 \text{ Mbps}}$}
+\end{examplebox}
+
+\subsection*{Question 3 --- Confidence Interval (15 points)}
+A factory produces bolts with unknown mean length. A sample of $n=25$ bolts gives $\bar{x}=10.2$\,cm and $s=0.5$\,cm. Assuming normal population:
+\begin{enumerate}[label=(\alph*)]
+  \item Find the 95\% confidence interval using the t-distribution. (10 pts)
+  \item How would the interval change if $n=100$ instead? (5 pts)
+\end{enumerate}
+
+\begin{examplebox}[Solution --- Question 3]
+\step{\textbf{(a)} $df = 24$, $t_{0.025,24} \approx 2.064$}
+\step{ME $= 2.064 \times 0.5/\sqrt{25} = 2.064 \times 0.1 = 0.2064$}
+\step{$\text{CI} = [10.2 - 0.2064,\; 10.2 + 0.2064] = \ans{[9.994,\; 10.406]}$}
+\step{\textbf{(b)} With $n=100$, use $z$ (large $n$). $z_{0.025} = 1.96$, ME $= 1.96 \times 0.5/\sqrt{100} = 0.098$}
+\step{$\text{CI} = [10.102,\; 10.298]$ --- \ans{Much narrower!} Larger $n \rightarrow$ more precise.}
+\end{examplebox}
+
+\subsection*{Question 4 --- Z-Test (15 points)}
+A manufacturer claims average battery life is $\mu_0=500$ hours with known $\sigma=30$ hours. A consumer group tests $n=36$ batteries and finds $\bar{x}=490$ hours. At $\alpha=0.05$, is the battery life less than claimed?
+
+\begin{examplebox}[Solution --- Question 4]
+\step{\textbf{Hypotheses:} $H_0: \mu = 500$, $H_1: \mu < 500$ (LEFT-tailed)}
+\step{$z = (490-500)/(30/\sqrt{36}) = -10/5 = \mathbf{-2.0}$}
+\step{\textbf{Critical value (left-tailed, $\alpha=0.05$):} $z_{0.05} = -1.645$}
+\step{$|z| = 2.0 > 1.645$, and $p = P(Z < -2.0) = 0.0228 < 0.05$}
+\step{\textbf{Conclusion:} \ans{REJECT $H_0$}. Significant evidence that battery life is less than 500 hours.}
+\end{examplebox}
+
+\subsection*{Question 5 --- Paired T-Test (15 points)}
+A diet program measures weight of 8 people before and after:
+
+\begin{center}
+\small
+\begin{tabular}{ccc}
+\toprule
+\textbf{Person} & \textbf{Before} & \textbf{After} \\
+\midrule
+1 & 185 & 178 \\
+2 & 192 & 190 \\
+3 & 206 & 195 \\
+4 & 177 & 177 \\
+5 & 225 & 210 \\
+6 & 168 & 165 \\
+7 & 245 & 233 \\
+8 & 198 & 195 \\
+\bottomrule
+\end{tabular}
+\end{center}
+At $\alpha=0.05$, did the diet produce significant weight loss?
+
+\begin{examplebox}[Solution --- Question 5]
+\step{\textbf{Differences $d$ = Before $-$ After:} $\{7, 2, 11, 0, 15, 3, 12, 3\}$}
+\step{$\bar{d} = 53/8 = 6.625$}
+\step{$s_d = \sqrt{209.875/7} = \sqrt{29.982} = 5.4756$}
+\step{\textbf{Hypotheses:} $H_0: \mu_d = 0$, $H_1: \mu_d > 0$ (right-tailed)}
+\step{$t = 6.625/(5.4756/\sqrt{8}) = 6.625/1.9362 = \mathbf{3.4213}$}
+\step{$df = 7$, $t_{0.05,7} = 1.895$ (one-tailed critical value)}
+\step{$t = 3.42 > 1.895$}
+\step{\textbf{Conclusion:} \ans{REJECT $H_0$}. The diet produced statistically significant weight loss.}
+\end{examplebox}
+
+\subsection*{Question 6 --- Linear Regression (15 points)}
+Given data: $x = \{2, 4, 6, 8, 10\}$, $y = \{3, 7, 8, 12, 14\}$.
+\begin{enumerate}[label=(\alph*)]
+  \item Find the regression line $\hat{y} = b_0 + b_1 x$. (10 pts)
+  \item Predict $\hat{y}$ when $x = 7$. (2 pts)
+  \item Compute $R^2$. (3 pts)
+\end{enumerate}
+
+\begin{examplebox}[Solution --- Question 6]
+\step{\textbf{Sums:} $n=5$, $\sum x = 30$, $\sum y = 44$, $\sum xy = 316$, $\sum x^2 = 220$, $\sum y^2 = 462$}
+\step{$\bar{x} = 6$, $\bar{y} = 8.8$}
+\step{\textbf{(a)} $b_1 = (5 \times 316 - 30 \times 44)/(5 \times 220 - 30^2) = (1580-1320)/(1100-900) = 260/200 = 1.3$}
+\step{$b_0 = 8.8 - 1.3 \times 6 = 1.0$}
+\step{Regression line: $\ans{\hat{y} = 1.0 + 1.3x}$}
+\step{\textbf{(b)} $\hat{y}(7) = 1.0 + 1.3 \times 7 = 1.0 + 9.1 = \ans{10.1}$}
+\step{\textbf{(c)} $r = 260/\sqrt{200 \times 414} = 260/\sqrt{82800} = 260/287.75 = 0.9036$}
+\step{$R^2 = 0.9036^2 = \ans{0.8165}$ $\rightarrow$ 81.65\% of variance in $y$ is explained by $x$.}
+\end{examplebox}
+
+\vfill
+
+\begin{center}
+\fbox{\parbox{0.9\textwidth}{\centering
+\textbf{EXAM STRATEGY REMINDERS}\\[4pt]
+\small
+1. Partial credit exists --- ALWAYS show your work, write formulas, show steps.\\
+2. Start with the question you know best.\\
+3. Write down the hypotheses even if you can't finish the calculation.\\
+4. If stuck: write the formula, plug in what you know, state what you'd do next.\\
+5. Check your cheat sheet for the right formula FIRST.\\
+6. Z and T tables are PROVIDED --- don't waste cheat sheet space on them.\\
+7. Double-check: ``fail to reject'' NOT ``accept.''\\
+8. Time: $\sim$80 minutes --- budget $\sim$12 min per question.
+}}
+\end{center}
+
+\end{document}

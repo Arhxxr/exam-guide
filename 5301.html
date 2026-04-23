@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSE 5301 Exam 2 — Ultimate Study Guide</title>
+<style>
+:root { --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #e6edf3; --muted: #8b949e; --accent: #58a6ff; --green: #3fb950; --red: #f85149; --yellow: #d29922; --purple: #bc8cff; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding: 12px; max-width: 900px; margin: 0 auto; }
+h1 { font-size: 1.6em; color: var(--accent); text-align: center; margin: 16px 0; border-bottom: 2px solid var(--accent); padding-bottom: 8px; }
+h2 { font-size: 1.35em; color: var(--green); margin: 20px 0 10px; padding: 8px 12px; background: rgba(63,185,80,0.1); border-left: 4px solid var(--green); border-radius: 4px; }
+h3 { font-size: 1.15em; color: var(--purple); margin: 14px 0 8px; }
+h4 { font-size: 1em; color: var(--yellow); margin: 10px 0 6px; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin: 10px 0; }
+.formula-box { background: #1c2333; border: 2px solid var(--accent); border-radius: 8px; padding: 12px; margin: 10px 0; font-family: 'Courier New', monospace; font-size: 0.95em; overflow-x: auto; }
+.formula-box .label { color: var(--yellow); font-weight: bold; font-family: sans-serif; display: block; margin-bottom: 6px; font-size: 0.85em; }
+.example { background: #1a2332; border-left: 4px solid var(--yellow); padding: 12px; margin: 10px 0; border-radius: 0 8px 8px 0; }
+.example .q { color: var(--yellow); font-weight: bold; margin-bottom: 6px; }
+.step { margin: 6px 0 6px 16px; }
+.step::before { content: "→ "; color: var(--accent); font-weight: bold; }
+.answer { color: var(--green); font-weight: bold; }
+.warning { background: rgba(248,81,73,0.1); border: 1px solid var(--red); border-radius: 6px; padding: 10px; margin: 8px 0; font-size: 0.9em; }
+.tip { background: rgba(88,166,255,0.1); border: 1px solid var(--accent); border-radius: 6px; padding: 10px; margin: 8px 0; font-size: 0.9em; }
+.priority { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.75em; font-weight: bold; margin-left: 8px; }
+.p-high { background: var(--red); color: white; }
+.p-med { background: var(--yellow); color: black; }
+.p-low { background: var(--muted); color: white; }
+.toc { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin: 12px 0; }
+.toc a { color: var(--accent); text-decoration: none; display: block; padding: 4px 0; }
+.toc a:hover { text-decoration: underline; }
+table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.9em; }
+th, td { border: 1px solid var(--border); padding: 6px 8px; text-align: left; }
+th { background: rgba(88,166,255,0.15); color: var(--accent); }
+.collapsible { cursor: pointer; user-select: none; }
+.collapsible::after { content: " ▼"; font-size: 0.7em; }
+.collapsible.active::after { content: " ▲"; font-size: 0.7em; }
+.content-hidden { display: none; }
+hr { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+.cheat-ref { font-size: 0.8em; color: var(--muted); }
+code { background: #1c2333; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+</style>
+</head>
+<body>
+
+<h1>CSE 5301 — Exam 2 Ultimate Study Guide</h1>
+<p style="text-align:center;color:var(--muted);font-size:0.85em;">Sessions 13–23 | April 23, 2026 | Prof. Negin Fraidouni</p>
+<p style="text-align:center;color:var(--muted);font-size:0.85em;">Z-table & T-table provided | 1 A4 cheat sheet (front+back, formulas only) | Calculator needed</p>
+
+<div class="toc">
+<strong style="color:var(--accent);">📋 Table of Contents (by Exam Weight)</strong>
+<a href="#hyp">1. Hypothesis Testing (z-test, t-test, paired t-test) <span class="priority p-high">HIGH PRIORITY</span></a>
+<a href="#ci">2. Confidence Intervals / Interval Estimation <span class="priority p-high">HIGH PRIORITY</span></a>
+<a href="#info">3. Information Theory (Entropy, MI, KL-Divergence) <span class="priority p-high">HIGH PRIORITY</span></a>
+<a href="#clt">4. Central Limit Theorem & Normal Distribution <span class="priority p-high">HIGH PRIORITY</span></a>
+<a href="#mle">5. Maximum Likelihood Estimation <span class="priority p-med">MEDIUM</span></a>
+<a href="#bayes">6. Bayesian Networks <span class="priority p-med">MEDIUM</span></a>
+<a href="#reg">7. Correlation & Linear Regression <span class="priority p-med">MEDIUM</span></a>
+<a href="#stat">8. Statistical Inference Foundations <span class="priority p-low">SUPPORTING</span></a>
+<a href="#cheat">9. 📝 CHEAT SHEET — All Formulas</a>
+<a href="#practice">10. 🎯 FULL PRACTICE EXAM</a>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 1: HYPOTHESIS TESTING -->
+<!-- ============================================ -->
+<h2 id="hyp">1. Hypothesis Testing <span class="priority p-high">HIGHEST EXAM WEIGHT</span></h2>
+
+<div class="card">
+<h3>What is it?</h3>
+<p>Hypothesis testing lets us make decisions about population parameters using sample data. We start with a <strong>null hypothesis</strong> (H₀: the status quo) and an <strong>alternative hypothesis</strong> (H₁: what we're trying to prove). We calculate a test statistic and compare it to a threshold to decide whether to reject H₀.</p>
+</div>
+
+<h3>The 5-Step Framework (USE THIS EVERY TIME)</h3>
+<div class="card">
+<ol>
+<li><strong>State hypotheses:</strong> H₀ and H₁</li>
+<li><strong>Choose significance level:</strong> α (usually 0.05 or 0.01)</li>
+<li><strong>Compute the test statistic:</strong> z or t</li>
+<li><strong>Find p-value OR compare to critical value</strong></li>
+<li><strong>Conclusion:</strong> Reject H₀ or Fail to reject H₀</li>
+</ol>
+</div>
+
+<div class="warning">⚠️ NEVER say "accept H₀" — always say "fail to reject H₀". This is a common point-deduction trap.</div>
+
+<!-- Z-TEST -->
+<h3>1a. Z-Test (σ known)</h3>
+<div class="formula-box">
+<span class="label">Z-TEST STATISTIC</span>
+z = (x̄ − μ₀) / (σ / √n)
+<br><br>
+<span class="label">WHEN TO USE</span>
+• Population standard deviation σ is KNOWN
+• n is large (≥ 30) OR population is normal
+</div>
+
+<div class="example">
+<div class="q">PRACTICE — Z-Test (from HW6 Q3, 15 points)</div>
+<p><strong>Problem:</strong> A sensor has known σ = 0.25 and reference mean μ₀ = 5. We take 10 measurements from a new sensor: {4.5, 5.2, 4.3, 4.5, 4.9, 5.5, 4.2, 5.1, 4.1, 4.5}. Is the new sensor significantly different?</p>
+<div class="step"><strong>Step 1 — Hypotheses:</strong> H₀: μ = 5, H₁: μ ≠ 5 (two-tailed)</div>
+<div class="step"><strong>Step 2 — Significance:</strong> α = 0.05</div>
+<div class="step"><strong>Step 3 — Sample mean:</strong> x̄ = (4.5+5.2+4.3+4.5+4.9+5.5+4.2+5.1+4.1+4.5)/10 = 46.8/10 = 4.68</div>
+<div class="step"><strong>Step 4 — Test statistic:</strong> z = (4.68 − 5) / (0.25/√10) = −0.32 / 0.07906 = <strong>−4.0477</strong></div>
+<div class="step"><strong>Step 5 — p-value:</strong> p = 2 × P(Z < −4.0477) = 2 × 0.0000259 ≈ <strong>0.0001</strong> (two-tailed)</div>
+<div class="step"><strong>Conclusion:</strong> p ≪ 0.05, so <span class="answer">REJECT H₀</span>. The new sensor is significantly different.</div>
+</div>
+
+<div class="example">
+<div class="q">PRACTICE — Z-Test (from HW6 Q4, 13 points)</div>
+<p><strong>Problem:</strong> Previous studies show average height μ₀ = 1.8m, σ = 0.3m. A sample of n=36 people has x̄ = 1.6839. Has the average height changed? (α = 0.01)</p>
+<div class="step"><strong>Hypotheses:</strong> H₀: μ = 1.8, H₁: μ ≠ 1.8</div>
+<div class="step"><strong>z = (1.6839 − 1.8) / (0.3/√36) = −0.1161 / 0.05 = −2.3222</strong></div>
+<div class="step"><strong>Critical value at α=0.01 two-tailed:</strong> z₀.₀₀₅ = ±2.5758</div>
+<div class="step"><strong>|z| = 2.32 < 2.58, and p = 0.0202 > 0.01</strong></div>
+<div class="step"><strong>Conclusion:</strong> <span class="answer">FAIL TO REJECT H₀</span> at 1% level. Not enough evidence.</div>
+</div>
+
+<!-- T-TEST -->
+<h3>1b. One-Sample T-Test (σ unknown)</h3>
+<div class="formula-box">
+<span class="label">T-TEST STATISTIC</span>
+t = (x̄ − μ₀) / (s / √n)
+
+where s = sample standard deviation = √[ Σ(xᵢ − x̄)² / (n−1) ]
+degrees of freedom: df = n − 1
+<br><br>
+<span class="label">WHEN TO USE</span>
+• Population σ is UNKNOWN → use sample s instead
+• Typically small sample (n < 30), but works for any n
+• Use t-table with df = n − 1
+</div>
+
+<div class="example">
+<div class="q">PRACTICE — One-Sample T-Test (from HW6 Q1, 15 points)</div>
+<p><strong>Problem:</strong> Algorithm runtime data (n=15): {17.5, 16.3, 18.4, 14.9, 16, 16.5, 18.5, 15.9, 18, 18.5, 18.1, 15.3, 17.6, 17.7, 17.8}. Population mean μ₀ = 16.5. Is there a difference?</p>
+<div class="step"><strong>Hypotheses:</strong> H₀: μ = 16.5, H₁: μ ≠ 16.5 (two-tailed)</div>
+<div class="step"><strong>Sample stats:</strong> n = 15, x̄ = 17.1333, s = 1.2069</div>
+<div class="step"><strong>t = (17.1333 − 16.5) / (1.2069/√15) = 0.6333 / 0.3116 = 2.0323</strong></div>
+<div class="step"><strong>df = 14, p-value (two-tailed) = 0.0615</strong></div>
+<div class="step"><strong>Conclusion:</strong> p = 0.0615 > 0.05, so <span class="answer">FAIL TO REJECT H₀</span>. No significant difference.</div>
+</div>
+
+<div class="example">
+<div class="q">PRACTICE — One-Sided T-Test (from HW6 Q5, 15 points)</div>
+<p><strong>Problem:</strong> Method 1 scores: {10,4,6,7,12,5,7,4,12,10,9,10,8,5,9}. Population (Method 2) mean = 8. Does Method 1 outperform?</p>
+<div class="step"><strong>Hypotheses:</strong> H₀: μ ≤ 8, H₁: μ > 8 (right-tailed)</div>
+<div class="step"><strong>n = 15, x̄ = 7.8667, s = 2.6957</strong></div>
+<div class="step"><strong>t = (7.8667 − 8) / (2.6957/√15) = −0.1333/0.6961 = −0.1916</strong></div>
+<div class="step"><strong>df = 14, p-value (right-tailed) = 0.5746</strong></div>
+<div class="step"><strong>Conclusion:</strong> p = 0.57 > 0.05, <span class="answer">FAIL TO REJECT H₀</span>. Method 1 does NOT outperform.</div>
+</div>
+
+<!-- TWO-SAMPLE T-TEST -->
+<h3>1c. Two-Sample (Welch) T-Test</h3>
+<div class="formula-box">
+<span class="label">TWO-SAMPLE T-TEST (Independent Groups)</span>
+t = (x̄₁ − x̄₂) / √(s₁²/n₁ + s₂²/n₂)
+
+Welch df ≈ (s₁²/n₁ + s₂²/n₂)² / [ (s₁²/n₁)²/(n₁−1) + (s₂²/n₂)²/(n₂−1) ]
+<br><br>
+<span class="label">WHEN TO USE</span>
+• Comparing means of TWO INDEPENDENT groups
+• σ₁ and σ₂ unknown (use sample variances)
+</div>
+
+<div class="example">
+<div class="q">PRACTICE — Two-Sample T-Test (from HW6 Q2, 20 points)</div>
+<p><strong>Problem:</strong> Body fat % — Men (n=13): {13.3,6,20,8,14,19,18,25,16,24,15,1,15}; Women (n=10): {22,16,21.7,21,30,26,12,23.2,28,23}. Significant difference?</p>
+<div class="step"><strong>Hypotheses:</strong> H₀: μ_men = μ_women, H₁: μ_men ≠ μ_women</div>
+<div class="step"><strong>Men: x̄₁ = 14.9462, s₁ = 6.8426</strong></div>
+<div class="step"><strong>Women: x̄₂ = 22.29, s₂ = 5.3197</strong></div>
+<div class="step"><strong>t = (14.9462 − 22.29) / √(6.8426²/13 + 5.3197²/10) = −7.3438 / 2.5363 = −2.8958</strong></div>
+<div class="step"><strong>Welch df ≈ 20.99, p = 0.0086</strong></div>
+<div class="step"><strong>Conclusion:</strong> p = 0.0086 < 0.05, <span class="answer">REJECT H₀</span>. Significant difference exists.</div>
+</div>
+
+<!-- PAIRED T-TEST -->
+<h3>1d. Paired T-Test</h3>
+<div class="formula-box">
+<span class="label">PAIRED T-TEST</span>
+Compute differences: dᵢ = x₁ᵢ − x₂ᵢ  for each pair
+d̄ = mean of differences
+s_d = std dev of differences
+
+t = d̄ / (s_d / √n)
+df = n − 1
+<br><br>
+<span class="label">WHEN TO USE</span>
+• Same subjects measured TWICE (before/after, test1/test2)
+• Data comes in PAIRS
+</div>
+
+<div class="example">
+<div class="q">PRACTICE — Paired T-Test (from HW6 Q6, 20 points)</div>
+<p><strong>Problem:</strong> 16 students take 2 exams. Are the exams equally difficult?</p>
+<table>
+<tr><th>Student</th><th>Exam1</th><th>Exam2</th><th>d = E1−E2</th></tr>
+<tr><td>Bob</td><td>63</td><td>69</td><td>−6</td></tr>
+<tr><td>Nina</td><td>65</td><td>65</td><td>0</td></tr>
+<tr><td>Tim</td><td>56</td><td>62</td><td>−6</td></tr>
+<tr><td>Kate</td><td>100</td><td>91</td><td>9</td></tr>
+<tr><td>Alonzo</td><td>88</td><td>78</td><td>10</td></tr>
+<tr><td>Jose</td><td>83</td><td>87</td><td>−4</td></tr>
+<tr><td>Nikhil</td><td>77</td><td>79</td><td>−2</td></tr>
+<tr><td>Julia</td><td>92</td><td>88</td><td>4</td></tr>
+<tr><td>Tohru</td><td>90</td><td>85</td><td>5</td></tr>
+<tr><td>Michael</td><td>84</td><td>92</td><td>−8</td></tr>
+<tr><td>Jean</td><td>68</td><td>69</td><td>−1</td></tr>
+<tr><td>Indra</td><td>74</td><td>81</td><td>−7</td></tr>
+<tr><td>Susan</td><td>87</td><td>84</td><td>3</td></tr>
+<tr><td>Allen</td><td>64</td><td>75</td><td>−11</td></tr>
+<tr><td>Paul</td><td>71</td><td>84</td><td>−13</td></tr>
+<tr><td>Edwina</td><td>88</td><td>82</td><td>6</td></tr>
+</table>
+<div class="step"><strong>Hypotheses:</strong> H₀: μ_d = 0, H₁: μ_d ≠ 0</div>
+<div class="step"><strong>d̄ = −1.3125, s_d = 7.0021, n = 16</strong></div>
+<div class="step"><strong>t = −1.3125 / (7.0021/√16) = −1.3125 / 1.7505 = −0.7498</strong></div>
+<div class="step"><strong>df = 15, p = 0.4650</strong></div>
+<div class="step"><strong>Conclusion:</strong> p = 0.465 > 0.05, <span class="answer">FAIL TO REJECT H₀</span>. Exams are equally difficult.</div>
+</div>
+
+<!-- TYPE I AND TYPE II ERRORS -->
+<h3>1e. Type I & Type II Errors</h3>
+<div class="card">
+<table>
+<tr><th></th><th>H₀ is TRUE</th><th>H₀ is FALSE</th></tr>
+<tr><td><strong>Reject H₀</strong></td><td style="color:var(--red);">Type I Error (α)<br>False Positive</td><td style="color:var(--green);">Correct! (Power = 1−β)</td></tr>
+<tr><td><strong>Fail to Reject H₀</strong></td><td style="color:var(--green);">Correct!</td><td style="color:var(--red);">Type II Error (β)<br>False Negative</td></tr>
+</table>
+<p style="margin-top:8px;"><strong>α (significance level):</strong> Probability of rejecting H₀ when it's actually true. You choose this (0.05, 0.01, etc.).</p>
+<p><strong>β:</strong> Probability of failing to reject H₀ when it's actually false.</p>
+<p><strong>Power = 1 − β:</strong> Probability of correctly rejecting a false H₀.</p>
+</div>
+
+<div class="warning">⚠️ Exam trap: "Type I = False Positive = rejecting a true H₀" and "Type II = False Negative = keeping a false H₀". Remember: Type I = 1st kind of mistake = being too eager to reject.</div>
+
+<!-- Z-TEST FOR PROPORTIONS -->
+<h3>1f. Z-Test for Proportions</h3>
+<div class="formula-box">
+<span class="label">Z-TEST FOR PROPORTIONS</span>
+z = (p̂ − p₀) / √(p₀(1 − p₀) / n)
+
+where p̂ = sample proportion, p₀ = hypothesized proportion
+<br><br>
+<span class="label">WHEN TO USE</span>
+• Testing whether a population proportion equals a claimed value
+• n is large enough: np₀ ≥ 5 and n(1−p₀) ≥ 5
+</div>
+
+<div class="example">
+<div class="q">PRACTICE — Z-Test for Proportions (from Session 21 — Clinton Poll)</div>
+<p><strong>Problem:</strong> A politician claims 50% support. A poll of n=518 voters finds 45% support (p̂=0.45). At α=0.05, is the true proportion different from 50%?</p>
+<div class="step"><strong>Hypotheses:</strong> H₀: p = 0.5, H₁: p ≠ 0.5 (two-tailed)</div>
+<div class="step"><strong>z = (0.45 − 0.5) / √(0.5 × 0.5 / 518) = −0.05 / √(0.000483) = −0.05 / 0.02198 = −2.275</strong></div>
+<div class="step"><strong>p-value (two-tailed):</strong> p = 2 × P(Z < −2.275) ≈ 2 × 0.0115 = 0.023</div>
+<div class="step"><strong>Conclusion:</strong> p = 0.023 < 0.05, so <span class="answer">REJECT H₀</span>. The true proportion significantly differs from 50%.</div>
+</div>
+
+<!-- ADDITIONAL WORKED EXAMPLES -->
+<h3>1g. More Worked Examples from Lecture</h3>
+
+<div class="example">
+<div class="q">PRACTICE — Z-Test (from Session 20 — Blood Glucose)</div>
+<p><strong>Problem:</strong> Normal blood glucose has μ₀=100 mg/dL, σ=15. A sample of n=36 patients with a new diet has x̄=108. At α=0.05, does the diet change blood glucose?</p>
+<div class="step"><strong>Hypotheses:</strong> H₀: μ = 100, H₁: μ ≠ 100</div>
+<div class="step"><strong>z = (108 − 100) / (15/√36) = 8 / 2.5 = 3.20</strong></div>
+<div class="step"><strong>p-value:</strong> 2 × P(Z > 3.20) = 2 × 0.00069 ≈ 0.0014</div>
+<div class="step"><strong>Conclusion:</strong> p ≪ 0.05, <span class="answer">REJECT H₀</span>. The diet significantly changes blood glucose.</div>
+</div>
+
+<div class="example">
+<div class="q">PRACTICE — One-Sample T-Test (from Session 21 — Potato Yield)</div>
+<p><strong>Problem:</strong> A farmer claims new fertilizer yields more than 20 tons/acre. Sample of n=12: x̄=22.1, s=3.2. At α=0.05, is the claim supported?</p>
+<div class="step"><strong>Hypotheses:</strong> H₀: μ ≤ 20, H₁: μ > 20 (right-tailed)</div>
+<div class="step"><strong>t = (22.1 − 20) / (3.2/√12) = 2.1 / 0.9238 = 2.273</strong></div>
+<div class="step"><strong>df = 11, t₀.₀₅,₁₁ = 1.796 (one-tailed critical value)</strong></div>
+<div class="step"><strong>t = 2.273 > 1.796</strong></div>
+<div class="step"><strong>Conclusion:</strong> <span class="answer">REJECT H₀</span>. There is significant evidence the fertilizer yields more than 20 tons/acre.</div>
+</div>
+
+<div class="tip">
+<strong>🔑 DECISION TREE: Which test to use?</strong><br>
+σ known? → <strong>Z-test</strong><br>
+σ unknown, one sample? → <strong>One-sample t-test</strong><br>
+σ unknown, two independent groups? → <strong>Two-sample (Welch) t-test</strong><br>
+σ unknown, paired/matched data? → <strong>Paired t-test</strong><br>
+Testing a proportion? → <strong>Z-test for proportions</strong><br>
+One-sided claim (greater/less)? → <strong>One-tailed test</strong><br>
+"Different from"? → <strong>Two-tailed test</strong>
+</div>
+
+<hr>
+
+<!-- ============================================ -->
+<!-- SECTION 2: CONFIDENCE INTERVALS -->
+<!-- ============================================ -->
+<h2 id="ci">2. Confidence Intervals / Interval Estimation <span class="priority p-high">HIGH</span></h2>
+
+<div class="card">
+<h3>What is it?</h3>
+<p>Instead of estimating a parameter with a single number (point estimate), we give a range [θ̂_l, θ̂_h] that likely contains the true value. The <strong>confidence level</strong> (1−α) is the probability the interval captures the true parameter.</p>
+</div>
+
+<h3>2a. Z-Interval (σ known, large n)</h3>
+<div class="formula-box">
+<span class="label">CONFIDENCE INTERVAL FOR MEAN (σ KNOWN)</span>
+CI = [ x̄ − z_{α/2} · σ/√n , x̄ + z_{α/2} · σ/√n ]
+
+Margin of Error = z_{α/2} · σ/√n
+</div>
+
+<h3>2b. CI with Unknown σ — Three Approaches</h3>
+<div class="formula-box">
+<span class="label">APPROACH 1: UPPER BOUND (Conservative)</span>
+If σ ≤ σ_max, use:
+CI = [ x̄ − z_{α/2} · σ_max/√n , x̄ + z_{α/2} · σ_max/√n ]
+(Wider interval but always valid)
+
+<span class="label">APPROACH 2: SAMPLE STANDARD DEVIATION (General)</span>
+S = √[ Σ(xₖ − x̄)² / (n−1) ]
+CI = [ x̄ − z_{α/2} · S/√n , x̄ + z_{α/2} · S/√n ]
+(Requires large n for z; use t for small n)
+
+<span class="label">APPROACH 3: BERNOULLI SPECIAL CASE</span>
+Conservative (upper bound σ_max = 0.5):
+  CI = [ x̄ − z_{α/2}/(2√n) , x̄ + z_{α/2}/(2√n) ]
+
+Estimated variance:
+  CI = [ x̄ − z_{α/2}·√(x̄(1−x̄)/n) , x̄ + z_{α/2}·√(x̄(1−x̄)/n) ]
+</div>
+
+<h3>2c. T-Interval (σ unknown, small n, normal population)</h3>
+<div class="formula-box">
+<span class="label">CONFIDENCE INTERVAL USING T-DISTRIBUTION</span>
+CI = [ x̄ − t_{α/2, df} · s/√n , x̄ + t_{α/2, df} · s/√n ]
+
+df = n − 1
+Use t-table instead of z-table
+</div>
+
+<div class="tip">
+<strong>🔑 Common z_{α/2} values (MEMORIZE):</strong><br>
+90% CI (α=0.10): z₀.₀₅ = 1.645<br>
+95% CI (α=0.05): z₀.₀₂₅ = 1.96<br>
+99% CI (α=0.01): z₀.₀₀₅ = 2.576
+</div>
+
+<div class="example">
+<div class="q">PRACTICE — Confidence Interval</div>
+<p><strong>Problem:</strong> A sample of n=50 light bulbs has mean lifetime x̄ = 1200 hours with known σ = 100 hours. Find the 95% confidence interval for the true mean lifetime.</p>
+<div class="step"><strong>Identify:</strong> σ known, n large → Z-interval</div>
+<div class="step"><strong>z_{α/2} = z₀.₀₂₅ = 1.96</strong></div>
+<div class="step"><strong>Margin of error = 1.96 × 100/√50 = 1.96 × 14.14 = 27.72</strong></div>
+<div class="step"><strong>CI = [1200 − 27.72, 1200 + 27.72] = <span class="answer">[1172.28, 1227.72]</span></strong></div>
+<div class="step">Interpretation: We are 95% confident the true mean lifetime is between 1172.28 and 1227.72 hours.</div>
+</div>
+
+<div class="example">
+<div class="q">PRACTICE — Bernoulli CI</div>
+<p><strong>Problem:</strong> In a poll of n=400 voters, 220 support candidate A (x̄ = 220/400 = 0.55). Find 95% CI for the true proportion θ using (a) conservative method and (b) estimated variance.</p>
+<div class="step"><strong>(a) Conservative:</strong> CI = [0.55 − 1.96/(2√400), 0.55 + 1.96/(2√400)] = [0.55 − 0.049, 0.55 + 0.049] = <span class="answer">[0.501, 0.599]</span></div>
+<div class="step"><strong>(b) Estimated:</strong> σ̂ = √(0.55×0.45/400) = √(0.000619) = 0.02487</div>
+<div class="step">CI = [0.55 − 1.96×0.02487, 0.55 + 1.96×0.02487] = <span class="answer">[0.501, 0.599]</span></div>
+<div class="step">(In this case they're very close; the conservative method is wider in general.)</div>
+</div>
+
+<hr>
+
+<!-- ============================================ -->
+<!-- SECTION 3: INFORMATION THEORY -->
+<!-- ============================================ -->
+<h2 id="info">3. Information Theory <span class="priority p-high">HIGH</span></h2>
+
+<div class="card">
+<h3>What is it?</h3>
+<p>Measures the amount of "surprise" or "uncertainty" in random variables. Entropy tells us how unpredictable a source is. Mutual information tells us how much knowing one variable tells us about another.</p>
+</div>
+
+<h3>All Information Theory Formulas</h3>
+<div class="formula-box">
+<span class="label">SELF-INFORMATION (of a single event)</span>
+I(x) = −log₂(P(x))     [in bits]
+I(x) = −ln(P(x))        [in nats]
+I(x) = −log₁₀(P(x))    [in Hartleys]
+
+<span class="label">ENTROPY (average uncertainty of X)</span>
+H(X) = −Σ P(xᵢ) · log₂(P(xᵢ))
+
+<span class="label">JOINT ENTROPY</span>
+H(X,Y) = −Σ_x Σ_y P(x,y) · log₂(P(x,y))
+
+<span class="label">CONDITIONAL ENTROPY</span>
+H(X|Y) = −Σ_x Σ_y P(x,y) · log₂(P(x|y))
+
+where P(x|y) = P(x,y) / P(y)
+
+<span class="label">MUTUAL INFORMATION</span>
+I(X;Y) = Σ_x Σ_y P(x,y) · log₂[ P(x,y) / (P(x)·P(y)) ]
+
+SHORTCUT: I(X;Y) = H(X) + H(Y) − H(X,Y)
+ALSO:     I(X;Y) = H(X) − H(X|Y) = H(Y) − H(Y|X)
+
+<span class="label">KL-DIVERGENCE (Relative Entropy)</span>
+D(P ‖ Q) = Σ P(i) · log₂[ P(i) / Q(i) ]
+
+NOTE: D(P‖Q) ≠ D(Q‖P)  (NOT symmetric!)
+NOTE: D(P‖Q) ≥ 0 always
+
+<span class="label">UNIT CONVERSIONS</span>
+H_Hartleys = H_bits × log₁₀(2) = H_bits × 0.3010
+H_nats = H_bits × ln(2) = H_bits × 0.6931
+</div>
+
+<div class="warning">⚠️ Key properties: Entropy is MAXIMIZED when all outcomes are equally likely. For n equally likely outcomes: H = log₂(n). KL-Divergence is NOT symmetric.</div>
+
+<div class="card">
+<h4>Important Identities & Bounds (from Session 13–14)</h4>
+<p><strong>Chain Rule:</strong> H(X,Y) = H(X) + H(Y|X) = H(Y) + H(X|Y)</p>
+<p><strong>Conditional Entropy Identity:</strong> H(X|Y) = H(X,Y) − H(Y)</p>
+<p><strong>Bounds on Joint Entropy:</strong> max(H(X), H(Y)) ≤ H(X,Y) ≤ H(X) + H(Y)</p>
+<p style="margin-top:6px; color:var(--muted);">Left bound: joint can't have less uncertainty than either variable alone. Right bound: equality holds only when X and Y are independent.</p>
+<p><strong>Mutual Information:</strong> I(X;Y) ≥ 0 always. I(X;Y) = 0 ⟺ X and Y are independent.</p>
+<p><strong>Conditional Mutual Information:</strong> I(X;Y|Z) = H(X|Z) − H(X|Y,Z)</p>
+</div>
+
+<div class="example">
+<div class="q">PRACTICE — Full Information Theory Problem (from HW4 Q1, 70 points total)</div>
+<p><strong>Problem:</strong> Given joint distribution P(X,Y):</p>
+<table>
+<tr><th>P(X,Y)</th><th>X=2</th><th>X=4</th><th>X=6</th></tr>
+<tr><td>Y=2</td><td>0.01</td><td>0.15</td><td>0.08</td></tr>
+<tr><td>Y=4</td><td>0.20</td><td>0.09</td><td>0.10</td></tr>
+<tr><td>Y=6</td><td>0.08</td><td>0.12</td><td>0.17</td></tr>
+</table>
+
+<h4>Find H(X):</h4>
+<div class="step"><strong>Marginals:</strong> P(X=2)=0.29, P(X=4)=0.36, P(X=6)=0.35</div>
+<div class="step">H(X) = −[0.29·log₂(0.29) + 0.36·log₂(0.36) + 0.35·log₂(0.35)]</div>
+<div class="step">= −[0.29(−1.7856) + 0.36(−1.4739) + 0.35(−1.5146)]</div>
+<div class="step">= −[−0.5179 − 0.5306 − 0.5301] = <span class="answer">1.5786 bits</span></div>
+
+<h4>Find H(Y):</h4>
+<div class="step"><strong>Marginals:</strong> P(Y=2)=0.24, P(Y=4)=0.39, P(Y=6)=0.37</div>
+<div class="step">H(Y) = −[0.24·log₂(0.24) + 0.39·log₂(0.39) + 0.37·log₂(0.37)] = <span class="answer">1.5547 bits</span></div>
+
+<h4>Find D(X‖Y):</h4>
+<div class="step">D(X‖Y) = 0.29·log₂(0.29/0.24) + 0.36·log₂(0.36/0.39) + 0.35·log₂(0.35/0.37)</div>
+<div class="step">= 0.0792 − 0.0416 − 0.0281 = <span class="answer">0.0095 bits</span></div>
+
+<h4>Find H(X,Y) — Joint Entropy:</h4>
+<div class="step">H(X,Y) = −Σ P(x,y)·log₂(P(x,y)) for all 9 cells</div>
+<div class="step">= −[0.01·log₂(0.01) + 0.15·log₂(0.15) + ... + 0.17·log₂(0.17)]</div>
+<div class="step">= <span class="answer">2.9709 bits</span></div>
+
+<h4>Find I(X;Y) — Mutual Information:</h4>
+<div class="step"><strong>Shortcut:</strong> I(X;Y) = H(X) + H(Y) − H(X,Y) = 1.5786 + 1.5547 − 2.9709 = <span class="answer">0.1624 bits</span></div>
+<div class="step">Verify: H(Y) − H(Y|X) = 1.5547 − 1.3923 = 0.1624 ✓</div>
+</div>
+
+<div class="example">
+<div class="q">PRACTICE — Entropy of Dice (from HW4 Q3)</div>
+<p><strong>Balanced die:</strong> Each face P(i) = 1/6</p>
+<div class="step">H = log₂(6) = <span class="answer">2.5850 bits</span></div>
+<p><strong>Loaded die:</strong> P(1)=0.2, P(2)=0.4, P(3)=P(4)=P(5)=P(6)=0.1</p>
+<div class="step">H = −[0.2·log₂(0.2) + 0.4·log₂(0.4) + 4×0.1·log₂(0.1)]</div>
+<div class="step">= −[−0.4644 − 0.5288 − 1.3288] = <span class="answer">2.3219 bits</span></div>
+<div class="step">Loaded die has LOWER entropy (more predictable). Makes sense!</div>
+</div>
+
+<div class="example">
+<div class="q">PRACTICE — Information Content (from HW4 Q2)</div>
+<p><strong>Problem:</strong> Roll a fair die twice, get sequence {2, 3}. How many bits of information?</p>
+<div class="step">P(2,3) = (1/6)(1/6) = 1/36</div>
+<div class="step">I = −log₂(1/36) = log₂(36) = 2·log₂(6) = 2 × 2.585 = <span class="answer">5.1699 bits</span></div>
+</div>
+
+<div class="example">
+<div class="q">PRACTICE — Unit Conversion (from HW4 Q4)</div>
+<p><strong>Problem:</strong> H = 3.6 bits. Convert to Hartleys and nats.</p>
+<div class="step">Hartleys = 3.6 × log₁₀(2) = 3.6 × 0.3010 = <span class="answer">1.0837 Hartleys</span></div>
+<div class="step">Nats = 3.6 × ln(2) = 3.6 × 0.6931 = <span class="answer">2.4953 nats</span></div>
+</div>
+
+<hr>
+
+<!-- ============================================ -->
+<!-- SECTION 4: CLT & NORMAL -->
+<!-- ============================================ -->
+<h2 id="clt">4. Central Limit Theorem & Normal Distribution <span class="priority p-high">HIGH</span></h2>
+
+<div class="card">
+<h3>Central Limit Theorem (CLT)</h3>
+<p>If X₁, X₂, ..., Xₙ are i.i.d. random variables with mean μ and variance σ², then for large n:</p>
+<p><strong>The sample mean X̄ is approximately Normal:</strong> X̄ ~ N(μ, σ²/n)</p>
+<p><strong>The sum Sₙ is approximately Normal:</strong> Sₙ ~ N(nμ, nσ²)</p>
+<p>Rule of thumb: n ≥ 30 is "large enough."</p>
+
+<h4>Law of Large Numbers (LLN)</h4>
+<p>As n → ∞, the sample mean X̄ₙ converges to the population mean μ. In other words, with enough data, the sample average will be very close to the true average.</p>
+<p><strong>Weak LLN:</strong> For any ε > 0, P(|X̄ₙ − μ| > ε) → 0 as n → ∞</p>
+<p style="color:var(--muted);font-size:0.9em;">CLT tells you the <em>shape</em> of the distribution (Normal); LLN tells you the sample mean <em>converges</em> to the true mean.</p>
+</div>
+
+<div class="formula-box">
+<span class="label">STANDARDIZATION (Z-SCORE)</span>
+For individual X:     Z = (X − μ) / σ
+For sample mean X̄:   Z = (X̄ − μ) / (σ/√n)
+For sum Sₙ:          Z = (Sₙ − nμ) / (σ√n)
+
+<span class="label">NORMAL APPROXIMATION TO BINOMIAL</span>
+X ~ Binomial(n, p)
+μ = np,  σ = √(np(1−p))
+Z = (X − np) / √(np(1−p))
+
+With continuity correction: P(X < k) ≈ P(Z < (k−0.5−np)/√(np(1−p)))
+
+<span class="label">INVERSE Z (Finding values from percentiles)</span>
+x = μ + z · σ
+where z is looked up from the Z-table for the desired percentile
+</div>
+
+<div class="example">
+<div class="q">PRACTICE — CLT for Sample Mean (from HW5 Q1, 10 pts)</div>
+<p><strong>Problem:</strong> n=100 people, E[Xᵢ]=150cm, σ=25cm. Find P(X̄ < 145).</p>
+<div class="step"><strong>Standard error:</strong> σ_x̄ = 25/√100 = 2.5</div>
+<div class="step"><strong>Z = (145 − 150)/2.5 = −2.0</strong></div>
+<div class="step"><strong>P(Z < −2.0) = <span class="answer">0.0228</span></strong> (from Z-table)</div>
+</div>
+
+<div class="example">
+<div class="q">PRACTICE — Finding Percentiles (from HW5 Q2, 12 pts each)</div>
+<p><strong>Problem:</strong> Heights ~ N(65, 6²). Find (a) height below which shortest 30% fall; (b) height above which tallest 5% fall.</p>
+<div class="step"><strong>(a)</strong> Need P(X < x) = 0.30 → z = −0.5244</div>
+<div class="step">x = 65 + (−0.5244)(6) = 65 − 3.15 = <span class="answer">61.85 inches</span></div>
+<div class="step"><strong>(b)</strong> Need P(X > x) = 0.05 → P(X < x) = 0.95 → z = 1.6449</div>
+<div class="step">x = 65 + (1.6449)(6) = 65 + 9.87 = <span class="answer">74.87 inches</span></div>
+</div>
+
+<div class="example">
+<div class="q">PRACTICE — Normal Approx to Binomial (from HW5 Q3)</div>
+<p><strong>Problem:</strong> n=2000 chips, failure rate p=0.063. Find P(X < 135).</p>
+<div class="step"><strong>μ = np = 126, σ = √(np(1−p)) = √118.062 = 10.8657</strong></div>
+<div class="step"><strong>With continuity correction: Z = (134.5 − 126)/10.8657 = 0.7823</strong></div>
+<div class="step"><strong>P(Z < 0.7823) = <span class="answer">0.7830</span></strong></div>
+</div>
+
+<div class="example">
+<div class="q">PRACTICE — CLT for Sum (from HW5 Q4)</div>
+<p><strong>Problem:</strong> Waiting time: μ=20s, σ=8s. Find P(900 < S₅₀ < 1100).</p>
+<div class="step"><strong>E[S₅₀] = 50×20 = 1000, σ_S = 8√50 = 56.57</strong></div>
+<div class="step"><strong>Z₁ = (900−1000)/56.57 = −1.7678</strong></div>
+<div class="step"><strong>Z₂ = (1100−1000)/56.57 = 1.7678</strong></div>
+<div class="step"><strong>P = Φ(1.7678) − Φ(−1.7678) = 0.9615 − 0.0385 = <span class="answer">0.9229</span></strong></div>
+</div>
+
+<hr>
+
+<!-- ============================================ -->
+<!-- SECTION 5: MLE -->
+<!-- ============================================ -->
+<h2 id="mle">5. Maximum Likelihood Estimation <span class="priority p-med">MEDIUM</span></h2>
+
+<div class="card">
+<h3>What is it?</h3>
+<p>MLE finds the parameter value θ that makes the observed data most probable. We write the likelihood function, take its log, differentiate, set to 0, and solve.</p>
+</div>
+
+<div class="formula-box">
+<span class="label">MLE PROCEDURE</span>
+1. Write the likelihood: L(θ) = Π P(xᵢ | θ)  (product of all data probabilities)
+2. Take the log-likelihood: ℓ(θ) = ln L(θ) = Σ ln P(xᵢ | θ)
+3. Differentiate: dℓ/dθ = 0
+4. Solve for θ̂ (the MLE)
+5. Verify it's a maximum (second derivative < 0)
+
+<span class="label">COMMON MLEs</span>
+Normal(μ, σ²):  μ̂ = x̄ = (1/n)Σxᵢ,  σ̂² = (1/n)Σ(xᵢ−x̄)²
+Bernoulli(p):   p̂ = x̄ = (number of successes)/n
+Poisson(λ):     λ̂ = x̄
+Exponential(λ): λ̂ = 1/x̄
+
+<span class="label">PROPERTIES OF MLE</span>
+• Consistent: θ̂ → θ as n → ∞
+• Asymptotically normal and efficient
+• Invariant: if θ̂ is MLE of θ, then g(θ̂) is MLE of g(θ)
+</div>
+
+<div class="example">
+<div class="q">PRACTICE — MLE for Normal Distribution</div>
+<p><strong>Problem:</strong> Data: {3, 5, 7, 9, 11}. Assuming Normal(μ, σ²), find MLE for μ and σ².</p>
+<div class="step"><strong>μ̂ = x̄ = (3+5+7+9+11)/5 = 35/5 = 7</strong></div>
+<div class="step"><strong>σ̂² = (1/5)[(3−7)²+(5−7)²+(7−7)²+(9−7)²+(11−7)²]</strong></div>
+<div class="step">= (1/5)[16+4+0+4+16] = 40/5 = <span class="answer">μ̂ = 7, σ̂² = 8</span></div>
+<div class="step"><em>Note: MLE uses 1/n, NOT 1/(n−1). The sample variance S² uses 1/(n−1).</em></div>
+</div>
+
+<div class="example">
+<div class="q">PRACTICE — MLE for Exponential</div>
+<p><strong>Problem:</strong> Lifetimes (in hours): {2.1, 3.5, 1.8, 4.2, 2.9}. Find MLE for λ if X ~ Exp(λ).</p>
+<div class="step"><strong>x̄ = (2.1+3.5+1.8+4.2+2.9)/5 = 14.5/5 = 2.9</strong></div>
+<div class="step"><strong>λ̂ = 1/x̄ = 1/2.9 = <span class="answer">0.3448</span></strong></div>
+</div>
+
+<hr>
+
+<!-- ============================================ -->
+<!-- SECTION 6: BAYESIAN NETWORKS -->
+<!-- ============================================ -->
+<h2 id="bayes">6. Bayesian Networks <span class="priority p-med">MEDIUM</span></h2>
+
+<div class="card">
+<h3>What is it?</h3>
+<p>A Bayesian Network (BN) is a directed acyclic graph (DAG) where nodes represent random variables and edges represent probabilistic dependencies. Each node has a conditional probability table (CPT). BNs allow us to compute joint and conditional probabilities efficiently using the chain rule.</p>
+</div>
+
+<div class="formula-box">
+<span class="label">JOINT PROBABILITY FROM A BAYESIAN NETWORK</span>
+P(X₁, X₂, ..., Xₙ) = Π P(Xᵢ | Parents(Xᵢ))
+
+<span class="label">KEY CONCEPTS</span>
+• Parent node: directly influences child
+• Root node: no parents → uses marginal probability P(X)
+• Conditional independence: X ⊥ Y | Z if knowing Z makes X and Y independent
+• d-separation: determines conditional independence in the graph
+
+<span class="label">MARKOV BLANKET</span>
+The Markov Blanket of node X = {Parents(X)} ∪ {Children(X)} ∪ {Other parents of Children(X)}
+→ Given its Markov blanket, X is conditionally independent of ALL other nodes
+
+<span class="label">LOCAL MARKOV PROPERTY</span>
+Each node is conditionally independent of its non-descendants given its parents:
+X ⊥ NonDescendants(X) | Parents(X)
+
+<span class="label">INFERENCE</span>
+To find P(A | evidence):
+P(A | B=b) = P(A, B=b) / P(B=b)
+
+Use marginalization: P(B=b) = Σ_A P(A, B=b)
+</div>
+
+<div class="example">
+<div class="q">PRACTICE — Bayesian Network Computation</div>
+<p><strong>Problem:</strong> A BN has: Rain → Sprinkler, Rain → WetGrass, Sprinkler → WetGrass.</p>
+<p>Given: P(R=T)=0.2, P(S=T|R=T)=0.01, P(S=T|R=F)=0.4, P(W=T|S=T,R=T)=0.99, P(W=T|S=T,R=F)=0.90, P(W=T|S=F,R=T)=0.80, P(W=T|S=F,R=F)=0.0</p>
+<p>Find P(Rain=T | WetGrass=T).</p>
+<div class="step"><strong>Use Bayes:</strong> P(R=T|W=T) = P(W=T|R=T)·P(R=T) / P(W=T)</div>
+<div class="step"><strong>P(W=T|R=T):</strong> Marginalize over S:</div>
+<div class="step">= P(W=T|S=T,R=T)·P(S=T|R=T) + P(W=T|S=F,R=T)·P(S=F|R=T)</div>
+<div class="step">= 0.99×0.01 + 0.80×0.99 = 0.0099 + 0.792 = 0.8019</div>
+<div class="step"><strong>P(W=T|R=F):</strong> = 0.90×0.4 + 0.0×0.6 = 0.36</div>
+<div class="step"><strong>P(W=T) = P(W=T|R=T)·P(R=T) + P(W=T|R=F)·P(R=F)</strong></div>
+<div class="step">= 0.8019×0.2 + 0.36×0.8 = 0.16038 + 0.288 = 0.44838</div>
+<div class="step"><strong>P(R=T|W=T) = 0.16038/0.44838 = <span class="answer">0.3577</span></strong></div>
+</div>
+
+<div class="example">
+<div class="q">PRACTICE — Alarm Network (from Session 22)</div>
+<p><strong>Problem:</strong> Classic BN: Burglary(B) → Alarm(A) ← Earthquake(E), Alarm → JohnCalls(J), Alarm → MaryCalls(M).</p>
+<p>Given: P(B)=0.001, P(E)=0.002, P(A|B,E)=0.95, P(A|B,¬E)=0.94, P(A|¬B,E)=0.29, P(A|¬B,¬E)=0.001, P(J|A)=0.90, P(J|¬A)=0.05, P(M|A)=0.70, P(M|¬A)=0.01</p>
+<p>Find P(B|J=T, M=T).</p>
+<div class="step"><strong>Joint factorization:</strong> P(B,E,A,J,M) = P(B)·P(E)·P(A|B,E)·P(J|A)·P(M|A)</div>
+<div class="step"><strong>By Bayes:</strong> P(B|J,M) = P(J,M|B)·P(B) / P(J,M)</div>
+<div class="step"><strong>Key insight:</strong> Must marginalize over E and A. This is the standard "explain away" example — if the alarm went off (J and M called), it's more likely to be burglary, but if we also know there was an earthquake, the probability of burglary goes down (explaining away).</div>
+<div class="step"><strong>Markov blanket of B:</strong> {A, E} — B is independent of J,M given A.</div>
+</div>
+
+<div class="example">
+<div class="q">PRACTICE — BN: Joint Probability Computation</div>
+<p><strong>Problem:</strong> Given a simple chain: A → B → C. P(A=1)=0.3, P(B=1|A=1)=0.8, P(B=1|A=0)=0.2, P(C=1|B=1)=0.9, P(C=1|B=0)=0.1. Find P(A=1, B=1, C=0).</p>
+<div class="step"><strong>Chain rule:</strong> P(A,B,C) = P(A)·P(B|A)·P(C|B)</div>
+<div class="step">P(A=1, B=1, C=0) = P(A=1) × P(B=1|A=1) × P(C=0|B=1)</div>
+<div class="step">= 0.3 × 0.8 × (1−0.9) = 0.3 × 0.8 × 0.1 = <span class="answer">0.024</span></div>
+</div>
+
+<hr>
+
+<!-- ============================================ -->
+<!-- SECTION 7: REGRESSION -->
+<!-- ============================================ -->
+<h2 id="reg">7. Correlation & Linear Regression <span class="priority p-med">MEDIUM</span></h2>
+
+<div class="card">
+<h3>What is it?</h3>
+<p>Linear regression fits a line ŷ = b₀ + b₁x to data points. Correlation (r) measures the strength and direction of the linear relationship between two variables.</p>
+<p style="margin-top:8px;"><strong>ρ (rho) = population correlation</strong> — true but unknown. <strong>r = sample correlation</strong> — computed from data. r estimates ρ.</p>
+</div>
+
+<div class="formula-box">
+<span class="label">CORRELATION COEFFICIENT (Pearson's r)</span>
+r = [nΣxᵢyᵢ − (Σxᵢ)(Σyᵢ)] / √{[nΣxᵢ² − (Σxᵢ)²][nΣyᵢ² − (Σyᵢ)²]}
+
+Also: r = Sxy / (Sx · Sy)
+
+where Sxy = Σ(xᵢ−x̄)(yᵢ−ȳ)/(n−1)
+
+Properties: −1 ≤ r ≤ 1
+  r = 1: perfect positive linear
+  r = −1: perfect negative linear
+  r = 0: no linear relationship
+
+<span class="label">LINEAR REGRESSION COEFFICIENTS</span>
+b₁ (slope) = [nΣxᵢyᵢ − (Σxᵢ)(Σyᵢ)] / [nΣxᵢ² − (Σxᵢ)²]
+
+  Also: b₁ = r · (Sy/Sx)
+
+b₀ (intercept) = ȳ − b₁·x̄
+
+Regression line: ŷ = b₀ + b₁·x
+
+<span class="label">COEFFICIENT OF DETERMINATION</span>
+R² = r²
+Interpretation: proportion of variance in Y explained by X
+
+<span class="label">RESIDUAL</span>
+eᵢ = yᵢ − ŷᵢ    (actual minus predicted)
+
+<span class="label">SUM OF SQUARES</span>
+SST = Σ(yᵢ − ȳ)²     (Total)
+SSR = Σ(ŷᵢ − ȳ)²     (Regression/Explained)
+SSE = Σ(yᵢ − ŷᵢ)²    (Error/Residual)
+SST = SSR + SSE
+R² = SSR/SST = 1 − SSE/SST
+</div>
+
+<div class="example">
+<div class="q">PRACTICE — Linear Regression</div>
+<p><strong>Problem:</strong> Data: x = {1, 2, 3, 4, 5}, y = {2, 4, 5, 4, 5}. Find the regression line.</p>
+<div class="step"><strong>Compute sums:</strong> n=5, Σx=15, Σy=20, Σxy=67, Σx²=55</div>
+<div class="step"><strong>x̄=3, ȳ=4</strong></div>
+<div class="step"><strong>b₁ = (5×67 − 15×20)/(5×55 − 15²) = (335−300)/(275−225) = 35/50 = 0.7</strong></div>
+<div class="step"><strong>b₀ = 4 − 0.7×3 = 4 − 2.1 = 1.9</strong></div>
+<div class="step"><strong>Regression line: <span class="answer">ŷ = 1.9 + 0.7x</span></strong></div>
+</div>
+
+<div class="example">
+<div class="q">PRACTICE — Correlation Interpretation (from Session 23)</div>
+<p><strong>Problem:</strong> An e-commerce study finds r = 0.98 between ad spending (x) and revenue (y). What does this mean? If Sx = 200, Sy = 5000, find b₁.</p>
+<div class="step"><strong>r = 0.98:</strong> Very strong positive linear relationship. As ad spending increases, revenue increases almost perfectly linearly.</div>
+<div class="step"><strong>R² = 0.98² = 0.9604:</strong> 96.04% of the variance in revenue is explained by ad spending.</div>
+<div class="step"><strong>Slope shortcut:</strong> b₁ = r × (Sy/Sx) = 0.98 × (5000/200) = 0.98 × 25 = <span class="answer">24.5</span></div>
+<div class="step">Interpretation: For every $1 increase in ad spending, revenue increases by approximately $24.50.</div>
+</div>
+
+<div class="warning">⚠️ Correlation ≠ Causation! High r only means a linear association exists, not that x causes y. Also, r only captures <em>linear</em> relationships — two variables could have a strong nonlinear relationship with r ≈ 0.</div>
+
+<hr>
+
+<!-- ============================================ -->
+<!-- SECTION 8: STATISTICAL INFERENCE FOUNDATIONS -->
+<!-- ============================================ -->
+<h2 id="stat">8. Statistical Inference Foundations <span class="priority p-low">SUPPORTING</span></h2>
+
+<div class="card">
+<h3>Key Definitions</h3>
+<p><strong>Population:</strong> The entire group we want to study.</p>
+<p><strong>Sample:</strong> A subset of the population we actually observe.</p>
+<p><strong>Parameter:</strong> A number describing the population (μ, σ, p). UNKNOWN.</p>
+<p><strong>Statistic:</strong> A number computed from the sample (x̄, s, p̂). KNOWN.</p>
+<p><strong>Point Estimator:</strong> A single value estimate for a parameter (e.g., x̄ for μ).</p>
+<p><strong>Unbiased Estimator:</strong> E[θ̂] = θ (on average, hits the true value).</p>
+<p><strong>Bias:</strong> B(θ̂) = E[θ̂] − θ</p>
+<p><strong>Mean Squared Error:</strong> MSE(θ̂) = Var(θ̂) + [Bias(θ̂)]²</p>
+<p style="margin-top:6px; color:var(--muted); font-size:0.9em;">If unbiased (Bias=0), then MSE = Var. The MLE σ̂² = (1/n)Σ(xᵢ−x̄)² is biased; the sample variance S² = (1/(n−1))Σ(xᵢ−x̄)² is unbiased.</p>
+
+<h4>Frequentist vs. Bayesian</h4>
+<p><strong>Frequentist:</strong> Parameters are fixed but unknown constants. Probability = long-run frequency. Uses MLE, confidence intervals.</p>
+<p><strong>Bayesian:</strong> Parameters are random variables with prior distributions. Updates beliefs using Bayes' theorem. Uses posterior distributions, credible intervals.</p>
+
+<h4>Order Statistics</h4>
+<p>If X₁, ..., Xₙ are i.i.d. with CDF F(x) and PDF f(x), the k-th order statistic X₍ₖ₎ is the k-th smallest value.</p>
+<p><strong>PDF of X₍ₖ₎:</strong> f₍ₖ₎(x) = [n! / ((k−1)!(n−k)!)] · [F(x)]^(k−1) · [1−F(x)]^(n−k) · f(x)</p>
+<p><strong>Special cases:</strong> X₍₁₎ = min, X₍ₙ₎ = max</p>
+<p style="color:var(--muted);font-size:0.9em;">PDF of minimum: f₍₁₎(x) = n·[1−F(x)]^(n−1)·f(x)<br>PDF of maximum: f₍ₙ₎(x) = n·[F(x)]^(n−1)·f(x)</p>
+</div>
+
+<div class="formula-box">
+<span class="label">SAMPLE STATISTICS</span>
+Sample mean: x̄ = (1/n) Σxᵢ
+Sample variance: S² = (1/(n−1)) Σ(xᵢ − x̄)²  [unbiased]
+                    = (1/(n−1))(Σxᵢ² − nx̄²)
+Sample std dev: S = √(S²)
+
+<span class="label">PROPERTIES</span>
+E[X̄] = μ  (unbiased for population mean)
+Var(X̄) = σ²/n
+E[S²] = σ²  (unbiased for population variance)
+</div>
+
+<hr>
+
+<!-- ============================================ -->
+<!-- CHEAT SHEET -->
+<!-- ============================================ -->
+<h2 id="cheat">📝 A4 CHEAT SHEET — All Formulas</h2>
+<p style="color:var(--yellow);font-size:0.9em;">Print this section on ONE A4 sheet (front & back). No solved questions — formulas only!</p>
+
+<div class="formula-box" style="border-color: var(--green);">
+<span class="label" style="color:var(--green);">═══ FRONT SIDE ═══</span>
+
+<strong>▸ Z-SCORE</strong>
+Z = (X − μ)/σ    |    Z = (X̄ − μ)/(σ/√n)    |    Z = (Sₙ − nμ)/(σ√n)
+
+<strong>▸ CONFIDENCE INTERVALS</strong>
+Known σ:     CI = x̄ ± z_{α/2} · σ/√n
+Unknown σ:   CI = x̄ ± z_{α/2} · S/√n     (large n)
+             CI = x̄ ± t_{α/2,n-1} · S/√n  (small n, normal pop.)
+Bernoulli:   CI = x̄ ± z_{α/2}·√(x̄(1−x̄)/n)
+Bernoulli conservative: CI = x̄ ± z_{α/2}/(2√n)
+
+z₀.₀₅=1.645 (90%)  |  z₀.₀₂₅=1.96 (95%)  |  z₀.₀₀₅=2.576 (99%)
+
+<strong>▸ HYPOTHESIS TESTING</strong>
+Z-test: z = (x̄ − μ₀)/(σ/√n)             [σ known]
+T-test: t = (x̄ − μ₀)/(s/√n), df=n−1     [σ unknown]
+Two-sample: t = (x̄₁−x̄₂)/√(s₁²/n₁+s₂²/n₂)
+Paired: t = d̄/(s_d/√n), df=n−1
+Proportion: z = (p̂ − p₀)/√(p₀(1−p₀)/n)
+
+Two-tailed: reject if |test stat| > critical value  OR  p < α
+Right-tailed: reject if test stat > critical value
+Left-tailed: reject if test stat < −critical value
+Type I error (α): reject true H₀ | Type II error (β): keep false H₀
+
+<strong>▸ SAMPLE VARIANCE</strong>
+S² = Σ(xᵢ−x̄)²/(n−1) = (Σxᵢ²−nx̄²)/(n−1)
+
+<strong>▸ BINOMIAL APPROXIMATION (CLT)</strong>
+X ~ Bin(n,p): μ=np, σ=√(np(1−p))
+P(X<k) ≈ Φ((k−0.5−np)/√(np(1−p)))  [continuity correction]
+</div>
+
+<div class="formula-box" style="border-color: var(--green);">
+<span class="label" style="color:var(--green);">═══ BACK SIDE ═══</span>
+
+<strong>▸ INFORMATION THEORY</strong>
+Self-info:     I(x) = −log₂(P(x))
+Entropy:       H(X) = −Σ P(x)·log₂(P(x))
+Joint Entropy: H(X,Y) = −Σ P(x,y)·log₂(P(x,y))
+Cond. Entropy: H(X|Y) = −Σ P(x,y)·log₂(P(x|y))
+   where P(x|y) = P(x,y)/P(y)
+Mutual Info:   I(X;Y) = H(X) + H(Y) − H(X,Y)
+   also = H(X) − H(X|Y) = H(Y) − H(Y|X)
+KL-Divergence: D(P‖Q) = Σ P(i)·log₂(P(i)/Q(i))  [NOT symmetric, ≥0]
+Chain rule:    H(X,Y) = H(X) + H(Y|X) = H(Y) + H(X|Y)
+Bounds:        max(H(X),H(Y)) ≤ H(X,Y) ≤ H(X)+H(Y)
+I(X;Y) ≥ 0,   I(X;Y) = 0 ⟺ X,Y independent
+Unit convert:  bits→Hartleys: ×0.3010   bits→nats: ×0.6931
+
+<strong>▸ MLE COMMON RESULTS</strong>
+Normal: μ̂=x̄, σ̂²=(1/n)Σ(xᵢ−x̄)²
+Bernoulli: p̂=x̄
+Poisson: λ̂=x̄
+Exponential: λ̂=1/x̄
+Procedure: L(θ)=ΠP(xᵢ|θ) → ℓ(θ)=Σln P(xᵢ|θ) → dℓ/dθ=0 → solve
+
+<strong>▸ LINEAR REGRESSION</strong>
+b₁ = (nΣxy − ΣxΣy)/(nΣx² − (Σx)²)
+b₀ = ȳ − b₁x̄
+ŷ = b₀ + b₁x
+
+r = (nΣxy − ΣxΣy)/√[(nΣx²−(Σx)²)(nΣy²−(Σy)²)]
+R² = r² = proportion of variance explained
+SST = SSR + SSE
+R² = 1 − SSE/SST
+
+<strong>▸ BAYESIAN NETWORKS</strong>
+Joint: P(X₁,...,Xₙ) = Π P(Xᵢ|Parents(Xᵢ))
+Bayes' Rule: P(A|B) = P(B|A)P(A)/P(B)
+Marginalization: P(B) = Σ_A P(A,B)
+Markov blanket(X) = Parents ∪ Children ∪ CoParents
+Local Markov: X ⊥ NonDesc(X) | Parents(X)
+
+<strong>▸ DECISION: WHICH TEST?</strong>
+σ known → Z-test
+σ unknown, 1 sample → 1-sample t (df=n−1)
+σ unknown, 2 indep groups → Welch t
+σ unknown, paired data → Paired t (df=n−1)
+Proportion → z = (p̂−p₀)/√(p₀(1−p₀)/n)
+
+<strong>▸ ORDER STATISTICS</strong>
+f₍ₖ₎(x) = [n!/((k−1)!(n−k)!)]·F(x)^(k−1)·(1−F(x))^(n−k)·f(x)
+Min: f₍₁₎ = n(1−F)^(n−1)f    Max: f₍ₙ₎ = nF^(n−1)f
+
+<strong>▸ MSE & BIAS</strong>
+MSE(θ̂) = Var(θ̂) + [Bias(θ̂)]²
+Bias(θ̂) = E[θ̂] − θ
+LLN: X̄ₙ → μ as n → ∞
+</div>
+
+<hr>
+
+<!-- ============================================ -->
+<!-- FULL PRACTICE EXAM -->
+<!-- ============================================ -->
+<h2 id="practice">🎯 FULL PRACTICE EXAM</h2>
+<p style="color:var(--yellow);font-size:0.9em;">These mirror the format, difficulty, and point distribution of HW5 & HW6. The professor said "questions will be similar to examples and homework."</p>
+
+<div class="card">
+<h3>Question 1 — Information Theory (20 points)</h3>
+<p>A communication channel transmits symbols A, B, C with probabilities P(A)=0.5, P(B)=0.3, P(C)=0.2.</p>
+<p>(a) Find the entropy H of this source. (7 pts)</p>
+<p>(b) Find the information content of receiving symbol C. (3 pts)</p>
+<p>(c) A second source transmits the same symbols with equal probability. Which source has higher entropy? Explain. (5 pts)</p>
+<p>(d) Convert your answer from (a) to nats. (5 pts)</p>
+</div>
+
+<div class="example">
+<div class="q">Solution — Question 1</div>
+<div class="step"><strong>(a)</strong> H = −[0.5·log₂(0.5) + 0.3·log₂(0.3) + 0.2·log₂(0.2)]</div>
+<div class="step">= −[0.5(−1) + 0.3(−1.7370) + 0.2(−2.3219)]</div>
+<div class="step">= −[−0.5 − 0.5211 − 0.4644] = −(−1.4855) = <span class="answer">1.4855 bits</span></div>
+<div class="step"><strong>(b)</strong> I(C) = −log₂(0.2) = log₂(5) = <span class="answer">2.3219 bits</span></div>
+<div class="step"><strong>(c)</strong> Equal probability source: H = log₂(3) = 1.585 bits. <span class="answer">The equal-probability source has HIGHER entropy</span> because entropy is maximized when all outcomes are equally likely (maximum uncertainty).</div>
+<div class="step"><strong>(d)</strong> H_nats = 1.4855 × ln(2) = 1.4855 × 0.6931 = <span class="answer">1.0296 nats</span></div>
+</div>
+
+<div class="card">
+<h3>Question 2 — CLT / Normal Distribution (20 points)</h3>
+<p>The download speed of an internet service has mean μ=50 Mbps and σ=8 Mbps.</p>
+<p>(a) For a sample of n=64 users, find the probability that the average download speed is less than 48 Mbps. (10 pts)</p>
+<p>(b) Find the download speed below which the slowest 10% of individual users fall. (10 pts)</p>
+</div>
+
+<div class="example">
+<div class="q">Solution — Question 2</div>
+<div class="step"><strong>(a)</strong> σ_x̄ = 8/√64 = 8/8 = 1.0</div>
+<div class="step">Z = (48 − 50)/1.0 = −2.0</div>
+<div class="step">P(X̄ < 48) = P(Z < −2.0) = <span class="answer">0.0228</span></div>
+<div class="step"><strong>(b)</strong> Need P(X < x) = 0.10 → z = −1.2816</div>
+<div class="step">x = 50 + (−1.2816)(8) = 50 − 10.25 = <span class="answer">39.75 Mbps</span></div>
+</div>
+
+<div class="card">
+<h3>Question 3 — Confidence Interval (15 points)</h3>
+<p>A factory produces bolts with unknown mean length. A sample of n=25 bolts gives x̄=10.2 cm and s=0.5 cm. Assuming normal population:</p>
+<p>(a) Find the 95% confidence interval using the t-distribution. (10 pts)</p>
+<p>(b) How would the interval change if n=100 instead? (5 pts)</p>
+</div>
+
+<div class="example">
+<div class="q">Solution — Question 3</div>
+<div class="step"><strong>(a)</strong> df = 24, t₀.₀₂₅,₂₄ ≈ 2.064 (from t-table)</div>
+<div class="step">Margin of error = 2.064 × 0.5/√25 = 2.064 × 0.1 = 0.2064</div>
+<div class="step">CI = [10.2 − 0.2064, 10.2 + 0.2064] = <span class="answer">[9.994, 10.406]</span></div>
+<div class="step"><strong>(b)</strong> With n=100, we can use z instead of t (large n). z₀.₀₂₅ = 1.96</div>
+<div class="step">ME = 1.96 × 0.5/√100 = 1.96 × 0.05 = 0.098</div>
+<div class="step">CI = [10.102, 10.298] — <span class="answer">Much narrower!</span> Larger n → more precise.</div>
+</div>
+
+<div class="card">
+<h3>Question 4 — Z-Test (15 points)</h3>
+<p>A manufacturer claims average battery life is μ₀=500 hours with known σ=30 hours. A consumer group tests n=36 batteries and finds x̄=490 hours. At α=0.05, is the battery life less than claimed?</p>
+</div>
+
+<div class="example">
+<div class="q">Solution — Question 4</div>
+<div class="step"><strong>Hypotheses:</strong> H₀: μ = 500, H₁: μ < 500 (LEFT-tailed)</div>
+<div class="step"><strong>z = (490 − 500)/(30/√36) = −10/5 = −2.0</strong></div>
+<div class="step"><strong>Critical value (left-tailed, α=0.05):</strong> z₀.₀₅ = −1.645</div>
+<div class="step"><strong>|z| = 2.0 > 1.645, and p = P(Z < −2.0) = 0.0228 < 0.05</strong></div>
+<div class="step"><strong>Conclusion:</strong> <span class="answer">REJECT H₀</span>. There is significant evidence that battery life is less than 500 hours.</div>
+</div>
+
+<div class="card">
+<h3>Question 5 — Paired T-Test (15 points)</h3>
+<p>A diet program measures weight of 8 people before and after:</p>
+<table>
+<tr><th>Person</th><th>Before</th><th>After</th></tr>
+<tr><td>1</td><td>185</td><td>178</td></tr>
+<tr><td>2</td><td>192</td><td>190</td></tr>
+<tr><td>3</td><td>206</td><td>195</td></tr>
+<tr><td>4</td><td>177</td><td>177</td></tr>
+<tr><td>5</td><td>225</td><td>210</td></tr>
+<tr><td>6</td><td>168</td><td>165</td></tr>
+<tr><td>7</td><td>245</td><td>233</td></tr>
+<tr><td>8</td><td>198</td><td>195</td></tr>
+</table>
+<p>At α=0.05, did the diet produce significant weight loss?</p>
+</div>
+
+<div class="example">
+<div class="q">Solution — Question 5</div>
+<div class="step"><strong>Differences d = Before − After:</strong> {7, 2, 11, 0, 15, 3, 12, 3}</div>
+<div class="step"><strong>d̄ = (7+2+11+0+15+3+12+3)/8 = 53/8 = 6.625</strong></div>
+<div class="step"><strong>s_d:</strong> Σ(dᵢ−d̄)² = 0.1406+21.3906+19.1406+43.8906+70.1406+13.1406+28.8906+13.1406 = 209.875</div>
+<div class="step">s_d = √(209.875/7) = √29.982 = 5.4756</div>
+<div class="step"><strong>Hypotheses:</strong> H₀: μ_d = 0, H₁: μ_d > 0 (right-tailed, expecting weight loss)</div>
+<div class="step"><strong>t = 6.625/(5.4756/√8) = 6.625/1.9362 = 3.4213</strong></div>
+<div class="step"><strong>df = 7, t₀.₀₅,₇ = 1.895 (one-tailed critical value)</strong></div>
+<div class="step"><strong>t = 3.42 > 1.895</strong></div>
+<div class="step"><strong>Conclusion:</strong> <span class="answer">REJECT H₀</span>. The diet produced statistically significant weight loss.</div>
+</div>
+
+<div class="card">
+<h3>Question 6 — Linear Regression (15 points)</h3>
+<p>Given data: x = {2, 4, 6, 8, 10}, y = {3, 7, 8, 12, 14}.</p>
+<p>(a) Find the regression line ŷ = b₀ + b₁x. (10 pts)</p>
+<p>(b) Predict ŷ when x = 7. (2 pts)</p>
+<p>(c) Compute R². (3 pts)</p>
+</div>
+
+<div class="example">
+<div class="q">Solution — Question 6</div>
+<div class="step"><strong>Sums:</strong> n=5, Σx=30, Σy=44, Σxy=316, Σx²=220, Σy²=462</div>
+<div class="step"><strong>x̄=6, ȳ=8.8</strong></div>
+<div class="step"><strong>(a) b₁ = (5×316 − 30×44)/(5×220 − 30²) = (1580−1320)/(1100−900) = 260/200 = 1.3</strong></div>
+<div class="step"><strong>b₀ = 8.8 − 1.3×6 = 8.8 − 7.8 = 1.0</strong></div>
+<div class="step"><strong>Regression line: <span class="answer">ŷ = 1.0 + 1.3x</span></strong></div>
+<div class="step"><strong>(b) ŷ(7) = 1.0 + 1.3×7 = 1.0 + 9.1 = <span class="answer">10.1</span></strong></div>
+<div class="step"><strong>(c) r = (5×316−30×44)/√[(5×220−900)(5×462−44²)] = 260/√[200×414] = 260/√82800 = 260/287.75 = 0.9036</strong></div>
+<div class="step"><strong>R² = 0.9036² = <span class="answer">0.8165</span></strong> → 81.65% of variance in y is explained by x.</div>
+</div>
+
+<hr>
+
+<div class="tip" style="text-align:center; font-size:1.1em;">
+<strong>🎯 EXAM STRATEGY REMINDERS</strong><br>
+1. Partial credit exists — ALWAYS show your work, write formulas, show steps<br>
+2. Start with the question you know best<br>
+3. Write down the hypotheses even if you can't finish the calculation<br>
+4. If stuck: write the formula, plug in what you know, state what you'd do next<br>
+5. Check your cheat sheet for the right formula FIRST<br>
+6. Z and T tables are PROVIDED — don't waste cheat sheet space on them<br>
+7. Double-check: "fail to reject" NOT "accept"<br>
+8. Time: ~80 minutes for the exam — budget ~12 min per question
+</div>
+
+<script>
+// Make sections collapsible for phone
+document.querySelectorAll('h2, h3').forEach(el => {
+  el.classList.add('collapsible');
+  el.addEventListener('click', function() {
+    this.classList.toggle('active');
+    let next = this.nextElementSibling;
+    while(next && !['H2','H3','HR'].includes(next.tagName)) {
+      next.classList.toggle('content-hidden');
+      next = next.nextElementSibling;
+    }
+  });
+});
+</script>
+
+</body>
+</html>
